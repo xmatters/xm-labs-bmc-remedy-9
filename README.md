@@ -6,7 +6,7 @@ Information about the incident or change request will be presented to the messag
 This is an experimental integration as our workshop engineers in the great white north have not validated it works for Remedy 9. It has been field tested however, and it should work. If any issues are encountered, open an issue [here](https://github.com/xmatters/xm-labs-bmc-remedy-9/issues) and we'll get it looked at. 
 
 # Pre-Requisites
-* BMC Remedy ITSM 9.1 *On Premise*
+* BMC Remedy ITSM 9.1 **On Premise**
 * xMatters account - If you don't have one, [get one](https://www.xmatters.com)!
 * xMatters Integration Agent 5.8.1 - Downloads and install docs are [here](https://support.xmatters.com/hc/en-us/articles/201463419-Integration-Agent-for-xMatters-5-x-xMatters-On-Demand)
 
