@@ -5,6 +5,15 @@ Information about the incident or change request will be presented to the messag
 
 This is an experimental integration as our workshop engineers in the great white north have not validated it works for Remedy 9. It has been field tested however, and it should work. If any issues are encountered, open an issue [here](https://github.com/xmatters/xm-labs-bmc-remedy-9/issues) and we'll get it looked at. 
 
+---------
+
+<kbd>
+  <img src="https://github.com/xmatters/xMatters-Labs/raw/master/media/disclaimer.png">
+</kbd>
+
+---------
+
+
 # Pre-Requisites
 * BMC Remedy ITSM 9.1 **On Premise**
 * xMatters account - If you don't have one, [get one](https://www.xmatters.com)!
