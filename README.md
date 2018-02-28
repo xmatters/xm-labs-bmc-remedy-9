@@ -37,3 +37,7 @@ the Integration Agent.
 # Installation
 For the rest of the details, see the [xM-BMC-Remedy_Incident_Management_5_1_2.pdf](xM-BMC-Remedy_Incident_Management_5_1_2.pdf) document. 
 
+**Note**
+The attached PDF is a bit out of date, and the method for installing the data load components (2.1.4) and integration services (2.1.5) has changed. 
+Instead of the instructions listed, copy the contents of the extracted `\components\integration-agent\` folder from the attached archive into the `<IAHOME>\components\integration-agent\` folder in your local system. Then continue setting the variables in the configuration.js files as described in the PDF.
+After you’re done that, go to **Developer > Event Domains** in xMatters, and click on the **applications** Event Domain. At the bottom, click **Add New** beside Integration Services. Enter the integration name (`bmcremedyincident-5-1-2`) and then click **Save**. Repeat to add another Event Domain if you’re using the data load component (using the name `bmcremedydataload-5-1-2`).
