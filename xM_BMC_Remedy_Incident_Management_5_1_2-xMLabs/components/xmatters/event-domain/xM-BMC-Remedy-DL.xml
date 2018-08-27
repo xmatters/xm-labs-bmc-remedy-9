@@ -1,0 +1,2548 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Integration xmlns="http://www.xmatters.com/1.0/IntegrationImportExport" noNamespaceSchemaLocation="IntegrationImportExport.xsd">
+    <FileFormatVersion>1.0</FileFormatVersion>
+    <ExportSoftwareVersion>4.1.0 build.1050 r50672</ExportSoftwareVersion>
+    <ImportSoftwareVersionRequired>4.1.0 r40987</ImportSoftwareVersionRequired>
+    <IntegrationVersion/>
+    <EventDomain description="BMC Remedy Data Load integration" name="bmcremedydataload-5-1-2">
+        <Properties>
+            <Property>
+                <Name>BESPUSHURL</Name>
+                <Description>Used to specify the address of the BES device server.</Description>
+                <Value>http://localhost:8888/static</Value>
+            </Property>
+        </Properties>
+        <ResponseTracking/>
+        <EventProperties>
+            <ListProperty>
+                <Name>has_errors</Name>
+                <Rank>1</Rank>
+                <Important>false</Important>
+                <Required>false</Required>
+                <Validate>false</Validate>
+                <ListPossibleValues>
+                    <Value>false</Value>
+                    <Value>true</Value>
+                </ListPossibleValues>
+            </ListProperty>
+            <ListProperty>
+                <Name>has_warnings</Name>
+                <Rank>2</Rank>
+                <Important>false</Important>
+                <Required>false</Required>
+                <Validate>false</Validate>
+                <ListPossibleValues>
+                    <Value>false</Value>
+                    <Value>true</Value>
+                </ListPossibleValues>
+            </ListProperty>
+        </EventProperties>
+        <ScriptPackage name="BMC Remedy DataLoad 5.1.2">
+            <Version>4.1</Version>
+            <Revision>1</Revision>
+            <Description>BMC Remedy DataLoad  Script Package for xMatters Enterprise</Description>
+            <Notes>- checked out as r15</Notes>
+            <Script name="initial" type="PROCESS"><![CDATA[# Copyright 2012 AlarmPoint Systems, Inc.
+#
+# This script package provides example functionality and a starting point
+# for the Integration.
+#
+# This script defines the initial business process for incoming
+# events. This script will have the following
+# objects provided automatically:
+#	@script 	- contains methods for controlling script behaviour.
+#	@event 	- contains information injected from the management system.
+#	@main 	- contains script specific information. 
+#----START----#
+import com.invoqsystems.apex.component.broker.process.scriptObjects.ScriptObjectLinkedHashMap
+
+main:
+
+### Configuration Variables ###
+# These control how the script runs. See the manual for more information about them.
+
+# The AlarmPoint URL used for the HTML Response Form and HTML Logo.
+$main.xmatters_url = @script::getGlobalConstant("WEBSERVERURL")
+
+# Specifies the BES Server URL, required for BES notifications.
+$main.bes_pushurl = @event::getEventDomainConstant("bespushurl", "http://localhost:8888/static")
+
+
+#############################################################################################
+# Refer to the managementSystemConfiguration sub routine below to setup required management #
+# system configuration variables                                                            #
+#############################################################################################
+GOSUB managementSystemConfiguration
+GOSUB informationOnlyConfiguration
+GOSUB failSafeConfiguration
+GOSUB errorContactConfiguration
+GOSUB notificationOverrides
+GOSUB optionalConfiguration
+
+### End Configuration ###
+
+# Setup logging
+GOSUB loggingConfiguration
+GOSUB initializeDebugLogging
+
+# Setup Notifications 
+GOSUB initializeEventTokens
+GOSUB createDefaultContent
+GOSUB checkForSubscriptions
+
+# Check for Recipients to notify
+GOSUB checkForNotifiableRecipients
+
+################################################################################################ 
+# Send the notifications for fail safe, subscriptions and targeted notifications if they apply #
+################################################################################################
+
+# Notify fail safe based off the $fail_safe value
+GOSUB sendFailSafeNotificationIfNeeded
+
+# Create and Send Notification Alert
+GOSUB sendNotification
+
+# Notify Subscriptions
+GOSUB sendSubscriptionNotifications
+
+# terminate the event
+GOSUB terminateEvent
+
+###############
+# Subroutines #
+###############
+
+# Management System Configuration 
+managementSystemConfiguration:
+
+  ############################################
+  # Required Management System Configuration #
+  ############################################
+
+  # if true allow replies only if user's custom fields set
+  # Note: Not all operations succeed if user's custom fields not set
+  $main.enforce_custom_fields_required = false
+
+  ##########################
+  # Optional Configuration #
+  ##########################
+
+  $main.package_name = "BMC Remedy DataLoad"
+  $script_name = "initial"
+  $full_script_name = $main.package_name & " " & $script_name
+
+  $main.annotationMethod = "annotate"
+
+  ##############################
+  # Presentation Configuration #
+  ##############################
+  # The following variables are used when displaying content on a Device
+
+  # The name of the management system
+  $main.presentationMgmtName = $main.package_name
+  
+  # The short name is used for Devices which have character limits
+  $main.presentationShortMgmtName = "Remedy"
+  
+  # The prefix used for the subject line for notifications
+  $main.presentationSubjectPrefix = "xMatters (" & $main.presentationMgmtName & ")"
+  
+  # The short name is used for Devices which have character limits
+  $main.presentationShortSubjectPrefix = "xM:" & $main.presentationShortMgmtName
+
+RETURN
+
+# The Remedy DataLoad integration 3.0 only has fyi notifications so forcefyi is set to "on" by default.
+informationOnlyConfiguration:
+
+  # Force notifications to be informational only (FYI), rather than requiring responses.
+  # This overrides the fyi behaviour specified on the injected event.
+  # "disable"	- Nothing is forced.
+  # "on" 		- Notifications are forced to be FYI.
+  # "off" 		- Notifications are forced not to be FYI.
+  $force_fyi = @event::getEventDomainConstant("forcefyi", "on")
+
+  # Configure Device filters for FYI
+  # NOTE: Uncommenting these settings override the Notification and Subscription Device filter settings 
+
+  #$use_email_for_fyi 	= true
+  #$use_phone_for_fyi 	= false
+  #$use_im_for_fyi    	= true
+  #$use_text_phone_for_fyi 	= true
+  #$use_text_pager_for_fyi 	= true
+  #$use_numeric_pager_for_fyi 	= true
+  #$use_bes_for_fyi 		= true
+  #$use_generic_for_fyi	= true
+
+RETURN
+
+# failSalfeConfiguration
+failSafeConfiguration:
+  # The failsafe recipient to notify, typically a group.
+  $fail_safe_group_name = $main.presentationShortMgmtName & " FailSafe"
+  $fail_safe_group = @event::getEventDomainConstant("failsafegroup", $fail_safe_group_name)
+
+  # Controls fail safe functionality, Notifying the fail safe recipient via EMAIL under certain circumstances.
+  # "enabled" 	  	- Notify if no subscriptions match or no notifiable recipients.
+  # "for-subscriptions"	- Notify if subscription functionality is enabled AND no subscriptions match.
+  # "for-recipients" 	- Notify if no notifiable recipients.
+  # "disabled" 		- Disable fail safe functionality.
+  $fail_safe = @event::getEventDomainConstant("failsafe", "enabled") # this is the setting for approval directed events
+
+  # The subject to be used for FailSafe Emails.
+  $main.failSafeSubject = "No matching Recipients or Subscriptions for xM Incident ID " & $event.incident_id & " - Failsafe group notified."
+  $main.failSafeRecSubject = "No matching Recipients exist for xM Incident ID " & $event.incident_id & " - Failsafe group notified."
+  $main.failSafeSubSubject = "No matching Subscriptions exist for xM Incident ID " & $event.incident_id & " - Failsafe group notified."
+
+RETURN
+
+# Contact info should an error occur with the integration
+errorContactConfiguration:
+  $main.errorContact = @event::getEventDomainConstant("errorContact", "xMatters/Remedy Integration Team")
+  $main.errorContactEmail = @event::getEventDomainConstant("errorContactEmail", "admin@defaultcompany.com")
+  $main.errorContactPhone = @event::getEventDomainConstant("errorContactPhone", "555-555-5555")
+
+RETURN
+
+notificationOverrides:
+  # Override Recipients Device Timeframes.
+  $override_timeframes = @event::getEventDomainConstant("overridetimeframes", false)
+
+  # Override Subscription Recipients Device Timeframes.
+  $override_subscriptionTimeframes = false
+
+  # Force the use of emergency Devices.
+  $use_emergency_devices = @event::getEventDomainConstant("useemergencydevices", false)
+
+  # Force the use of emergency Devices for Subscriptions.
+  $use_emergency_subscriptionDevices = false
+
+  # Track when each device is delivered to. Setting this to false may give a performance 
+  # advantage, but you lose any information about whether a delivery was successful 
+  # or not.
+  $track_delivery = @event::getEventDomainConstant("trackdelivery", true)
+
+  # Annotate when each device is delivered to. Setting this to false may give a performance 
+  # advantage, but you lose any information about whether a delivery was successful 
+  # or not.
+  $main.annotate_delivery = @event::getEventDomainConstant("annotatedelivery", true)
+
+  # Enables submission of annotations back to the Management System.
+  $main.annotate = @event::getEventDomainConstant("annotate", true)
+
+  # Enables submission of Subscription annotations back to the Management System.
+  $main.subscription_annotate = @event::getEventDomainConstant("subscriptionannotate", false)
+  
+  # Track when each device is delivered to for Subscriptions.
+  $track_subscriptionDelivery = @event::getEventDomainConstant("tracksubscriptiondelivery", false)
+RETURN
+
+# optionalConfiguration
+optionalConfiguration:
+
+  # Amount of time (in seconds) the event is allowed to run before timing out.
+  # 86400 seconds = 24 hours.
+  $main.timeout = @event::getEventDomainConstant("timeout", 259200)
+
+  # Specifies the maximum Invalid Responses allowed before notification is no longer requeued.
+  $main.maxInvalidResponses = @event::getEventDomainConstant("maxinvalidresponses", 3)
+
+  # Enables HTML Email functionality.
+  $main.enable_HTML_Email = @event::getEventDomainConstant("enablehtmlemail", true)
+
+  # For BES and HTML Email this is the URL of the HTML Response Form.
+  # This should point to your AlarmPoint Web Server.
+  $main.HTML_form_url = $main.xmatters_url & "/jsp/ProcessNotificationResponse.jsp"
+
+  # Set this if you want the logo displayed within HTML Email Notifications.
+  $main.use_logo = @event::getEventDomainConstant("uselogo", true)
+
+  # The path to the HTML Email Graphic.
+  # This is the correct path for 5.0. For 4.1, the correct path should be:
+  # "/static/images/xmatters/logos/xmatters_email.gif"
+  $logo = @event::getEventDomainConstant("mainlogo", "/static/images/logos/xmatters_email.gif") 
+  $main.logo = $main.xmatters_url & $logo
+
+  # The text that appears if the logo can't be displayed.
+  # Note: If the logo doesn't display, it is unlikely that the HTML_form_url will work either.
+  $main.logo_alt_text = "[If the logo does not appear you may be blocking images or you may be outside a firewall. If the latter, the links will not work for responding and you should respond by replying to this email as described below.]"
+
+  # The numeric pager content is set to a non-existent phone number for 
+  # event call in, this number should be changed to a real callin number 
+  # or a message indicating an alarmpoint event notification has occurred.
+  $main.numeric_pager_number = @event::getEventDomainConstant("numericpagernumber", "555-1212")
+
+RETURN
+
+loggingConfiguration:
+
+  # Indicates whether to log informational messages for debugging purposes.
+  # You may want to disable this behaviour to improve performance.
+  $main.debug = @event::getEventDomainConstant("debug", false)
+
+  # Set this if you want to specify your own log file for debugging messages.
+  # This variable is ignored unless $main.debug is also set to true.
+  $main.use_logFile = @event::getEventDomainConstant("useLogFile", true)
+
+  # Defines the file for debugging information if $main.use_logfile is set to true.
+  $main.logFile = @event::getEventDomainConstant("logFile", "../logs/BMC_RemedyDL_Script.log")
+  
+RETURN
+
+initializeEventTokens:
+  # ----------------------------------------------------------------------------------------------------
+  # Set up $main.fyi 
+  #
+  # Value is based on the properties of the event/notification and the $force_fyi variable (based on a domain constant).
+  # Subsequent scripts should use $main.fyi to decide if the event is an FYI notification or not, which could
+  # be: 
+  # - an FYI event from the MS, 
+  # ----------------------------------------------------------------------------------------------------
+
+  $main.fyi = false
+  
+  # Force Subscription notifications to be informational only (FYI).
+  $subscription_fyi = true
+
+  IF( $force_fyi == "on" )
+    $main.fyi = true
+  ELSE-IF ( $force_fyi == "off" )
+    $main.fyi = false
+  ELSE-IF( $event.fyi == "yes" || $event.fyi == "true"|| $event.fyi == "TRUE" )
+      $main.fyi = true
+  ENDIF
+
+  # This section is not used for this integration. Missing tokens are simply not
+  # displayed.  
+  #
+  #
+  # This section ensures the required parameters are present in the event. 
+  # If they are not, they are set to a default value and this action is logged.
+  # Note $event.recipients isn't required to be defined.
+#  $main.undefined_default = "UNDEFINED"
+
+#  @eventTokens = new ScriptObjectLinkedHashMap()  
+#  @eventTokens::put("event.impact", event.impact)
+
+#  $hasNext = @eventTokens::hasNext()
+
+#  WHILE( $hasNext )
+
+#    @entry = @eventTokens::getNext()
+
+#    $key = @entry::getKey()
+#    $value = @entry::getValue()
+
+#    IF ( ! EXISTS( $value ) )
+#      $token = $undefined_default
+#      $main.logMessage = "Optional token " & $key & " not found, defaulting to '" & $main.undefined_default & "'"
+#      GOSUB logMessage
+#    ENDIF
+
+#    $hasNext = @eventTokens::hasNext() 
+
+#  ENDWHILE
+
+RETURN
+
+
+# Determine if there are any Notifiable Recipients, check for the Change Manager, Change Coordinator and Approvers.
+checkForNotifiableRecipients:
+  $targetedEvent = true
+  IF ( ! EXISTS( $event.recipients ) )
+    $no_recipients = true
+    $message_note = "No Recipients exist for this event."
+    IF ( $main.debug )
+      @script::log( $main.log_prepend & $message_note )
+    ENDIF
+    @event::report( $message_note )
+  ELSE
+    # Special case where the recipients element is present but empty.
+    # This case means that a previous notification resulted in the owner assigning the incident to themselves.
+    # In this case we do not want to send another notification to the user.
+    IF ( EMPTY( $event.recipients ) )
+      $targetedEvent = false
+      $no_recipients = true
+      $message_note = "Recipients token is empty for this event."
+      IF ( $main.debug )
+        @script::log( $main.log_prepend & $message_note )
+      ENDIF
+      @event::report( $message_note )
+    ENDIF
+ 
+    # Check if the Recipients are Notifiable.
+    @checkRecipient = @event::isAnyRecipientNotifiable( $event.recipients ) 
+    IF ( ! $checkRecipient.recipientNotifiable )
+      $no_recipients = true
+      $message_note = "None of the targeted Recipients were Notifiable, Reason: " & $checkRecipient.reason
+      IF ( $main.debug )
+        @script::log( $main.log_prepend & $message_note )
+      ENDIF 
+      @event::report( $message_note )
+    ELSE
+      # link the Notifiable Recipients
+      $main.notifiableRecipients = $event.recipients
+      $no_recipients = false
+    ENDIF
+  ENDIF
+
+RETURN
+
+# Create mandatory data elements for generic content, used when
+# notifications don't contain device specific content.
+createDefaultContent:
+  @genericContent = @event::createContent()
+
+  # Set the generic content for notifications to the event situation.
+  # This is required for reporting.
+  $genericContent.message = $event.message
+RETURN
+
+# Check if any Subscriptions match the event.
+checkForSubscriptions:
+  $subscriptionList = @event::getSubscriptions()
+
+  $matches = $subscriptionList::size()
+  IF ( $matches == 0 )
+    $no_subs_match = true
+    $message_note = "No Subscriptions Match"
+    IF ( $main.debug )
+      @script::log( $main.log_prepend & $message_note)
+    ENDIF  
+    @event::report( $message_note )
+  ELSE
+    $no_subs_match = false
+  ENDIF
+
+RETURN
+
+# Determine whether the fail safe recipient should be notified.
+sendFailSafeNotificationIfNeeded:
+  
+  $hit_fail_safe = false
+  IF ( $fail_safe == "enabled" )
+     IF ( $no_subs_match && $no_recipients && $targetedEvent ) 
+       $hit_fail_safe = true
+       $main.activeFailSafeSubject = $main.failSafeSubject
+     ENDIF
+  ELSE-IF ( $fail_safe == "for-subscriptions" && $no_subs_match )
+    $hit_fail_safe = true
+    $main.activeFailSafeSubject = $main.failSafeSubSubject
+  ELSE-IF ( $fail_safe == "for-recipients" && $no_recipients )
+    $hit_fail_safe = true
+    $main.activeFailSafeSubject = $main.failSafeRecSubject
+  ELSE-IF ( $fail_safe == "disabled" && $no_subs_match && $no_recipients )
+    # send notification back to managemnt system even if disabled to update that no recipients will be notified
+    $hit_fail_safe = false
+    $annotation_text = $main.failSafeSubject
+    GOSUB performAnnotation
+  ENDIF
+
+  # annotation note to be sent back to the management system
+  $annotation_note = $main.activeFailSafeSubject
+  
+  # Link the fail safe recipient to be notified.
+  IF ( $hit_fail_safe )
+    @script::log( $main.log_prepend & "TARGETING FAIL SAFE" )
+    @failsafe = @event::notification()
+    @failsafe::setPresentationScript( "presentation" )
+    @failsafe::setHandlerScript( "response" )
+    @failsafe::setContent( @genericContent )
+    # setup which devices to be notified for fail safe notifications
+    @failsafe::setDeviceFilter( "EMAIL", true )
+    @failsafe::setDeviceFilter( "BES", true )
+    @failsafe::setDeviceFilter( "VOICE", false )
+    @failsafe::setDeviceFilter( "IM", false )
+    @failsafe::setDeviceFilter( "TEXT_PHONE", false )
+    @failsafe::setDeviceFilter( "TEXT_PAGER", false )
+    @failsafe::setDeviceFilter( "NUMERIC_PAGER", false )
+    @failsafe::setDeviceFilter( "GENERIC", false )
+    @failsafe::link( $fail_safe_group )
+    # Failsafe Notifications are FYI for Fail Safe
+    $failsafe.fyi = true
+    # Indicate to the Presentation that it's a failsafe Notification
+    $failsafe.subject = $main.activeFailSafeSubject
+
+    $message_note = "Forcing Notification to Group: " & $fail_safe_group 
+    IF ( $main.debug )
+      @script::log( $main.log_prepend & $message_note )
+    ENDIF
+    @event::report( $message_note )
+
+    # Notify Recipients
+    @failsafe::performNotification()
+
+    $annotation_text = $main.activeFailSafeSubject
+    GOSUB performAnnotation
+
+  ENDIF
+
+  # failsafe has already been handled
+  $main.failsafe = true
+  $hit_fail_safe = false
+  $no_subs_match = false
+
+RETURN
+
+# sends a annotation to the Management System with the message text stored in $message_text
+# argument
+# $annotation_text
+performAnnotation:
+  IF ( $main.annotate )
+    $sendAnnotations = true
+
+    IF ( $main.debug )
+      @script::log( $main.log_prepend & "Calling sendAnnotation with: " & $annotation_text )
+    ENDIF 
+    CALL sendAnnotation
+  ENDIF
+RETURN
+
+
+sendSubscriptionNotifications:
+
+  # Assume $subscriptionList hasn't changed since the subscription match check.  
+  FOR ( $subscriptionId : $subscriptionList )
+    @subscription = @event::getSubscription( $subscriptionId )
+    
+    IF ( $main.debug )
+      @script::log( $main.log_prepend & "Injected Event Matched Subscription: " & $subscription.name )
+    ENDIF
+
+    @subscriptionAlert = @subscription::notification()
+    @subscriptionAlert::setPresentationScript( "presentation" )
+    @subscriptionAlert::setHandlerScript( "response" )
+    
+    @subscriptionContent = @subscription::content()
+    $subscriptionContent.message = $event.message
+
+    IF ( !EMPTY( $subscriptionContent.choices ) )
+      $subscriptionAlert.subscriptionChoices = $subscriptionContent.choices
+    ENDIF
+
+    IF( $force_fyi == "on" )
+      $subscriptionAlert.fyi = true 
+    ELSE-IF ( $force_fyi == "off" )
+      $subscriptionAlert.fyi = false
+    ELSE
+      $subscriptionAlert.fyi = $main.fyi
+    ENDIF
+
+    $subscriptionAlert.subName = $subscription.name
+    @subscriptionAlert::setContent( @subscriptionContent )
+    @subscriptionAlert::setHandleDeliveryEvents( $track_subscriptionDelivery )
+    @subscriptionAlert::setTimeOverride( $override_subscriptionTimeframes )
+    @subscriptionAlert::setEmergencyDeviceUsage( $use_emergency_subscriptionDevices )
+    @subscriptionAlert::performNotification()
+  ENDFOR
+
+RETURN
+
+# Correlate the event severity with an alert priority
+correlateEventSeverity:
+  
+  # Correlate the event severity with an alert priority
+  # Priority - PRIORITY
+  # -------------------
+  # Critical - HIGH
+  # High     - MEDIUM
+  # Other    - LOW
+  $priority = $event.xm_priority
+  $priority::toLowerCase()
+  IF ( $main.fyi == true ) # Set all FYI notifications to LOW
+     @alert::setEventPriority( "LOW" )
+  ELSE-IF ( $priority == "critical" ) #note lower case
+    @alert::setEventPriority( "HIGH" )
+  ELSE-IF ( $priority == "high" )
+    @alert::setEventPriority( "MEDIUM" )
+  ELSE
+     @alert::setEventPriority( "LOW" )
+  ENDIF # The default priority for a notification is LOW.
+
+RETURN
+
+# Create Notification Alert
+sendNotification:
+
+  @alert = @event::notification()
+  @alert::setPresentationScript( "presentation" )
+  @alert::setHandlerScript( "response" )
+
+  GOSUB correlateEventSeverity
+  
+  @alert::setContent( @genericContent )
+  @alert::setHandleDeliveryEvents( $track_delivery )
+  $alert.fyi = $main.fyi
+
+  # Optional override behavior
+  @alert::setTimeOverride( $override_timeframes )
+  @alert::setEmergencyDeviceUsage( $use_emergency_devices )
+
+  # Override the Device Filters for FYI notifications for specific devices.
+  IF ( $main.fyi )
+    IF ( EXISTS ($use_email_for_fyi) ) 
+      @alert::setDeviceFilter( "EMAIL",		$use_email_for_fyi )
+    ENDIF
+    IF ( EXISTS ($use_phone_for_fyi) ) 
+      @alert::setDeviceFilter( "VOICE",		$use_phone_for_fyi )
+    ENDIF
+    IF ( EXISTS ($use_im_for_fyi) ) 
+      @alert::setDeviceFilter( "IM",		$use_im_for_fyi )
+    ENDIF
+    IF ( EXISTS ($use_text_phone_for_fyi) ) 
+      @alert::setDeviceFilter( "TEXT_PHONE",	$use_text_phone_for_fyi )
+    ENDIF
+    IF ( EXISTS ($use_text_pager_for_fyi) ) 
+      @alert::setDeviceFilter( "TEXT_PAGER",	$use_text_pager_for_fyi )
+    ENDIF
+    IF ( EXISTS ($use_numeric_pager_for_fyi) ) 
+      @alert::setDeviceFilter( "NUMERIC_PAGER",	$use_numeric_pager_for_fyi )
+    ENDIF
+    IF ( EXISTS ($use_bes_for_fyi) ) 
+      @alert::setDeviceFilter( "BES",		$use_bes_for_fyi )
+    ENDIF
+    IF ( EXISTS ($use_generic_for_fyi) ) 
+      @alert::setDeviceFilter( "GENERIC",		$use_generic_for_fyi )
+    ENDIF
+  ENDIF
+
+  @alert::link( $main.notifiableRecipients )
+  # Notify Recipients
+  @alert::performNotification()
+
+RETURN
+
+terminateEvent:
+  # This flag is triggered by other scripts allowing completion of the event process.
+  $main.continue = false
+
+  UNTIL ( $main.continue, $main.timeout )
+
+  # If the event times out, clean up the notifications.
+  IF ( $main.timeout )
+     @event::delinkAll()
+  ENDIF
+
+  @script::log( $main.log_prepend & "Ending " & $full_script_name & " script." )
+
+RETURN
+
+# Initializes the logging if $main.debug = true
+initializeDebugLogging:
+
+  IF ( $main.debug )
+    IF ( $main.use_logFile )
+      @script::setLog( $main.logFile )
+    ENDIF
+    $main.log_prepend = "[" & $event.incident_id & "] "
+  ENDIF
+
+  # Script started successfully
+  @script::log( $main.log_prepend & "Starting " & $full_script_name & " script." )
+
+RETURN
+
+
+#----END----#
+]]></Script>
+            <Script name="buildUserResponseMap" type="HANDLER"><![CDATA[import com.invoqsystems.apex.component.broker.process.scriptObjects.ScriptObjectLinkedHashMap
+# ==============================================================================================
+# Main
+#
+# Assemble the user response map. The keys are legitimate response choices from the 
+# presentation scripts or the automatically-generated callout_annotate. The values are the
+# "action token" that the IA will use to determine what action to take.
+#
+# Truncated response choices are added and have the same value as the full form of the response. 
+#
+# Key comparisons are case insensitive. Values are transformed to lower-case before being sent
+# to the IA.
+# ==============================================================================================
+main:
+
+  @userResponseMap = new ScriptObjectLinkedHashMap()
+
+  @userResponseMap::put("Restart", "Restart")
+  @userResponseMap::put("Rst", "Restart")
+]]></Script>
+            <Script name="processUserResponse" type="HANDLER"><![CDATA[import com.invoqsystems.apex.component.broker.process.scriptObjects.ScriptObjectLinkedHashMap
+import org.apache.commons.lang.StringEscapeUtils
+
+
+# ==============================================================================================
+#
+# Figure out what the response command / action from the user was and act on it, including
+# sending any annotatation that was provided. The actionToken will have been forced to lower
+# case by this point.
+# ==============================================================================================
+main:
+  
+  # Process the user response 
+  IF ( $actionToken == "Annotate" ) 
+    GOSUB prepareAndSendServiceMessage
+ 
+    CALL sendAPDeliveredResponse
+
+  ELSE-IF ( $actionToken == "Restart" ) 
+    GOSUB prepareAndSendServiceRequest
+  
+    CALL sendAPDeliveredResponse
+    CALL sendAPDelinkAllExceptResponderResponse
+
+  ELSE
+
+    # --------------------------- BAD REPLY -----------------------------------------
+    # ---------------- Only used for 2-way integrations -----------------------------
+    #    $message_note = "Unrecognized response reply: [" & $response.reply & "]"
+    #    CALL requeueMessage
+    
+    # For this integration if a response is recieved consider the notification delivered.
+    CALL sendAPDeliveredResponse
+
+  ENDIF
+
+# ==============================================================================================
+# prepareAndSendServiceRequest
+#
+# Put the actionToken and annotation into the esmTokens map and send the request to the IA
+# ==============================================================================================
+prepareAndSendServiceRequest:
+    @esmTokens::put("responseAction", $actionToken)
+    @esmTokens::put("sendAnnotations", $sendAnnotations)
+
+    IF ( EXISTS($annotationText) && $sendAnnotations)
+      @stringEscapeUtils = new StringEscapeUtils()
+      $annotationTextEsc = @stringEscapeUtils::escapeXml($annotationText)
+      @esmTokens::put("annotation", $annotationTextEsc)
+    ENDIF
+
+    CALL sendExternalServiceRequest
+RETURN
+
+# ==============================================================================================
+# prepareAndSendServiceMessage
+#
+# Put the actionToken and annotation into the esmTokens map and send the message to the IA
+# ==============================================================================================
+prepareAndSendServiceMessage:
+    @esmTokens::put("responseAction", $actionToken)
+    @esmTokens::put("sendAnnotations", $sendAnnotations)
+
+    IF ( EXISTS($annotationText) && $sendAnnotations)
+      @stringEscapeUtils = new StringEscapeUtils()
+      $annotationTextEsc = @stringEscapeUtils::escapeXml($annotationText)
+      @esmTokens::put("annotation", $annotationTextEsc)
+    ENDIF
+
+    CALL sendExternalServiceMessage
+RETURN
+]]></Script>
+            <Script name="requeueMessage" type="HANDLER"><![CDATA[# Requeue a message up to the maximum number of requeues allowed.
+# Expects $message_note to be set before this subroutine runs.
+
+main:
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "requeueMessage " & $message_note )
+ENDIF
+@event::report( $message_note, $response.recipient_notification_id )
+
+# get the recipient that responded and increment the number of invalid responses.
+@recipient = @event::getRecipient( $responder_id )    
+IF ( EXISTS( $recipient.invalidCount ) )
+  $recipient.invalidCount = $recipient.invalidCount + 1
+ELSE
+  $recipient.invalidCount = 1
+ENDIF
+
+#--- the user will only receive a maximum number of messages saying invalid response before we stop sending them ---#
+IF ( $recipient.invalidCount <= $main.maxInvalidResponses )
+  IF ( EXISTS ($event.apiaresultexception))
+    $notification.userReply = $response.reply
+    $notification.fyi = true
+  ELSE
+    # Assume a bad reply
+    $notification.badReply = $response.reply
+  ENDIF
+  @notification::requeue( $responder_id, 0 )
+ENDIF
+]]></Script>
+            <Script name="responderDetails" type="HANDLER"><![CDATA[# Copyright 2010 AlarmPoint Systems, Inc.
+#
+# Script objects received by this script include:
+#     @main	- Contains information to be shared across scripts in this process.
+#     @event	- Contains information coming from the management system.
+#     @notification	- Contains the notification to sent out.
+#     @response	- Contains the response to the notification.
+#     @script	- A local object with methods shared between all scripts.
+#
+# This Script is responsible for setting the following variables:
+#     responder_name	- Contains the responders name as a formatted String 
+#     responder_id  	- Contains the responders id if avaliable
+#
+
+main:
+GOSUB getResponderName
+
+
+getResponderName:
+  # Determine if the responder is a person or a group supervisor.
+  $recipient_target = $response.recipient_target
+  $responder_id = $response.recipient_target
+  @responder = @event::getRecipient( $responder_id )
+  $responder_category = @responder::getRecipientCategory()
+
+  IF ( $main.debug )
+    @script::log( $main.log_prepend & "Responder " & $responder_id & " is of type " & $responder_category )
+  ENDIF
+  IF ( $responder_category == "DEVICE" )
+    $responder_id = $responder.owner
+    @person = @event::getRecipient( $responder.owner )
+    $responder_name = $person.firstName & " " & $person.lastName & " (" & $recipient_target & ")"
+  ELSE-IF ( $responder_category == "PERSON" )
+    $responder_id = $response.person_target
+    $responder_name = $responder.firstName & " " & $responder.lastName & " (" & $recipient_target & ")"
+  ELSE  # Group Supervisor
+    $responder_name = $responder_id & "_Supervisor"
+  ENDIF
+RETURN
+]]></Script>
+            <Script name="response" type="HANDLER"><![CDATA[# Copyright 2011 AlarmPoint Systems, Inc.
+# http://www.alarmpoint.com
+#
+#
+# This script handles responses from device notifications.
+#
+# Script objects received by this script include:
+#     @main	- Contains information to be shared across scripts in this process.
+#     @event	- Contains information coming from the management system.
+#     @notification	- Contains the notification to sent out.
+#     @response	- Contains the response to the notification.
+#     @script	- A local object with methods shared between all scripts.
+#
+import com.invoqsystems.apex.component.broker.process.scriptObjects.ScriptObjectLinkedHashMap
+
+# ==============================================================================================
+# Main
+#
+# This script contains code that shouldn't have to be changed as part of the integration.
+# See processUserResponse for the handling of the specific response from the user.
+# ==============================================================================================
+main:
+ 
+  GOSUB initialize
+
+  # Un-commenting this line allows testing of this script via the AddEvent Web Service operation 
+  # if (EXISTS (@event::getGlobalConstant()) or @event::getDomainConstant()
+
+ # GOSUB logResponseInfo
+  
+  # Create token map and set up common tokens
+  @esmTokens = new ScriptObjectLinkedHashMap()
+
+  @esmTokens::put("responseEvent", $response.response_event)
+  @esmTokens::put("recipientTarget", $response.recipient_target)
+
+  # Set up $responder_name and $responder_id
+  CALL responderDetails
+
+  @esmTokens::put("responderId", $responder_id)
+  @esmTokens::put("responder", $responder_name)
+
+  # Handle the response event
+  $responseEvent = $response.response_event
+
+  IF ( $responseEvent == "DEVICE_DELIVERED" )
+    GOSUB processDeliveryNotification
+
+  ELSE-IF ( $responseEvent == "SUCCESSFUL_DELIVERY" )
+    GOSUB processDeliveryNotification
+
+  ELSE-IF ( $responseEvent == "DELIVERY_FAILURE" )
+    GOSUB processDeliveryNotification
+
+  ELSE-IF ( $responseEvent == "RECEIVED_RESPONSE" )
+    # Build the list of valid responses, extract the response command and annotation from the 
+    # reply text, then do the actual response processing.
+    CALL buildUserResponseMap
+    GOSUB getActionTokenAndAnnotationText
+    CALL processUserResponse
+
+  ELSE
+    $message_note = "Unrecognized Response Event [" & $responseEvent & "]"
+    GOSUB logMessageNote
+
+  ENDIF
+
+RETURN
+
+# ==============================================================================================
+# logResponseInfo 
+#
+# ==============================================================================================
+logResponseInfo:
+
+  $log_message = "Incident ID = [" & $event.incident_id & "]"
+  GOSUB logMessageNote
+
+  $log_message = "Event = ["  & $response.response_event & "]"
+  GOSUB logMessageNote
+
+  $log_message = "Reply = [" & $response.reply & "]"
+  GOSUB logMessageNote
+
+RETURN
+
+# ==============================================================================================
+# processDeliveryNotification
+#
+# Handles the SUCCESSFUL_DELIVERY and DELIVERY_FAILURE notifications.
+# 
+# ==============================================================================================
+processDeliveryNotification:
+
+  # --------------------------- processDeliveryNotification -------------------------------------
+
+  IF ( EXISTS( $notification.subName ) )
+     @esmTokens::put("notificationType", "Subscription")
+  ELSE-IF ( $main.fyi == true ) 
+     @esmTokens::put("notificationType",  "FYI")
+  ENDIF
+
+  IF ( $sendAnnotations && $main.annotate_delivery )
+    CALL sendExternalServiceMessage
+  ENDIF
+
+RETURN
+
+# ==============================================================================================
+# getActionTokenAndAnnotationText
+#
+# Iterate over the userResponseMap and see if the start of the reply from the user corresponds 
+# to any of the responses we're expecting. If we find something, extract the annotation, if found.
+#
+# Input: $userResponseMap, $responseTokens
+# Output: $actionToken, $annotationText
+# ==============================================================================================
+getActionTokenAndAnnotationText:
+
+# -------------------------- getActionTokenAndAnnotationText -----------------------------------
+
+$actionToken = ""
+
+# Set up to parse the user response
+$responseTokens = $response.reply
+$responseTokens::trim()
+$responseTokens::toLowerCase()
+
+@userResponseMap::clearIterator()
+$hasNext = @userResponseMap::hasNext()
+
+WHILE( $hasNext && ($actionToken == "") )
+
+  @entry = @userResponseMap::getNext()
+
+  $key = @entry::getKey()
+  $key::toLowerCase()
+
+  $value = @entry::getValue()
+  
+  $log_message = "Map entry = [" & $key & ", " & $value & "], responseTokens = [" & $responseTokens & "]"
+  GOSUB logMessageNote
+
+  $keyMatches = $responseTokens::startsWith($key)
+  IF ($keyMatches)
+    $matchedToken = $key
+    $actionToken = $value
+  ENDIF
+
+  $hasNext = @userResponseMap::hasNext()
+
+ENDWHILE
+
+IF ($actionToken != "")
+  # -------------------------- Found a valid action token -----------------------------------
+  # Any part of the response beyond what we matched against is an annotation.
+  $matchedTokenLength = $matchedToken::length()  
+  $responseTokensLength = $response.reply::length()
+
+  IF ($responseTokensLength > $matchedTokenLength)
+    $annotationText = $response.reply::substring( $matchedTokenLength + 1 )
+    $annotationText::trim()
+  ENDIF
+ENDIF
+
+  $log_message = "actionToken = [" & $actionToken & "], annotationText = [" & $annotationText & "]"
+  GOSUB logMessageNote
+
+RETURN
+
+# ==============================================================================================
+# Logs a message to the debug log using $log_message and $main.log_prepend
+# ==============================================================================================
+logMessageNote:
+  IF ( $main.debug )
+    @script::log( $main.log_prepend & $log_message )
+  ENDIF
+RETURN
+
+# ==============================================================================================
+# Initialize the script variables, log and determine if annotations will be sent back to the management system
+# ==============================================================================================
+initialize:
+  $script_name = "response"
+  $full_script_name = $main.package_name & " " & $script_name
+  $script_block_suffix = $full_script_name & " script for " & $response.recipient_target & " with response event " & $response.response_event & "."
+
+  # determine if annotations will be sent back
+  $sendAnnotations = $main.annotate
+  IF ( EXISTS( $notification.subName ) )
+    $sendAnnotations = $main.subscription_annotate
+  ENDIF
+
+  IF ( $main.debug )
+    IF ( $main.use_logFile )
+      @script::setLog( $main.logFile )
+    ENDIF
+  ENDIF
+  @script::log( $main.log_prepend & "Starting " & $script_block_suffix )
+
+RETURN
+]]></Script>
+            <Script name="sendAPDelinkAllExceptResponderResponse" type="HANDLER"><![CDATA[# This script handles delinking all recipients from the notification except for the responder
+
+main:
+
+# Set the AlarmPoint Action (Job Control)
+# delivered/delinkAllExcept responding person
+@event::delivered( $responder_id )
+IF ($requestSuccess == "true")
+  # Set the AlarmPoint Action (Job Control)
+  @event::delinkAllExcept( $responder_id )
+ENDIF
+]]></Script>
+            <Script name="sendAPDelinkAllResponse" type="HANDLER"><![CDATA[# ==============================================================================================
+# This script handles delinking all recipients from the notification
+#
+# If subscriptions are FYI, we want to allow them to continue being delivered
+# even after someone has (e.g.) closed the event. 
+# If not, the event itself should be delinked and allowed to terminate.
+# ==============================================================================================
+
+main:
+
+@event::delivered( $responder_id )
+IF ($requestSuccess == "true")
+
+  IF ( $main.subscription_fyi )
+    @notification::delinkAll()
+  ELSE
+    # Set the AlarmPoint Action (Job Control)
+    @event::delinkAll() 
+
+    # terminate the event
+    $main.continue = true
+  ENDIF
+ENDIF
+]]></Script>
+            <Script name="sendAPDelinkResponderResponse" type="HANDLER"><![CDATA[# This script handles delinking the responder from the notification
+
+main:
+
+# Set the AlarmPoint Action (Job Control)
+@event::delivered( $responder_id )
+IF ($requestSuccess == "true")
+  # Set the AlarmPoint Action (Job Control)
+  @event::delink($responder_id)
+ENDIF
+]]></Script>
+            <Script name="sendAPDeliveredResponse" type="HANDLER"><![CDATA[# ==============================================================================================
+# Register that the event has been deliverd to the responder.
+# ==============================================================================================
+main:
+
+# Set the AlarmPoint Action (Job Control)
+@event::delivered( $responder_id )
+]]></Script>
+            <Script name="sendAPNotifyNextResponse" type="HANDLER"><![CDATA[# Notifies the next person in the group immediately (rather than waiting for the escalation timeout)
+main:
+
+# Notify the next user in the escalation and delink the responding person
+$notifyNext_result = @notification::notifyNext()
+@event::report($notifyNext_result)
+]]></Script>
+            <Script name="sendAnnotation" type="HANDLER"><![CDATA[import com.invoqsystems.apex.component.broker.process.scriptObjects.ScriptObjectLinkedHashMap
+
+# ==============================================================================================
+# Main
+#
+# Public interface for scripts from other packages that expect to be able to send 
+# annotations to the IA, having only set up $annotation_text.
+#
+# Inputs: $annotation_text
+# Outputs: @esmTokens
+# ==============================================================================================
+main:
+  @esmTokens = new ScriptObjectLinkedHashMap()
+
+  @esmTokens::put("responseEvent", "STANDALONE_ANNOTATION")
+  @esmTokens::put("responseAction", "annotate")
+  @esmTokens::put("sendAnnotations", $main.annotate)
+
+  IF ( EXISTS($annotation_text) )
+    @esmTokens::put("annotation", $annotation_text)
+  ENDIF
+
+  CALL sendExternalServiceMessage
+]]></Script>
+            <Script name="sendExternalServiceMessage" type="HANDLER"><![CDATA[# This script handles sending all ExternalServiceMessages to the Integration Agent
+# Note: Changing this script will effect ALL response's which create a ESM
+
+main:
+
+  @esm = @event::createExternalServiceMessage()
+
+  $esm.additionalTokens = @esmTokens::getSerializedEntrySet()
+
+  IF ( $main.debug )
+    @script::log( $main.log_prepend & "esm tokens " &  $esm.additionalTokens )
+  ENDIF
+
+  @esm::send()
+
+  $requestSuccess = "true"
+]]></Script>
+            <Script name="sendExternalServiceRequest" type="HANDLER"><![CDATA[# This script handles sending all ExternalServiceRequests to the Integration Agent
+# Note: Changing this script will effect ALL response's which create a ESR
+#
+# Required fields: 
+# - $esmTokens, holds Hash Map of additional tokens to be sent to the IA
+
+main:
+
+  # Perform the external service request
+  @esr = @event::createExternalServiceRequest2()
+  $esr.additionalTokens = @esmTokens::getSerializedEntrySet()
+ 
+  IF ( $main.debug )
+    @script::log( $main.log_prepend & "esm tokens " &  $esm.additionalTokens ) 
+  ENDIF
+
+  @esr::send()
+  UNTIL($esr.completed, $main.timeout)
+
+  $requestSuccess = "false"
+  # Let's see what we got back!
+  @external_response = @esr::getResponse()
+  $external_response.apiaresult::replace("\n\n", "\n")
+  $event.apiaResult = $external_response.apiaresult
+
+  $event.apiaResult::toLowerCase()
+  IF ($event.apiaResult == "ok")
+    $requestSuccess = "true"
+    @event::report( "Received [" & $external_response.apiaresult & "] for service request", $response.recipient_notification_id )
+  ELSE-IF ($event.apiaResult == "exception")
+    $external_response.apiaresultexception::replace("\n\n", "\n")
+    $event.apiaresultexception = $external_response.apiaresultexception
+    $message_note = "Exception received from " & $main.presentationMgmtName & ": " & $external_response.apiaresultexception
+
+    CALL requeueMessage
+  ELSE
+    @event::report( "Received [" & $external_response.apiaresult & "] for service request", $response.recipient_notification_id )
+  ENDIF
+    
+]]></Script>
+            <Script name="createDeviceContent" type="PRESENTATION"><![CDATA[# This Script creates the content for all devices.
+#
+# The Message Content section builds the content for the message and should NOT be altered.
+# To alter the content to be displayed on a device you should update the deviceContent Scripts for 
+# the device.  The message content is based off @messageContent.
+# Data added to @messageContent will render in the devices content.
+#
+# Required Variables:
+# @messageContent, holds the message content to be displayed on the device.
+# $subject, holds the subject for the message based off the createSubject Script.
+# Note: the $subject can be overwritten in the deviceContent Scripts to have different subjects 
+# for different devices types.
+
+main:
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Starting createDeviceContent" )
+ENDIF
+
+$content.subject = $subject
+$hasNext = @messageContent::hasNext()
+
+WHILE( $hasNext )
+
+  @entry = @messageContent::getNext()
+
+  $key = @entry::getKey()
+  $value = @entry::getValue()
+  
+  IF ( !EMPTY( $value ) ) 
+    IF ( $main.debug) 
+      @script::log( $main.log_prepend & "Appending to message content: " & $value )
+    ENDIF
+
+    $content.message = $content.message & $key & ": " & $value & "\n" 
+  ENDIF 
+
+  $hasNext = @messageContent::hasNext() 
+
+ENDWHILE
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Ending createDeviceContent" )
+ENDIF
+]]></Script>
+            <Script name="createHTMLDeviceContent" type="PRESENTATION"><![CDATA[# This Script creates the content for HTML devices.
+# The script is broken down into 3 main areas, CSS, Message Content and Response Choices.
+#
+# The CSS can be changed if you want to update the look of the HTML Message.
+#
+# The Message Content section builds the HTML content for the message and should NOT be altered.
+# To alter the content to be displayed on a HTML device you should update the deviceContent Scripts for 
+# the HTML device.  The addMessageContent subroutine adds the message content based off @messageContent.
+# Data added to @messageContent will render in the HTML content section.
+#
+# The Response Choices section builds the HTML responses for the message based off $content.choices.
+# If you want to update response choices this should be done in the presentation script within the
+# setupResponseChoices subroutine.  
+# 
+# Within addResponseChoices we create the URL Alias if applicable.  The URLAliasContent is generated
+# based off the variables set within the initial script subroutine managementSystemConfiguration. 
+#
+# Required Variables:
+# @messageContent, holds the message content to be displayed on the device.
+# $content.choices
+
+main:
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Starting createHTMLDeviceContent" )
+ENDIF
+
+@person = @event::getRecipient( $recipient.owner )  
+$userId = $person.id
+
+# reset the iterator to be used for the message content
+@messageContent::clearIterator()
+
+GOSUB addCSSContent
+GOSUB addMessageContent
+GOSUB addResponseChoices
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Ending createHTMLDeviceContent" )
+ENDIF
+
+###############
+# Subroutines #
+###############
+
+# Add style information.
+# The CSS can be changed if you want to update the look of the HTML Message.
+addCSSContent:
+
+  # Add style information.
+  $styleinfo = "<style type=\u0022text/css\u0022 media=\u0022all\u0022> <!--"
+  $styleinfo = $styleinfo & "div, p { color: #000; text-align: left; font-family: Gotham, Arial, sans-serif; font-size: 14px; }"
+  $styleinfo = $styleinfo & "table { font-size: 1em; display: block; }"
+  $styleinfo = $styleinfo & "a:link, a:visited, a:active { color: #174A7C; }"
+  $styleinfo = $styleinfo & "a:hover { color: #990033; }"
+  $styleinfo = $styleinfo & "table.param { border-collapse: collapse; table-layout: auto; }"
+  $styleinfo = $styleinfo & "table.param th {text-align: left; color: #C2CD23; background-color: #000000; font-family: Gotham, Arial, sans-serif; font-size: 1.2em; padding: 4px 5px 4px 5px; border: solid #666; border-width: 1px 1px 1px 1px; }"
+  $styleinfo = $styleinfo & "tr.param_odd { background-color: #FFF; }"
+  $styleinfo = $styleinfo & "tr.param_even { background-color: #DEDEDE; }"
+  $styleinfo = $styleinfo & "td.param_key { text-align: right; font-family: Gotham, Arial, sans-serif; font-weight: bold; border-collapse: collapse; padding: 3px 5px 3px 2px; border: solid #666; border-width: 1px 0px 1px 1px; }"
+  $styleinfo = $styleinfo & "td.param_val { text-align: left; font-family: Gotham, Arial, sans-serif; font-weight: normal; border-collapse: collapse; padding: 3px 2px 3px 2px; border: solid #666; border-width: 1px 1px 1px 0px; }"
+  $styleinfo = $styleinfo & "p.instructions { font-style: italic; font-weight: bold; }"
+  $styleinfo = $styleinfo & "ol.responses { list-style: decimal inside; white-space: normal; }"
+  $styleinfo = $styleinfo & "li.response { font-weight: bold; }"
+  $styleinfo = $styleinfo & "div.warning_section { border: 1px solid #990033; padding: 3px; margin: 0; background-color: #FFCCCC; }"
+  $styleinfo = $styleinfo & "p.warning { font-style: italic; font-weight: bold; color: #990033; padding-left: 15px; }"
+  $styleinfo = $styleinfo & "--> </style>"
+
+  $content.htmlmessage = $styleinfo
+
+RETURN
+
+# Add the content based off @messageContent
+# This section builds the HTML content for the message and should NOT be altered.
+# To alter the content to be displayed on a HTML device you should update the deviceContent Scripts for 
+# the HTML device.  The addMessageContent subroutine adds the message content based off @messageContent.
+# Data added to @messageContent will render in the HTML content section.
+addMessageContent:
+
+  # Add the subject
+  $content.subject = $subject
+  $content.pushtitle = $subject
+  
+  $contentinfo = ""
+  # Add a logo if necessary.
+  $contentinfo = ""
+  IF ( $main.use_logo )
+    $contentinfo = $contentinfo & "<div id=\u0022html_logo\u0022 class=\u0022logo\u0022><img src=\u0022" & $main.logo & "\u0022 /></div>"
+  ENDIF
+
+  IF (! EMPTY ($content.warning) ) 
+    $contentinfo = $contentinfo & "<div id=\u0022warning_section\u0022 class=\u0022warning_section\u0022><p id=\u0022eml_warning\u0022 class=\u0022warning\u0022>" & $content.warning & "</p></div>"
+  ENDIF 
+
+  # Display event parameters.
+  $contentinfo = $contentinfo & "<div id=\u0022html_param_section\u0022 class=\u0022param_section\u0022>"
+  $contentinfo = $contentinfo & "<table id=\u0022html_params\u0022 class=\u0022param\u0022 summary=\u0022Event Parameters\u0022>"
+  $contentinfo = $contentinfo & "<tr id=\u0022html_param_hdr\u0022 class=\u0022param\u0022>"
+  $contentinfo = $contentinfo & "<th id=\u0022html_param_hdr_txt\u0022 class=\u0022param\u0022 colspan=\u00222\u0022>"
+  $contentinfo = $contentinfo & $main.presentationMgmtName & " - Integration " & $subscriptionString & " Notification</th></tr>"
+
+  $hasNext = @messageContent::hasNext()
+  $rowCSSDisplay = "odd"
+
+  # Process the event content to be displayed on the HTML device
+  WHILE( $hasNext )
+
+    @entry = @messageContent::getNext()
+
+    $key = @entry::getKey()
+    $value = @entry::getValue()
+    
+    IF ( !EMPTY( $value ) ) 
+      $value::replace("\n", "<br>")
+      $contentinfo = $contentinfo & "<tr id=\u0022html_param1\u0022 class=\u0022param_" & $rowCSSDisplay & "\u0022>"
+      $contentinfo = $contentinfo & "<td id=\u0022html_param_key1\u0022 class=\u0022param_key\u0022>"
+      $contentinfo = $contentinfo & $key & ":</td>"
+      $contentinfo = $contentinfo & "<td id=\u0022html_param_val1\u0022 class=\u0022param_val\u0022>"
+      $contentinfo = $contentinfo & $value & "</td></tr>"
+    
+    IF ($rowCSSDisplay == "odd") 
+      $rowCSSDisplay = "even"
+    ELSE  
+      $rowCSSDisplay = "odd"
+   ENDIF
+    
+   # work-around variable max length of about 4000 chars
+   $content.htmlmessage::add( $contentinfo )
+   $contentinfo = ""
+
+    ENDIF
+
+    $hasNext = @messageContent::hasNext() 
+
+  ENDWHILE
+
+  $contentinfo = $contentinfo & "</table></div>"
+  $content.htmlmessage::add( $contentinfo )
+
+
+RETURN
+
+# Display response choices.
+# This section builds the HTML responses for the message based off $content.choices.
+# If you want to update response choices this should be done in the presentation script within the
+# setupResponseChoices subroutine.  
+addResponseChoices:
+
+  # Display response choices.
+  IF ( EXISTS( $content.choices ) )
+    $responseinfo = "<div id=\u0022html_response_section\u0022 class=\u0022response_section\u0022>"  
+    $responseinfo = $responseinfo & "<p id=\u0022html_response_instructions\u0022 class=\u0022instructions\u0022>"  
+    $size = $content.choices::size()
+    IF ( $size > 0 )
+      $responseinfo = $responseinfo & "Provided you can connect to the xMatters Web Server, you can respond by selecting one of the following links:"
+      $responseinfo = $responseinfo & "</p>"
+      $responseinfo = $responseinfo & "<ol id=\u0022html_responses\u0022 class=\u0022responses\u0022 title=\u0022Response Choices\u0022>"
+      $count = 0
+      FOR ( $choice : $content.choices )
+        # Remove Annotate and any other unsuitable responses from the Response Choice List for HTML.
+        IF ( $choice != "Annotate")
+          $count = $count + 1
+          $responseinfo = $responseinfo & "<li id=\u0022html_response_item" & $count & "\u0022 class=\u0022response\u0022>"  
+          $responseinfo = $responseinfo & "<a id=\u0022html_response_link" & $count & "\u0022 class=\u0022response\u0022"
+          $responseinfo = $responseinfo & "  href=\u0022" & $main.HTML_form_url & "?notificationId=" & $content.notification_key & "&userId=" & $userId & "&deviceType=Email&responseChoice=" & $choice & "\u0022"
+          $responseinfo = $responseinfo & "  title=\u0022" & $choice & "\u0022>" & $choice & "</a></li>"
+        ENDIF
+      ENDFOR
+
+      # Create the URLAliasContent to allow users a URL link in the notification to view to the event in the Mobile Gateway 
+      # GOSUB addURLAliasContent  ## Not currently in use
+
+      $responseinfo = $responseinfo & "</ol></div>"
+      if (EXISTS ($isEmail) )
+        $responseinfo = $responseinfo & "<div id=\u0022eml_response_section\u0022 class=\u0022eml_response_section\u0022>"
+        $responseinfo = $responseinfo & "<!--<_XM_POP_RESPONSE_INSTRUCTIONS_REPLACEMENT_TOKEN_>-->"
+
+###     Uncomment the two lines below if running on xMatters 4.1
+#        $responseinfo = $responseinfo & "<p id=\u0022html_instructions\u0022 class=\u0022instructions\u0022>"
+#        $responseinfo = $responseinfo & "If you are unable to connect to the xMatters server you will need to respond with the following method:"
+      ENDIF
+    ELSE
+      $responseinfo = $responseinfo & "<div id=\u0022html_instructions_section\u0022>"
+      $responseinfo = $responseinfo & "<p id=\u0022html_instructions\u0022 class=\u0022instructions\u0022>"  
+      $responseinfo = $responseinfo & "<b>This message is sent for informational purposes only. No response is required.</b>"
+    ENDIF
+    $responseinfo = $responseinfo & "</p></div>"
+    $content.htmlmessage::add( $responseinfo )
+  ENDIF
+
+RETURN
+
+# add the URLAliasContent to allow users a URL link in the notification to view to the event in the Mobile Gateway 
+# The URLAliasContent is generated based off the variables set within the initial script subroutine managementSystemConfiguration. 
+addURLAliasContent:
+
+  # Add URL Alias for Mobile Gateway Integration
+  IF ($main.use_mg)
+    $hasMobileAccess = $person.hasMobileAccess
+    $accessibleServices = @person::getAccessibleIntegrationServices($event.domain)
+    $hasAccessToService = $accessibleServices::contains($main.mg_int_service_name)
+    IF ($hasMobileAccess && $hasAccessToService)
+      @urlAlias = @event::createURLAlias()
+      @urlAlias::setTarget($main.mg_host & $main.mg_view_ticket_url)
+      @urlAlias::setHost($main.mg_host)
+      @urlAlias::setTimeout($main.timeout) #keep URL Alias active as long as the event is
+
+      $cfvUserRaw = @person::getCustomFieldValue($main.mg_username_custom_field)
+      #force conversion to string
+      $cfvUserRaw = "J" & $cfvUserRaw
+      $cfvUser = $cfvUserRaw::substring(1)
+
+      $cfvPassRaw = @person::getCustomFieldValue($main.mg_password_custom_field)
+      #force conversion to string
+      $cfvPassRaw = "J" & $cfvPassRaw
+      $cfvPass = $cfvPassRaw::substring(1)
+
+      IF ( (!EMPTY ($cfvUser)) && ( !EMPTY ($cfvPass)) ) 
+        @urlAlias::setParameter($main.mg_urlalias_user, $cfvUser)
+        @urlAlias::setParameter($main.mg_urlalias_pass, $cfvPass)
+      ENDIF
+      @urlAlias::setParameter("username", $person.targetName)
+      @urlAlias::setParameter("IncidentNumber", $event.incident_id)
+      $alias = @urlAlias::activate()
+
+      $count = $count + 1
+      $responseinfo = $responseinfo & "<li id=\u0022eml_response_item" & $count & "\u0022 class=\u0022response\u0022>"  
+      $responseinfo = $responseinfo & "<a id=\u0022eml_response_link" & $count & "\u0022 class=\u0022response\u0022"
+      $responseinfo = $responseinfo & "  href=\u0022" & $alias & "\u0022"
+      $responseinfo = $responseinfo & "  title=\u0022View Incident\u0022>View Incident</a></li>"
+    ENDIF
+  ENDIF
+
+RETURN
+]]></Script>
+            <Script name="createSubject" type="PRESENTATION"><![CDATA[# This Script is responsible for creating the subject to be shown on various devices.
+# If the subject is set from the initial script it is used otherwise we create the subscription.
+# The subject will be prefixed with FYI or Subscription if either apply.
+
+main:
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Starting createSubject" )
+ENDIF
+
+$userTimeValue = @script::formatDate( $event.creationTimeValue, $recipient.timeZone, "EEEE, d MMM yyyy HH:mm:ss 'GMT'Z" )
+
+# Log the Creation and Type of this Notification.
+$category = @recipient::getRecipientCategory()
+$message_note = "Creating "
+
+IF ( $main.fyi )
+  $message_note = $message_note & "FYI "
+ENDIF
+  
+IF ( EXISTS( $notification.subName ) )
+  $message_note = $message_note & "Subscription "
+ENDIF
+$message_note = $message_note & "Notification for [" & $category & ":" & $content.recipient_target & "] on " & $userTimeValue & "."
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & $message_note )
+ENDIF
+
+# Specify subject line content.  If the subject already exists in the notifcation object then use that, otherwise create a new subject.
+IF ( EXISTS( $notification.subject ) )
+  $subject = $notification.subject
+ELSE-IF ( EXISTS( $event.subject ) )
+  $subject = $event.subject
+ELSE
+  IF ( EXISTS( $notification.subName ) )
+    $subject = "[Subscription:" & $notification.subName & "] " & $main.presentationSubjectPrefix & ": " & $event.notification_summary
+    $subscriptionString = "Subscription"
+    $shortSubscriptionString = "[SUB]"
+  ELSE
+    $subject = $main.presentationSubjectPrefix & " Report"
+  ENDIF
+ENDIF
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Ending createSubject" )
+ENDIF
+]]></Script>
+            <Script name="defaultContent" type="PRESENTATION"><![CDATA[# Prepares the default messageContent map with key / value pairs that will be displayed to the user in subsequent
+# device-specific scripts.
+#
+# If you want to create content specific to a particular device override the call to this default content
+# in the script specific to the device.
+# For example.  To create content specific to an Email edit the deviceContentEmail script. 
+main:
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Starting defaultContent" )
+ENDIF
+
+IF ( ( $content.deviceclassification == "email" ) || ( $content.deviceclassification == "bes" ) || ( $content.deviceclassification == "browser" ))
+
+  @messageContent::put( "Time of Event", $userTimeValue )
+  @messageContent::put( "Target", $content.recipient_target ) 
+
+  @messageContent::put( "Requested Data Load Action", $event.action )
+  @messageContent::put( "Total Updates to xMatters", $event.total_count )
+  @messageContent::put( "Successful Updates", $event.success_count )
+  @messageContent::put( "Warnings", $event.warning_count )
+  @messageContent::put( "Errors", $event.error_count )
+  @messageContent::put( "Notes", $event.notes )
+
+ELSE
+  @messageContent::put( "Total", $event.total_count )
+  @messageContent::put( "OK", $event.success_count )
+  @messageContent::put( "Err", $event.error_count )
+  @messageContent::put( "Warn", $event.warning_count )
+ENDIF
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Ending defaultContent" )
+ENDIF
+]]></Script>
+            <Script name="defaultExternalServiceRequestExceptionContent" type="PRESENTATION"><![CDATA[# Default content for notifications being sent due to the Integration Agent reporting an exception as a response to an ESR.
+main:
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Starting defaultExternalServiceRequestExceptionContent" )
+ENDIF
+
+@script::log( $main.log_prepend & "Processing Integration Agent Exception Notification" )
+IF ( ( $content.deviceclassification == "email" ) || ( $content.deviceclassification == "bes" ) || ( $content.deviceclassification == "browser" ))
+  $content.warning = "The Integration Agent encountered a problem trying to process your response"
+
+  @messageContent::put( "Time of Event", $userTimeValue )
+  @messageContent::put( "Target", $content.recipient_target )
+  
+  @messageContent::put( "User Response", $notification.userReply )
+  @messageContent::put( "Exception", $event.apiaresultexception )
+
+  @messageContent::put( "Contact", $main.errorContact )
+  @messageContent::put( "For email use", $main.errorContactEmail )
+  @messageContent::put( "Phone", $main.errorContactPhone )
+ELSE
+  @messageContent::put( "Exc:", $event.apiaresultexception )
+  @messageContent::put( "Cnt:", $main.errorContact )
+  @messageContent::put( "Email:", $main.errorContactEmail )
+  @messageContent::put( "Phone:", $main.errorContactPhone )
+ENDIF
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Ending defaultExternalServiceRequestExceptionContent" )
+ENDIF
+]]></Script>
+            <Script name="defaultInvalidResponseContent" type="PRESENTATION"><![CDATA[# Sets up the properties of the content object needed to indicate to the user that they chose an invalid response option.
+main:
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Starting defaultInvalidResponseContent" )
+ENDIF
+
+# Set invalid response text.  
+# Note: This will only be valid if this script is reinitiated from the handler script.
+IF ( !EMPTY( $notification.response_failed ) )
+  @script::log("This is legacy code that can probably be scheduled for removal.  Called from notification.response_failed if block")
+  $content.message = $notification.response_failed & "\n"
+  $notification.response_failed::remove(0)
+ENDIF
+
+# Set invalid response text.  
+# Note: This will only be valid if this script is reinitiated from the handler script.
+IF ( !EMPTY( $notification.rejectedBy ) )
+  @script::log("This is legacy code that can probably be scheduled for removal.  Called from notification.rejectedBy if block")
+  $main.fyi = true
+  $content.message = $notification.rejectedMessage & "\n"
+ENDIF
+
+# Set invalid response text.
+# This text typically will appear above the default content as a warning.  
+# Note: This will only be valid if this script is reinitiated from the handler script.
+
+$content.message = "Unrecognized reply: [" & $notification.badReply & "]. \n"
+
+IF ( EXISTS( $recipient.invalidCount ) )
+  IF ( $recipient.invalidCount == $main.maxInvalidResponses )
+    $content.message = $content.message & "You have responded with " & $recipient.invalidCount & " invalid responses. You will no longer be notified if an invalid response is submitted for this notification. \n"
+  ENDIF
+ENDIF
+
+$content.warning = $content.message
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Ending defaultInvalidResponseContent" )
+ENDIF
+]]></Script>
+            <Script name="deviceContentBES" type="PRESENTATION"><![CDATA[# This Script sets the content to be shown for the specific device.
+# If you want to add additional information to be shown on the device you will want
+# to update the @messageContent, by adding a new "label", value pair to the 
+# @messageContent map.
+#
+# Example:  @messageContent::put( "My Label", $event.my_token )
+main:
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Starting deviceContentBES" )
+ENDIF
+
+IF ( $content.deviceclassification == "bes" )
+
+  ######################################################
+  # Set the content to be shown on a blackberry device #
+  ######################################################
+  IF ( !EMPTY($event.apiaresultexception) )
+    CALL defaultExternalServiceRequestExceptionContent
+  ELSE-IF ( !EMPTY( $notification.badReply ) )
+    CALL defaultInvalidResponseContent
+    CALL defaultContent
+  ELSE
+    CALL defaultContent
+  ENDIF
+  
+  ####################
+  # Generate Content #
+  ####################
+  # Note: content.pushurl must be present, even if url is invalid
+  $content.pushurl = $main.bes_pushurl
+  $content.message = "Message"
+
+  call createHTMLDeviceContent
+
+ENDIF
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Ending deviceContentBES" )
+ENDIF
+]]></Script>
+            <Script name="deviceContentBrowser" type="PRESENTATION"><![CDATA[# This Script sets the content to be shown for the specific device.
+# If you want to add additional information to be shown on the device you will want
+# to update the @messageContent, by adding a new "label", value pair to the 
+# @messageContent map.
+#
+# Example:  @messageContent::put( "My Label", $event.my_token )
+main:
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Starting deviceContentBrowser" )
+ENDIF
+
+IF ( $content.deviceclassification == "browser" )
+
+  ##################################################
+  # Set the content to be shown in the xMatters UI #
+  ##################################################
+  IF ( !EMPTY($event.apiaresultexception) )
+    CALL defaultExternalServiceRequestExceptionContent
+  ELSE-IF ( !EMPTY( $notification.badReply ) )
+    CALL defaultInvalidResponseContent
+    CALL defaultContent
+  ELSE
+    CALL defaultContent
+  ENDIF
+
+  ####################
+  # Generate Content #
+  ####################
+  $content.message = $content.message & $subject & "\n"
+  CALL createDeviceContent
+ENDIF
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Ending deviceContentBrowser" )
+ENDIF
+]]></Script>
+            <Script name="deviceContentEmail" type="PRESENTATION"><![CDATA[# This Script sets the content to be shown for the specific device.
+# If you want to add additional information to be shown on the device you will want
+# to update the @messageContent, by adding a new "label", value pair to the 
+# @messageContent map.
+#
+# Example:  @messageContent::put( "My Label", $event.my_token )
+main:
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Starting deviceContentEmail" )
+ENDIF
+
+IF ( $content.deviceclassification == "email" )
+
+  ##################################################
+  # Set the content to be shown on an email device #
+  ##################################################
+  IF ( !EMPTY($event.apiaresultexception) )
+    CALL defaultExternalServiceRequestExceptionContent
+  ELSE-IF ( !EMPTY( $notification.badReply ) )
+    CALL defaultInvalidResponseContent
+    CALL defaultContent
+  ELSE
+    CALL defaultContent
+  ENDIF
+
+  # If additional email options are provided with the event link them to the content
+  IF ( EXISTS( $event.ccs ) )
+    $content.ccs = $event.ccs
+  ENDIF
+  IF ( EXISTS( $event.bccs ) )
+    $content.bccs = $event.bccs
+  ENDIF
+  IF ( EXISTS( $event.replyto ) )
+    $content.replyto = $event.replyto
+  ENDIF
+
+  ####################
+  # Generate Content #
+  ####################
+  CALL createDeviceContent
+
+  IF ( $main.enable_HTML_Email )
+    $isEmail = true
+    CALL createHTMLDeviceContent 
+  ENDIF
+ENDIF
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Ending deviceContentEmail" )
+ENDIF
+]]></Script>
+            <Script name="deviceContentIM" type="PRESENTATION"><![CDATA[# This Script sets the content to be shown for the specific device.
+# If you want to add additional information to be shown on the device you will want
+# to update the @messageContent, by adding a new "label", value pair to the 
+# @messageContent map.
+#
+# Example:  @messageContent::put( "My Label", $event.my_token )
+main:
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Starting deviceContentIM" )
+ENDIF
+
+IF ( $content.deviceclassification == "im" )
+
+  ################################################
+  # Set the content to be shown in on the device #
+  ################################################
+  IF ( !EMPTY($event.apiaresultexception) )
+    CALL defaultExternalServiceRequestExceptionContent
+  ELSE-IF ( !EMPTY( $notification.badReply ) )
+    CALL defaultInvalidResponseContent
+    CALL defaultContent
+  ELSE
+    CALL defaultContent
+  ENDIF
+
+  ####################
+  # Generate Content #
+  ####################
+  $content.message = $content.message & " " & $shortSubscriptionString & " " & $main.presentationShortSubjectPrefix & " "
+
+  CALL createDeviceContent
+ENDIF
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Ending deviceContentIM" )
+ENDIF
+]]></Script>
+            <Script name="deviceContentNumericPager" type="PRESENTATION"><![CDATA[# This Script sets the content to be shown for the specific device.
+# If you want to add additional information to be shown on the device you will want
+# to update the @messageContent, by adding a new "label", value pair to the 
+# @messageContent map.
+#
+# Example:  @messageContent::put( "My Label", $event.my_token )
+main:
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Starting deviceContentNumericPager" )
+ENDIF
+
+IF ( $content.deviceclassification == "numeric_pager" )
+  # This is the number that will be provided on the user's device.
+  $content.message = $main.numeric_pager_number
+ENDIF
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Ending deviceContentNumericPager" )
+ENDIF
+]]></Script>
+            <Script name="deviceContentTextPager" type="PRESENTATION"><![CDATA[# This Script sets the content to be shown for the specific device.
+# If you want to add additional information to be shown on the device you will want
+# to update the @messageContent, by adding a new "label", value pair to the 
+# @messageContent map.
+#
+# Example:  @messageContent::put( "My Label", $event.my_token )
+main:
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Starting deviceContentTextPager" )
+ENDIF
+
+IF ( $content.deviceclassification == "text_pager" )
+
+  ################################################
+  # Set the content to be shown in on the device #
+  ################################################
+  IF ( !EMPTY($event.apiaresultexception) )
+    CALL defaultExternalServiceRequestExceptionContent
+  ELSE-IF ( !EMPTY( $notification.badReply ) )
+    CALL defaultInvalidResponseContent
+    CALL defaultContent
+  ELSE
+    CALL defaultContent
+  ENDIF
+
+  ####################
+  # Generate Content #
+  ####################
+  $content.message = $content.message & " " & $shortSubscriptionString & " " & $main.presentationShortSubjectPrefix & " "
+
+  CALL createDeviceContent
+ENDIF
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Ending deviceContentTestPager" )
+ENDIF
+]]></Script>
+            <Script name="deviceContentTextPhone" type="PRESENTATION"><![CDATA[# This Script sets the content to be shown for the specific device.
+# If you want to add additional information to be shown on the device you will want
+# to update the @messageContent, by adding a new "label", value pair to the 
+# @messageContent map.
+#
+# Example:  @messageContent::put( "My Label", $event.my_token )
+main:
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Starting deviceContentTextPhone" )
+ENDIF
+
+IF ( $content.deviceclassification == "text_phone" )
+
+  ################################################
+  # Set the content to be shown in on the device #
+  ################################################
+  IF ( !EMPTY($event.apiaresultexception) )
+    CALL defaultExternalServiceRequestExceptionContent
+  ELSE-IF ( !EMPTY( $notification.badReply ) )
+    CALL defaultInvalidResponseContent
+    CALL defaultContent
+  ELSE
+    CALL defaultContent
+  ENDIF
+
+  ####################
+  # Generate Content #
+  ####################
+  $content.message = $content.message & " " & $shortSubscriptionString & " " & $main.presentationShortSubjectPrefix & " "
+
+  CALL createDeviceContent
+ENDIF
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Ending deviceContentTextPhone" )
+ENDIF
+]]></Script>
+            <Script name="deviceContentVoice" type="PRESENTATION"><![CDATA[# This Script sets the content to be shown for the specific device.
+# If you want to add additional information to be shown on the device you will want
+# to update the @messageContent, by adding a new "label", value pair to the 
+# @messageContent map.
+#
+# Example:  @messageContent::put( "My Label", $event.my_token )
+main:
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Starting deviceContentVoice" )
+ENDIF
+
+IF ( $content.deviceclassification == "voice" )
+  # AlarmPoint will automatically use the script package "Callout" to contact the
+  # person on their phone prior to executing the interaction script below
+  $content.interactionScript = "notify"
+
+  # Mandatory non empty value must be passed into the $content.message in order for the notification to process.
+  $content.message = "Undefined"
+
+  $content.subscription = $subscription
+  
+  # prevent phone device being presented response choices under certain conditions in the same way as for the other devices
+#  IF ( $show_response_options )
+#    $content.fyi = false
+#  ELSE
+#    $content.fyi = true
+#  ENDIF
+
+ENDIF
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Ending deviceContentVoice" )
+ENDIF
+]]></Script>
+            <Script name="presentation" type="PRESENTATION"><![CDATA[# Copyright 2010 AlarmPoint Systems, Inc.
+#
+# This script package provides example functionality and a starting point
+# for a the Integration.
+#
+# This script provides device specific formatting of the content presented
+# in notifications delivered for the integration.
+#
+# Script objects accessible by this script include:
+# @script 		- Contains methods for controlling script behaviour.
+# @event 		- Contains information injected from the management system.
+# @main 		- Contains global information specific to the Action Scripts. 
+# @content 	- Contains notification content information.
+# @notification 	- Contains notification variables and methods for controlling behaviour.
+#
+# Additional custom information can be added by referencing the appropriate 
+# $event variables. If not done in the initial script, 
+# default values should be assigned to the added variables to prevent script 
+# failure if the custom value is missing.
+#
+import com.invoqsystems.apex.component.broker.process.scriptObjects.ScriptObjectLinkedHashMap
+
+main:
+
+GOSUB initialize
+
+# Retrieve the recipient object associated with the events recipient target.
+@recipient = @event::getRecipient( $content.recipient_target )
+
+# notification a result of a subscription
+$subscription = EXISTS( $notification.subName )
+
+# Set the message content for the device types
+@messageContent = new ScriptObjectLinkedHashMap()
+
+# Create the subject and some initialization for the notifications
+CALL createSubject
+
+# Setup which reponse choices will be avaliable on different devices
+CALL deviceResponses
+
+#Retrieve the login of the current recipient
+@currentRecipient = @event::getRecipient($content.recipient_target)
+$category = @currentRecipient::getRecipientCategory()
+$login = ""
+IF($category == "PERSON")
+   $login = $currentRecipient.login
+ENDIF
+
+# Each devices has its content generated from within its own deviceContent script
+CALL deviceContentBES
+CALL deviceContentBrowser
+CALL deviceContentEmail
+CALL deviceContentIM
+CALL deviceContentNumericPager
+CALL deviceContentTextPager
+CALL deviceContentTextPhone
+CALL deviceContentVoice
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Ending " & $script_block_suffix )
+ENDIF
+
+# ==============================================
+# Initialize the script variables and logging
+# ==============================================
+initialize:
+  $script_name = "presentation"
+  $full_script_name = $main.package_name & " " & $script_name
+  $script_block_suffix = $full_script_name & " script for " & $content.recipient_target & " of type: " & $content.deviceclassification & "."
+
+  IF ( $main.debug )
+    IF ( $main.use_logFile )
+      @script::setLog( $main.logFile )
+    ENDIF
+  ENDIF
+  @script::log( $main.log_prepend & "Starting " & $script_block_suffix )
+
+RETURN
+]]></Script>
+            <Script name="defaultExternalServiceRequestExceptionVoiceContent" type="INTERACTION"><![CDATA[main:
+
+  @phone::play( "phrase", "this message is an fyi notification" )
+
+  @phone::play( "phrase", "the integration agent encountered an exception while processing your response" )
+  @phone::play( "phrase", "of" )
+  @phone::play( "phrase", $notification.userReply )
+
+  @phone::play( "phrase", "for" )
+  @phone::play( "phrase", "change ID" )
+  @phone::play( "characters", $event.infrastructure_change_id )
+
+  @phone::play( "phrase", "please contact" )
+  @phone::play( "phrase", $main.errorContact )
+  @phone::play( "phrase", "AT" )
+  @phone::play( "phrase", $main.errorContactEmail )
+  @phone::play( "phrase", "or" )
+  # Strip all non-numeric characters.  This is probably not what you want, but once you have choosen an error number you can change this as needed.
+  $strippedNumber = $event.phone_number
+  $strippedNumber::replaceAll("[\D]","")
+  @phone::play( "characters", $strippedNumber )
+]]></Script>
+            <Script name="defaultVoiceContent" type="INTERACTION"><![CDATA[main:
+    IF ( $main.debug )
+      @script::log( $main.log_prepend & "Starting defaultVoiceContent" )
+    ENDIF
+
+    IF ( $main.fyi == "true"  )
+      @phone::play( "phrase", "this message is an fyi notification" )
+    ENDIF
+
+    IF ( $content.subscription == "true" ) 
+      @phone::play( "phrase", "a subscribed bmc remedy data load action" )
+    ELSE
+      @phone::play( "phrase", "a bmc remedy data load action" )
+    ENDIF
+
+    @phone::play( "phrase", "occurred on" )
+
+    CALL playEventCreationDateTime
+
+    IF (!EMPTY ($event.action))
+      @phone::play( "phrase", "with action" )
+      @phone::play( "phrase", $event.action )
+    ENDIF
+
+    IF (!EMPTY ($event.total_count))
+      @phone::play( "phrase", "total updates to xmatters" )
+      @phone::play( "phrase", $event.total_count )
+    ENDIF
+
+    IF (!EMPTY ($event.success_count))
+      @phone::play( "phrase", "successful updates" )
+      @phone::play( "phrase", $event.success_count )
+    ENDIF
+
+    IF (!EMPTY ($event.warning_count))
+      @phone::play( "phrase", "warnings" )
+      @phone::play( "phrase", $event.warning_count )
+    ENDIF
+
+    IF (!EMPTY ($event.error_count))
+      @phone::play( "phrase", "errors" )
+      @phone::play( "phrase", $event.error_count )
+    ENDIF
+
+    IF (!EMPTY ($event.notes))
+      @phone::play( "phrase", $event.notes )
+    ENDIF
+
+    IF ( $main.debug )
+      @script::log( $main.log_prepend & "Ending defaultVoiceContent" )
+    ENDIF
+]]></Script>
+            <Script name="deviceResponses" type="INTERACTION"><![CDATA[import java.util.HashMap   
+# =================================================================================
+# Setup the response choices to be used for the devices which are to be notified. 
+# Responses are categorized by devices which are character limited and unlimited. 
+# =================================================================================
+main:
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Starting deviceResponses" )
+ENDIF
+
+  $show_response_options = ((!$main.fyi) && ($notification.fyi == false)) 
+  $use_voice_fyi_choices = (($main.fyi) && ($content.deviceclassification == "voice"))
+  $annotate_enabled = $main.annotate
+
+  # ===============================================================================
+  # The standard response choices come from the xMatters UI for subscriptions
+  # or are built on the fly for standard notifications.
+  #
+  # The 2 sets of standard choices are assumed to be the same in the code that follows.
+  # ===============================================================================
+
+  IF ($show_response_options)
+    IF ( EXISTS( $notification.subName ) )
+      $annotate_enabled = $main.subscription_annotate
+      # Configure Subscription notification response choices 
+      IF ( EXISTS( $notification.subscriptionChoices ) )
+        $content.choices = $notification.subscriptionChoices
+      ENDIF
+    ELSE     
+      # Possible future response choices
+      $content.choices = "Restart" 
+      #$content.choices::add( "Another Response Option" )
+    ENDIF
+
+  # ===============================================================================
+  # The main response choices are then edited according to the target device.
+  # ===============================================================================
+
+    # --- additional choices for email devices ---
+    IF ($content.deviceclassification == "email" && $annotate_enabled)
+      $content.choices::add( "Annotate" )
+    ENDIF
+
+      # --- additional choices for voice devices ---
+      # The notify script assumes that choices with these names are present
+
+  ELSE-IF ($use_voice_fyi_choices)
+    $content.choices = "Delete"
+    $content.choices::add( "Save" )
+  ENDIF
+
+  GOSUB truncateResponseChoicesForLimitedCharacterDevices
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Ending deviceResponses" )
+ENDIF
+
+RETURN
+
+# ---------------------------------------------------------------------------------------------------------------------------
+# truncateSubscriptionChoicesForLimitedCharacterDevices
+#
+# On limited character devices the subscription response choices entered by the user need to be truncated.
+#
+# Input: $content.choices
+# Output: $content.choices
+# ---------------------------------------------------------------------------------------------------------------------------
+truncateResponseChoicesForLimitedCharacterDevices:
+
+  IF ( ( $content.deviceclassification == "im" ) || ( $content.deviceclassification == "text_pager" ) )
+    @responseMap = new HashMap()
+    @responseMap::put("Restart","Rst")
+
+    # First check if there are responses, only then attempt to truncate them
+    IF ( EXISTS($content.choices) )
+      FOR ( $choice : $content.choices )
+	$shortChoice = @responseMap::get($choice)
+	IF ( !EMPTY($shortChoice) )
+	  $newChoices::add($shortChoice)
+	ELSE
+	  @script::log( $main.log_prepend & "No shortChoice found for response choice: " & $choice )
+	ENDIF
+      ENDFOR
+
+      $content.choices = $newChoices
+      $newChoices::clear()
+    ENDIF
+  ENDIF
+
+RETURN
+
+# ---------------------------------------------------------------------------------------------------------------------------
+# removeResponseChoicesOnSpecificDevices
+#
+# Removes annotation and other reponses from device types which can not support the removed responses.
+#
+# Input: $content.choices
+# Output: $content.choices
+# ---------------------------------------------------------------------------------------------------------------------------
+removeResponseChoicesOnSpecificDevices:
+
+  # No annotate response on these device classes.
+  IF ( $content.deviceclassification == "voice" || $content.deviceclassification == "browser" || $content.deviceclassification == "bes" || $content.deviceclassification == "text_pager" )
+    $choicesToRemove = "Annotate"
+
+    FOR ( $choice : $choicesToRemove )
+      $index = $content.choices::indexOf($choice)
+      IF ( $index >= 0 )
+        $content.choices::remove( $index )
+      ENDIF
+    ENDFOR
+  ENDIF
+
+RETURN
+
+checkForCustomCredentials:
+  # possibly call a refactored "responderDetails" as this section is a subset
+#  $recipient_category = @recipient::getRecipientCategory()
+#  $cfRecipient = $recipient
+  
+#  IF ( $main.debug )
+#    @script::log( $main.log_prepend & "recipient " & $content.recipient_target & " is of type " & $recipient_category )
+#  ENDIF
+  
+#  IF ( $recipient_category == "DEVICE" )
+#    @cfRecipient = @event::getRecipient( $recipient.owner )
+#  ELSE-IF ( $recipient_category == "GROUP" )
+#    $has_credentials_custom_fields = false
+#    RETURN # we do not need to process custom fields for groups
+#  ELSE 
+#    @cfRecipient = @event::getRecipient( $recipient.targetName )
+#  ENDIF  
+      
+RETURN
+]]></Script>
+            <Script name="initializeVoiceNotification" type="INTERACTION"><![CDATA[# This script is used to initalize the debug logging and to log the notification type and category
+main:
+
+GOSUB initialize
+GOSUB logNotificationType
+
+# logs the notification type and category
+logNotificationType:
+  $category = @recipient::getRecipientCategory()
+  $message_note = "Creating "
+  IF ( $content.fyi )
+    $message_note = $message_note & "FYI "
+  ENDIF
+
+  IF ( EXISTS( $notification.subName ) )
+    $message_note = $message_note & "Subscription [" & $notification.subName & "] "
+  ENDIF
+  $message_note = $message_note & "Notification for [" & $category & ":" & $content.recipient_target & "] on voice device."
+  IF ( $main.debug )
+    @script::log( $main.log_prepend & $message_note )
+  ENDIF
+RETURN
+
+# ==============================================
+# Initialize the script variables and logging
+# ==============================================
+initialize:
+  $script_name = "notify"
+  $full_script_name = $main.package_name & " " & $script_name
+  $script_block_suffix = $full_script_name & " script for " & $content.recipient_target & " of type: Voice."
+
+  IF ( $main.debug )
+    IF ( $main.use_logFile )
+      @script::setLog( $main.logFile )
+    ENDIF
+  ENDIF
+  @script::log( $main.log_prepend & "Starting " & $script_block_suffix )
+
+RETURN
+]]></Script>
+            <Script name="notify" type="INTERACTION"><![CDATA[# Copyright 2010 AlarmPoint Systems, Inc.
+# Copyright 2010 AlarmPoint Systems, Inc.
+# http://www.alarmpoint.com
+#
+# This script package provides example functionality and a starting point.
+#
+# This script handles voice device interactions for voice notifications.
+#
+# Script objects received by this script include:
+#     @main	- Contains information to be shared across scripts in this process.
+#     @event	- Contains information coming from the management system.
+#     @content	- Contains content to be displayed for this notification.
+#     @phone	- Contains information about this call (eg. Phone number).
+#     @interaction 	- Contains information about the interaction with the called user.
+#     @script	- A local object with methods shared between all scripts
+#
+# Other pieces of information automatically provided to this script include:
+#     $targetName		- The target name of the user being contacted.
+#     $deviceTargetName	- The target name of the device being contacted.
+#     $liveNotificationId 	- The identifier for the notification that initiated the call.
+#
+
+# ===============================================================================
+main:
+# ===============================================================================
+CALL initializeVoiceNotification
+
+IF ( $content.deviceclassification == "voice" )
+  GOSUB NotifyVoice
+ELSE
+  @phone::play( "phrase", "Unable to play alert. No device content was created for alert." )
+  IF ( $main.debug )
+    @script::log( $main.log_prepend & "Unable to notify " & $content.recipient_target & " of type: " & $content.deviceclassification & "." )
+  ENDIF 
+ENDIF
+
+IF ( $main.debug )
+  @script::log( $main.log_prepend & "Ending " & $script_block_suffix )
+ENDIF
+RETURN
+
+
+# ===============================================================================
+# Notify using a voice device
+# ===============================================================================
+NotifyVoice:
+  # indicate if interaction was successful
+  $session.interactionResult = true		
+
+  # Repeat the message as long as the user requests it.
+  $repeat = true
+
+  # Indicate whether user has interacted with notification
+  $interactionReported = false
+
+  $details = false # ???
+  $skip = false    # ???
+
+WHILE ( $repeat )
+  $repeat = false
+  @phone::clearDtmf()
+
+  @recipient = @event::getRecipient( $content.recipient_target )
+
+  IF (!$skip)
+
+    IF ( !EMPTY($event.apiaresultexception) )
+      CALL defaultExternalServiceRequestExceptionVoiceContent
+    ELSE
+      CALL defaultVoiceContent
+    ENDIF
+
+  ELSE # reset the skip flag
+    $skip = false
+  ENDIF
+
+
+  IF ( $voiceMail )
+    RETURN
+  ENDIF
+
+  # Get menu selection with 3 retries
+  $retry = $main.maxInvalidResponses
+  $processed = false
+
+  WHILE ( $retry > 0 )
+    @phone::clearDtmf()
+
+    # This will handle FYI notifications as well
+    GOSUB buildPlayResponseOptions
+
+    # If we have less than 9 options, 
+    IF ( $optionCount < 10 )
+      $nkey = @phone::getDigits( 1, 10 )
+    ELSE
+      $nkey = @phone::getDigits( 2, 10 )
+    ENDIF
+    @phone::clearDtmf()
+
+    # This will handle FYI notifications as well
+    GOSUB ProcessMenuSelection
+
+    IF ( $processed || $repeat )
+      $retry = 0
+    ELSE
+      $retry = $retry - 1
+    ENDIF
+  ENDWHILE
+ENDWHILE
+
+IF ( ! $processed )
+ @session::reportFailure( $notId, "USER_RESPONSE_TIMEOUT" )
+ENDIF
+
+RETURN
+
+
+# ==============================================================================================
+# buildPlayResponseOptions
+#
+# As the response options may vary depending on the implementation of the integration, we will
+# retrieve the responses from the $content.choices collection that is setup in the PRESENTATION
+# script and determine what will be presented to the voice device 
+# ==============================================================================================
+buildPlayResponseOptions:
+
+  CALL deviceResponses
+
+  @responseMap = new HashMap()
+  $option = 1
+  $optionCount = $content.choices::size()
+
+  IF ( !EMPTY( $content.choices ) ) 
+    # loop over list items and build response options string
+    FOR ( $choice : $content.choices )
+
+      @phone::play( "phrase", "for")
+      @phone::play( "phrase", $choice)
+      @phone::play( "phrase", "Press")
+
+      IF ( $optionCount < 9 )
+        $key = "" & $option
+        @responseMap::put( $key, $choice )
+        @phone::play( "phrase", $key)
+
+        IF ( $main.debug )
+          $tmp = @responseMap::get($key)
+          @script::log( $main.log_prepend & "Response for option " & $key & ": " & $tmp )
+        ENDIF      
+      ELSE
+        $key = "" & $option
+        $playPhrase = "" & $option
+
+        IF ($option < 10)
+          $key = "0" & $option
+          $playPhrase = "zero" & $option
+        ENDIF
+        @responseMap::put($key, $choice)  
+        @phone::play( "phrase",  $playPhrase)
+
+        IF ( $main.debug )
+          $tmp = @responseMap::get($key)
+          @script::log( $main.log_prepend & "Response for option " & $key & ": " & $tmp )
+        ENDIF
+
+      ENDIF
+      $option = $option + 1
+    ENDFOR
+
+    @phone::play( "phrase", "to repeat this message" )
+    @phone::play( "phrase", "Press")
+    IF ($optionCount < 9)
+      @phone::play( "phrase", 9)
+    ELSE
+      @phone::play( "phrase", "99")
+    ENDIF
+    
+  ELSE
+    IF ( $main.debug )
+      @script::log( $main.log_prepend & "$content.choices is empty" )
+    ENDIF 
+  ENDIF  
+
+RETURN
+
+
+### MENU SELECTION PROCESS METHODS ###
+
+# ==============================================================================================
+# ProcessMenuSelection
+#
+# As the response options are contained in the map, we can lookup the selected response from
+# the response map based on the key selected on the voice device and send the appropriate
+# response to the response handler
+# ==============================================================================================
+ProcessMenuSelection:
+
+  # Retrieve the Key from the map for the selected response
+  $key = "" & $nkey
+  $responseCode = @responseMap::get($key)
+  $responseCode::toLowerCase()
+
+  IF ( $main.debug )
+    @script::log( $main.log_prepend & "NKey Response for option " & $key & ": " & $responseCode )
+  ENDIF
+
+  # ===============================================================================
+  # The repeat, event details and diagnostics menu choices don't require us to 
+  # invoke respondToNotification()
+  # ===============================================================================  
+
+  IF ( $nkey == "9" || $nkey == "99" )
+    # Repeat
+    $repeat = true
+  ELSE-IF ( EXISTS( $responseCode ))
+    $processed = true
+    IF ( $main.debug )
+      @script::log( $main.log_prepend & "Issuing " & $responseCode &  " for " & $content.recipient_target )
+    ENDIF
+    $responseStatus = @session::respondToNotification( $notId, $responseCode )
+    IF ( $responseStatus )
+      @phone::play( "phrase", "the requested response has been processed" )
+    ELSE
+      @phone::play( "phrase", "not associated" )
+    ENDIF
+
+  ENDIF
+  
+RETURN
+
+# ----------------------------
+# Process FYI phone menu selection
+# ----------------------------
+ProcessFYIMenuSelection:
+IF ( $nkey == "1" )
+  # Delete
+  $processed = true
+  IF ( $main.debug )
+    @script::log( $main.log_prepend & "Issuing Delete for " & $content.recipient_target )
+  ENDIF
+  $responseStatus = @session::respondToNotification( $notId, "Delete" )
+  IF ( $responseStatus )
+    @phone::play( "phrase", "message deleted" )
+  ELSE
+    @phone::play( "phrase", "not associated" )
+  ENDIF
+
+ELSE-IF ( $nkey == "2" )
+  # Save
+  $processed = true
+  IF ( $main.debug )
+    @script::log( $main.log_prepend & "Issuing Save for " & $content.recipient_target )
+  ENDIF
+  $responseStatus = @session::respondToNotification( $notId, "Save" )
+  IF ( $responseStatus )
+    @phone::play( "phrase", "message saved" )
+  ELSE
+    @phone::play( "phrase", "not associated" )
+  ENDIF
+ELSE-IF ( $nkey == "9" )
+  # Repeat
+  $repeat = true
+ENDIF
+RETURN
+
+# --------------
+# Error handlers
+# --------------
+PhoneHangupException:
+
+  $message = "Phone hangup exception"
+  $err_msg = "USER_HUNG_UP"
+  IF ( $authenticated )
+    $err_msg = $err_msg & "_AFTER_AUTHENTICATION"
+  ENDIF
+
+  CALL processVoiceException
+
+EXIT
+
+PhoneTimeoutException:
+
+  $message = "Phone Timeout exception"
+  $err_msg = "TIMED_OUT"
+
+  CALL processVoiceException
+
+  @phone::hangup()
+EXIT
+
+Exception:
+IF ( $main.debug )
+  $exception = @exception::getMessage()
+  @script::log( $main.log_prepend & "Phone Call exception: " & $exception )
+ENDIF 
+@phone::hangup()
+EXIT
+]]></Script>
+            <Script name="playEventCreationDateTime" type="INTERACTION"><![CDATA[# ==============================================================================================
+# Play Date Time
+# ==============================================================================================
+main:
+
+  @phone::playDate( $event.creationTimeValue, $recipient.timeZone, "ddd m d" )
+  @phone::play( "phrase", "AT" )
+  @phone::playDate( $event.creationTimeValue, $recipient.timeZone, "hh nn" )
+
+RETURN
+]]></Script>
+            <Script name="processVoiceException" type="INTERACTION"><![CDATA[# ProcessVoiceException
+
+main:
+
+$connected = false
+IF ( $main.debug )
+
+  $exception = @exception::getMessage()
+  @script::log( $main.log_prepend & $message & ": " & $exception )
+ENDIF
+]]></Script>
+            <Script name="voiceMailOption" type="INTERACTION"><![CDATA[#BMC Remedy Change Management.presentation.voiceMailOption
+main:
+
+# should return a string that represents one of VoiceMailOptions (CONTENT_AND_CALLBACK, CONTENT, CALLBACK, HANG_UP)
+$voiceMailOption = "CONTENT"
+$skipGreeting = true
+]]></Script>
+        </ScriptPackage>
+    </EventDomain>
+</Integration>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.xmatters.com/apia_http_bmcremedy/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="apia_http_bmcremedy" targetNamespace="http://www.xmatters.com/apia_http_bmcremedy/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.xmatters.com/apia_http_bmcremedy/" elementFormDefault="qualified">
+      <xsd:simpleType name="actionType">
+	<xsd:restriction base="xsd:string">
+	  <xsd:enumeration value="Add" />
+	  <xsd:enumeration value="Update" />
+	  <xsd:enumeration value="Delete" />
+	  <xsd:enumeration value="Load" />
+	</xsd:restriction>
+      </xsd:simpleType>
+      <xsd:element name="TriggerRequest">
+	<xsd:complexType>
+	  <xsd:sequence>
+	    <xsd:element name="action" type="tns:actionType"/>
+	    <xsd:element name="id" type="xsd:string"/>
+	    <xsd:element name="form" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+	    <xsd:element name="message" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+	  </xsd:sequence>
+	</xsd:complexType>
+      </xsd:element>
+      <xsd:element name="TriggerResponse">
+	<xsd:complexType>
+	  <xsd:sequence>
+	    <xsd:element name="status" type="xsd:string" />
+	    <xsd:element name="description" type="xsd:string" />
+	  </xsd:sequence>
+	</xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="TriggerRequest">
+    <wsdl:part name="body" element="tns:TriggerRequest"/>
+  </wsdl:message>
+  <wsdl:message name="TriggerResponse">
+    <wsdl:part name="body" element="tns:TriggerResponse"/>
+  </wsdl:message>
+  <wsdl:portType name="apia_http_bmcRemedyIncident">
+    <wsdl:operation name="triggerIncident">
+      <wsdl:input message="tns:TriggerRequest"/>
+      <wsdl:output message="tns:TriggerResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="apia_http_bmcRemedyIncidentSOAP" type="tns:apia_http_bmcRemedyIncident">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="triggerIncident">
+      <soap:operation soapAction="triggerIncident"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="apia_http_bmcRemedyIncident">
+    <wsdl:port binding="tns:apia_http_bmcRemedyIncidentSOAP" name="apia_http_bmcRemedyIncidentSOAP">
+      <soap:address location="http://localhost:8081/http/applications_bmcremedyincident-5-1-2"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

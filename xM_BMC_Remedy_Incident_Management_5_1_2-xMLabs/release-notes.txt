@@ -1,0 +1,158 @@
+-------------------------------------------------------------------------------
+xMatters On-Demand for BMC Remedy Service Desk Incident Management
+-------------------------------------------------------------------------------
+
+August 27th, 2018
+
+Integration version 5.1.2
+Copyright xMatters, inc. 2018
+
+-------
+SUMMARY
+-------
+This release of the xMatters for BMC Remedy Service Desk Incident Management 
+integration is designed to work with xMatters On-Demand and BMC Remedy Service
+Desk Incident Management version 9.
+
+NOTE: This is the same version as for Remedy 8.1 so many of the artifacts will
+reflect 8.1, but will still be applicable for Remedy 9. 
+
+This release of the integration provides updated workflow definitions 
+(xm_dataload_8_1.def and xm_incident_8_1.def).
+
+--------------
+QUALIFICATIONS
+--------------
+This release has been qualified against the following software components:
+  - xMatters On-Demand with xMatters integration agent 5.1 patch 008
+  - BMC Remedy Service Desk Incident Management v8.1
+
+For a complete list of validated components and operating systems, consult the
+xMatters and BMC Remedy documentation.  
+
+--------
+FEATURES
+--------
+This release of the integration has been modified to include both the Incident
+Management integration and the Dataload integration
+
+
+------------
+KNOWN ISSUES
+------------
+
+
+
+-----------------------------
+ARCHIVE FILE FOLDER STRUCTURE
+-----------------------------
+|-- components
+| |-- bmcremedy
+| | |-- apia_http_bmcremedy.wsdl
+| | |-- xm_dataload_8_1.def
+| | |-- xm_foundation_8_1.def
+| | ‘-- xm_incident_8_1.def
+| |-- integration-agent
+| | |-- conf
+| | | |-- .initiatorpasswd
+| | | |-- deduplicator-filter.xml
+| | | |-- xm_ctm_ws.pwd
+| | | ‘-- xm_hpd_ws.pwd
+| | ‘-- integrationservices
+| |   ‘-- remedy81
+| |     |-- remedydataload-5-1-2
+| |     | |-- soap
+| |     | | |-- XM-CTM-People-WS-soapui-project.xml
+| |     | | |-- XM-CTM-Support-Group-WS-soapui-project.xml
+| |     | | |-- XM-CTM-Support-Group-WS.wsdl
+| |     | | |-- XM-CTM-SupportGroupAssoc-join-People-WS-soapui-project.xml
+| |     | | |-- XM-CTM-SupportGroupFunctionalRole-WS-soapui-project.xml
+| |     | | ‘-- XM-HPD-IncidentInterface-WS-soapui-project.xml
+| |     | |-- test
+| |     | | ‘-- [...]
+| |     | |-- bmcremedydataload-lifecycle.js
+| |     | |-- bmcremedydataload.js
+| |     | |-- bmcremedydataload.xml
+| |     | |-- configuration.js
+| |     | |-- dataSyncList.js
+| |     | |-- phonenumber.js
+| |     | |-- processGroups.js
+| |     | |-- processUsers.js
+| |     | |-- supervisorMapper.js
+| |     | |-- userRolesMapper.js
+| |     | |-- xm-ctm-people-ws.js
+| |     | |-- xm-ctm-support-group-functional-role-ws.js
+| |     | |-- xm-ctm-support-group-ws.js
+| |     | ‘-- xm-ctm-supportgroupassoc-join-people-ws.js
+| |     |-- remedyincident-5-1-2
+| |     | |-- soap
+| |     | | |-- XM-HPD-HelpDesk-WS-soapui-project.xml
+| |     | | |-- XM-HPD-IncidentInterface-WS-soapui-project.xml
+| |     | | ‘-- XM-SupportGrp-SupportGrpAssoci-WS-soapui-project.xml
+| |     | |-- bmcremedyincident-callbacks.js
+| |     | |-- bmcremedyincident-event.js
+| |     | |-- bmcremedyincident-properties.js
+| |     | |-- bmcremedyincident.js
+| |     | |-- bmcremedyincident.xml
+| |     | |-- configuration.js
+| |     | |-- http_event.js
+| |     | |-- updateIncident.js
+| |     | |-- xm-hpd-helpdesk-ws.js
+| |     | |-- xm-hpd-incident-interface-ws.js
+| |     | |-- xm-sup-grp-assoc-ws.js
+| |     | ‘-- xmrestapi.js
+| |     ‘-- util.js
+| ‘-- xmatters
+|   |-- event-domain
+|   | ‘-- xM-BMC-Remedy-DL.xml
+|   |-- engine
+|   | |-- BMCRemedyITSMIncident.zip
+|   | ‘-- BMCRemedyITSMIntegratedProperties.zip
+|   ‘-- vox
+|     |-- bmcremedydataload
+|     | ‘-- [...]
+|     |-- a bmc remedy incident.vox
+|     |-- Accept.vox
+|     |-- and a summary of.vox
+|     |-- Ignore.vox
+|     |-- priority of.vox
+|     ‘-- Resolve.vox
+|-- documentation
+| ‘-- xM-BMC-Remedy_Incident_Management_5_1_2.pdf
+‘-- release-notes.txt
+
+
+
+------------
+INSTALLATION
+------------
+
+Review the installation instructions in the integration guide located in the 
+documentation folder of the extracted integration archive.
+
+
+-----------------
+TECHNICAL SUPPORT
+-----------------
+
+xMatters is committed to continuous improvement. Your constructive comments on 
+this xMatters integration will help us to correct problems and improve features. 
+Contact xMatters customer support with questions about xMatters or to arrange 
+for training or maintenance.
+
+Client Assistance:
+*	Email: support@xmatters.com
+*	International: +1 925.226.0300 and press 2
+*	US/CAN Toll Free: +1 877.XMATTRS (962.8877)
+*   EMEA: +44 (0) 20 3427 6333
+*   Australia/APJ Support: +61-2-8038-5048 opt 2
+
+xMatters:
+*   Web site:  http://www.xmatters.com
+*   Address:   xMatters, inc.
+               12647 Alcosta Blvd., #425
+               San Ramon, CA 94583
+			   
+
+			   
+END OF FILE

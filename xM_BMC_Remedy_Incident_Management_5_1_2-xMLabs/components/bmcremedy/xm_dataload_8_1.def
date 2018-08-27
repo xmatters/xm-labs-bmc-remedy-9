@@ -1,0 +1,1103 @@
+char-set: UTF-8
+#
+#  File exported Wed Jun 14 10:47:50 2017
+#
+begin schema
+   name           : XM:CTM_SupportGroupAssoc_join_People
+   core-version   : 2
+   upgrade-version: 0
+   num-fields     : 8
+   timestamp      : 1497461520
+   owner          : Demo
+   last-changed   : Demo
+   default-vui    : Default Administrator View__c
+   num-vuis       : 1
+   export-version : 12
+   schema-type    : 2
+      primary     : CTM:Support Group Association
+      secondary   : CTM:People
+      join-option : 0
+      join-query  : 4\1\99\1000000080\1\1\
+   next-field-id  : 536870912
+   permission     : 20004\2
+   object-prop    : 3\60048\4\0\\90015\2\4\90016\4\1\1\
+vui  {
+   id             : 536870912
+   name           : Default Administrator View__c
+   label          : Default Administrator View__c
+   timestamp      : 1497461519
+   vui-locale     : 
+   vui-type       : 1
+   owner          : Demo
+   last-changed   : Demo
+   display-prop   : 1\20\4\29\Default Administrator View__c\
+   object-prop    : 2\90016\4\1\1\90015\2\4\
+}
+field {
+   id             : 1
+   name           : Request ID
+   datatype       : 4
+   fieldtype      : 2
+      mapschema   : 0
+      mapfield    : 1
+   create-mode    : 2
+   option         : 3
+   timestamp      : 1497461519
+   owner          : Demo
+   last-changed   : Demo
+   length-units   : 0
+   maxlength      : 255
+   clob-store-opt : 0
+   menu-style     : 2
+   qbe-match-op   : 1
+   fulltext-optns : 0
+   permission     : 0\1
+   permission     : 3\1
+   permission     : 4\1
+ display-instance : 536870912\14\3\41\2\5286\2500\28120\4600\4\6\1\7\40\2147483640\20\4\10\Request ID\21\41\2\0\400\7086\2100\27\8\16\28\6\4\29\6\1\60\40\1\65\41\2\0\0\0\0\143\4&
+ display-instance : 0\4294967295\151\41\2\7649\0\22834\2100\170\40\0\231\6\1\
+   object-prop    : 2\90016\4\1\1\90015\2\4\
+}
+field {
+   id             : 4
+   name           : Login ID
+   datatype       : 4
+   fieldtype      : 2
+      mapschema   : 0
+      mapfield    : 4
+   create-mode    : 2
+   option         : 1
+   timestamp      : 1497461519
+   owner          : Demo
+   last-changed   : Demo
+   length-units   : 0
+   maxlength      : 254
+   clob-store-opt : 0
+   menu-style     : 1
+   qbe-match-op   : 2
+   fulltext-optns : 0
+   permission     : -20000\2
+   permission     : 0\1
+ display-instance : 536870912\19\3\41\2\42519\10700\67040\12800\4\6\1\5\6\2\7\40\2147483653\14\40\1\20\4\8\Login ID\21\41\2\0\400\5849\2100\27\8\16\60\40\1\66\41\2\22159\0\24521&
+ display-instance : \2100\143\40\4294967295\151\41\2\6411\0\21596\2100\170\40\0\231\6\0\288\6\0\289\4\4\0x00\290\4\4\0x00\310\6\0\5116\6\0\
+   object-prop    : 3\60063\2\0\90016\4\1\1\90015\2\4\
+}
+field {
+   id             : 7
+   name           : Status
+   datatype       : 6
+   fieldtype      : 2
+      mapschema   : 0
+      mapfield    : 7
+   create-mode    : 1
+   option         : 1
+   timestamp      : 1497461519
+   owner          : Demo
+   last-changed   : Demo
+   enum-value     : Proposed
+   enum-value     : Enabled
+   enum-value     : Offline
+   enum-value     : Obsolete
+   enum-value     : Archive
+   enum-value     : Delete
+   default        : 1
+   permission     : -20000\2
+   permission     : 0\1
+ display-instance : 536870912\19\3\41\2\41957\6700\55567\8800\4\6\1\5\6\2\7\40\2147483652\14\40\1\20\4\6\Status\21\41\2\0\400\4499\2100\27\8\16\60\40\1\64\6\0\143\40\4294967295\&
+ display-instance : 151\41\2\5061\0\13609\2100\170\40\0\230\4\62\6\0\Proposed\1\Enabled\2\Offline\3\Obsolete\4\Archive\5\Delete\231\6\0\288\6\0\289\4\4\0x00\290\4\4\0x00\31&
+ display-instance : 0\6\0\
+   object-prop    : 2\90016\4\1\1\90015\2\4\
+}
+field {
+   id             : 15
+   name           : Status-History
+   datatype       : 4
+   fieldtype      : 2
+      mapschema   : 0
+      mapfield    : 15
+   create-mode    : 1
+   option         : 3
+   timestamp      : 1497461519
+   owner          : Demo
+   last-changed   : Demo
+   permission     : -20000\2
+   permission     : 0\1
+   object-prop    : 2\90016\4\1\1\90015\2\4\
+}
+field {
+   id             : 1000000025
+   name           : Support Staff
+   datatype       : 6
+   fieldtype      : 2
+      mapschema   : 1
+      mapfield    : 1000000025
+   create-mode    : 1
+   option         : 1
+   fieldOption    : 1
+   timestamp      : 1497461519
+   owner          : Demo
+   last-changed   : Demo
+   enum-value     : Yes
+   enum-value     : No
+   default        : 1
+   permission     : -20033\2
+   permission     : -20026\2
+   permission     : -20025\2
+   permission     : -20024\2
+   permission     : 0\1
+   permission     : 4\2
+ display-instance : 536870912\21\3\41\2\3374\11900\18897\14000\4\6\1\5\6\1\7\40\2147483648\14\40\1\20\4\14\Support Staff*\21\41\2\0\400\9448\2100\27\8\16\60\40\1\64\6\0\90\6\1\9&
+ display-instance : 1\6\1\143\40\4294967295\151\41\2\10011\0\15522\2100\170\40\0\230\4\12\2\0\Yes\1\No\231\6\0\288\6\0\289\4\4\0x00\290\4\4\0x00\310\6\0\
+   object-prop    : 2\90016\4\1\1\90015\2\4\
+}
+field {
+   id             : 1000000079
+   name           : Support Group ID
+   datatype       : 4
+   fieldtype      : 2
+      mapschema   : 0
+      mapfield    : 1000000079
+   create-mode    : 2
+   option         : 1
+   timestamp      : 1497461519
+   owner          : Demo
+   last-changed   : Demo
+   length-units   : 0
+   maxlength      : 15
+   clob-store-opt : 0
+   menu-style     : 1
+   qbe-match-op   : 3
+   fulltext-optns : 0
+   permission     : -20000\2
+   permission     : 0\1
+ display-instance : 536870912\19\3\41\2\42294\2900\72552\5000\4\6\1\5\6\2\7\40\2147483651\14\40\1\20\4\16\Support Group ID\21\41\2\0\400\11586\2100\27\8\16\60\40\1\66\41\2\27896&
+ display-instance : \0\30258\2100\143\40\4294967295\151\41\2\12148\0\27333\2100\170\40\0\231\6\0\288\6\0\289\4\4\0x00\290\4\4\0x00\310\6\0\5116\6\0\
+   object-prop    : 3\60063\2\0\90016\4\1\1\90015\2\4\
+}
+field {
+   id             : 1000000346
+   name           : Assignment Availability
+   datatype       : 6
+   fieldtype      : 2
+      mapschema   : 0
+      mapfield    : 1000000346
+   create-mode    : 2
+   option         : 1
+   timestamp      : 1497461519
+   owner          : Demo
+   last-changed   : Demo
+   enum-value     : Yes
+   enum-value     : No
+   default        : 0
+   permission     : -20000\2
+   permission     : 0\1
+ display-instance : 536870912\19\3\41\2\3149\8800\26321\10600\4\6\1\5\6\2\7\40\2147483649\14\40\1\20\4\23\Assignment Availability\21\41\2\0\400\14960\1800\27\8\16\60\40\1\64\6\1&
+ display-instance : \143\40\4294967295\151\41\2\15523\400\23172\2200\170\40\0\230\4\12\2\0\Yes\1\No\231\6\0\288\6\0\289\4\4\0x00\290\4\4\0x00\310\6\0\
+   object-prop    : 2\90016\4\1\1\90015\2\4\
+}
+field {
+   id             : 1000000846
+   name           : Notification Availability
+   datatype       : 6
+   fieldtype      : 2
+      mapschema   : 1
+      mapfield    : 1000000846
+   create-mode    : 1
+   option         : 2
+   timestamp      : 1497461519
+   owner          : Demo
+   last-changed   : Demo
+   enum-value     : Yes
+   enum-value     : No
+   permission     : -20033\2
+   permission     : -20026\2
+   permission     : -20025\2
+   permission     : -20024\2
+   permission     : 0\1
+   permission     : 4\2
+ display-instance : 536870912\19\3\41\2\3037\16300\21259\18400\4\6\1\5\6\3\7\40\2147483650\14\40\1\20\4\25\Notification Availability\21\41\2\0\400\12148\2100\27\8\16\60\40\1\64\&
+ display-instance : 6\0\143\40\4294967295\151\41\2\12710\0\18221\2100\170\40\0\230\4\12\2\0\Yes\1\No\231\6\0\288\6\0\289\4\4\0x00\290\4\4\0x00\310\6\0\
+   object-prop    : 2\90016\4\1\1\90015\2\4\
+}
+end
+begin filter
+   name           : XM:EI:DataLoadInjection_150
+   timestamp      : 1497462378
+   owner          : Demo
+   last-changed   : Demo
+   filter-op      : 4
+   enable         : 1
+   filter-order   : 150
+   wk-conn-type   : 1
+   schema-name    : XM:Event Injection
+   export-version : 12
+   filter-query   : 2\2\4\7\99\536870913\2\4\4\PPL%\4\7\99\536870913\2\4\4\SGP%\1\4\1\99\536870913\2\0\4\1\99\536870916\2\6\3\
+   action {
+      set-field   : 0\536870915\101\2\1\
+   }
+   action {
+      set-field   : 0\8\108\20\ARSYS.ARF.WEBSERVICE\20\101\4\36\c4245525-eeff-460b-a51a-79820047329f\101\4\20\WebServiceSoapClient\101\4\4\call\101\4\39\([Ljava/lang/String;
+      set-field   : 0\)Ljava/lang/String;\101\4\55\C:\Users\Administrator\Desktop\apia_http_bmcremedy.wsdl\101\4\27\apia_http_bmcRemedyDataLoad\101\4\619\<?xml version="1.0"
+      set-field   : 0\ encoding="UTF-8"?><operation bindingStyle="document" name="triggerDataLoad"    soapActionURI="triggerDataLoad" type="create" useStyle="literal">   
+      set-field   : 0\ <arOptions>        <setOptions>            <type>setFirst</type>            <documentType>full</documentType>        </setOptions>    </arOptions
+      set-field   : 0\>    <inputMapping name="TriggerRequest"        namespace="http://www.xmatters.com/apia_http_bmcremedy/" topLevelElement="TriggerRequest"/>    <outp
+      set-field   : 0\utMapping name="TriggerResponse"        namespace="http://www.xmatters.com/apia_http_bmcremedy/" topLevelElement="TriggerResponse"/></operation>\101
+      set-field   : 0\\4\74\http://localhost:8081/http/bmcremedydataload-5-1-2_bmcremedydataload-5-1-2\101\4\44\http://www.xmatters.com/apia_http_bmcremedy/\101\4\1985\<?xml
+      set-field   : 0\ version="1.0" encoding="UTF-8"?><arDocMapping arDocVersion="11" externalSchema=""    generateXsiType="false" name="TriggerRequest" schemaSource="imp
+      set-field   : 0\orted">    <formMapping>        <form distinguishingKeyId="1" foreignKeyId="1"            formName="XM:Event Injection" primaryKeyId="1"/>        <
+      set-field   : 0\element all="false" dataType="ROOT" default="" maxOccurs="1"            minOccurs="1" name="ROOT" targetNamespace="http://www.xmatters.com/apia_http_b
+      set-field   : 0\mcremedy/">            <element dataType="string" default="" form="qualified"                maxOccurs="1" minOccurs="1" name="action"              
+      set-field   : 0\  nillable="false"                targetNamespace="http://www.xmatters.com/apia_http_bmcremedy/" xmlType="false">                <fieldMapping arFiel
+      set-field   : 0\dId="536870916" arFieldPart="" defaultAttachName=""/>            </element>            <element dataType="string" default="" form="qualified"       
+      set-field   : 0\         maxOccurs="1" minOccurs="1" name="id" nillable="false"                targetNamespace="http://www.xmatters.com/apia_http_bmcremedy/" xmlType=
+      set-field   : 0\"false">                <fieldMapping arFieldId="536870913" arFieldPart="" defaultAttachName=""/>            </element>            <element dataType
+      set-field   : 0\="string" default="" form="qualified"                maxOccurs="1" minOccurs="1" name="requestType"                nillable="false"                t
+      set-field   : 0\argetNamespace="http://www.xmatters.com/apia_http_bmcremedy/" xmlType="false">                <fieldMapping arFieldId="536870914" arFieldPart="" defau
+      set-field   : 0\ltAttachName=""/>            </element>            <element dataType="string" default="" form="qualified"                maxOccurs="1" minOccurs="1"
+      set-field   : 0\ name="additionalData"                nillable="false"                targetNamespace="http://www.xmatters.com/apia_http_bmcremedy/" xmlType="false">
+      set-field   : 0\                <fieldMapping arFieldId="536870917" arFieldPart="" defaultAttachName=""/>            </element>        </element>    </formMapping>
+      set-field   : 0\</arDocMapping>\101\4\1248\<?xml version="1.0" encoding="UTF-8"?><arDocMapping arDocVersion="11" externalSchema=""    generateXsiType="false" name=
+      set-field   : 0\"TriggerResponse" schemaSource="imported">    <formMapping>        <form distinguishingKeyId="1" foreignKeyId="1"            formName="XM:Event Inje
+      set-field   : 0\ction" primaryKeyId="1"/>        <element all="false" dataType="ROOT" default="" maxOccurs="1"            minOccurs="1" name="ROOT" targetNamespace="
+      set-field   : 0\http://www.xmatters.com/apia_http_bmcremedy/">            <element dataType="string" default="" form="qualified"                maxOccurs="1" minOccu
+      set-field   : 0\rs="1" name="status"                nillable="false"                targetNamespace="http://www.xmatters.com/apia_http_bmcremedy/" xmlType="false"> 
+      set-field   : 0\               <fieldMapping arFieldId="7" arFieldPart="" defaultAttachName=""/>            </element>            <element dataType="string" default=
+      set-field   : 0\"" form="qualified"                maxOccurs="1" minOccurs="1" name="description"                nillable="false"                targetNamespace="ht
+      set-field   : 0\tp://www.xmatters.com/apia_http_bmcremedy/" xmlType="false">                <fieldMapping arFieldId="8" arFieldPart="" defaultAttachName=""/>        
+      set-field   : 0\    </element>        </element>    </formMapping></arDocMapping>\101\4\31\apia_http_bmcRemedyDataLoadSOAP\101\0\101\0\101\0\101\0\101\0\101\0\101\
+      set-field   : 0\0\101\0\8\
+   }
+   object-prop    : 2\90015\2\4\90016\4\1\1\
+   errhandler-opt : 1
+   errhandler-name: XM:EI:EventInjectionError
+end
+begin filter
+   name           : XM:GroupMember_Add_900
+   timestamp      : 1497461520
+   owner          : Demo
+   last-changed   : Demo
+   filter-op      : 6
+   enable         : 1
+   filter-order   : 900
+   wk-conn-type   : 1
+   schema-name    : CTM:Support Group Association
+   export-version : 12
+   filter-query   : 1\4\6\99\1000000079\2\0\4\1\50\7\2\6\1\
+   action {
+      push-field  : 0\1\@\9\XM:Action\1\536870914\4\1\2\2\1\2\2\2\4\6\101\4\3\Add\
+      push-field  : 1\1\@\9\XM:Action\1\536870913\4\1\2\2\1\2\2\2\4\6\102\1\@\1\@\1\1000000079\0\1\4\
+      push-field  : 2\1\@\9\XM:Action\1\8\4\1\2\2\1\2\2\2\4\6\104\1\104\1\104\1\101\4\28\Sending request to Add user \102\1\@\1\@\1\4\0\1\4\101\4\10\ to group \102\1\@\1\@\1
+      push-field  : 2\\1000000079\0\1\4\
+   }
+   object-prop    : 3\90002\4\26\Remedy Foundation Elements\90015\2\4\90016\4\1\1\
+   errhandler-opt : 0
+end
+begin filter
+   name           : XM:GroupMember_Delete_900
+   timestamp      : 1497461520
+   owner          : Demo
+   last-changed   : Demo
+   filter-op      : 8
+   enable         : 1
+   filter-order   : 900
+   wk-conn-type   : 1
+   schema-name    : CTM:Support Group Association
+   export-version : 12
+   filter-query   : 4\6\99\1000000079\2\0\
+   action {
+      push-field  : 0\1\@\9\XM:Action\1\536870916\4\1\2\2\1\2\2\2\4\6\102\1\@\1\@\1\4\0\1\4\
+      push-field  : 1\1\@\9\XM:Action\1\536870915\4\1\2\2\1\2\2\2\4\6\101\4\17\deleteGroupMember\
+      push-field  : 2\1\@\9\XM:Action\1\536870914\4\1\2\2\1\2\2\2\4\6\101\4\6\Update\
+      push-field  : 3\1\@\9\XM:Action\1\536870913\4\1\2\2\1\2\2\2\4\6\102\1\@\1\@\1\1000000079\0\1\4\
+      push-field  : 4\1\@\9\XM:Action\1\8\4\1\2\2\1\2\2\2\4\6\104\1\104\1\104\1\104\1\101\4\31\Sending request to Delete user \102\1\@\1\@\1\4\0\1\4\101\4\12\ from group \10
+      push-field  : 4\2\1\@\1\@\1\1000000079\0\1\4\101\4\47\ via updating the current list of group members\
+   }
+   object-prop    : 3\90002\4\26\Remedy Foundation Elements\90015\2\4\90016\4\1\1\
+   errhandler-opt : 0
+end
+begin filter
+   name           : XM:GroupMember_Update_900
+   timestamp      : 1497461520
+   owner          : Demo
+   last-changed   : Demo
+   filter-op      : 2
+   enable         : 1
+   filter-order   : 900
+   wk-conn-type   : 1
+   schema-name    : CTM:Support Group Association
+   export-version : 12
+   filter-query   : 1\4\6\99\1000000079\2\0\4\1\50\1000000346\2\6\0\
+   action {
+      push-field  : 0\1\@\9\XM:Action\1\536870914\4\1\2\2\1\2\2\2\4\6\101\4\6\Update\
+      push-field  : 1\1\@\9\XM:Action\1\536870913\4\1\2\2\1\2\2\2\4\6\102\1\@\1\@\1\1000000079\0\1\4\
+      push-field  : 2\1\@\9\XM:Action\1\8\4\1\2\2\1\2\2\2\4\6\104\1\104\1\104\1\104\1\101\4\31\Sending request to Delete user \102\1\@\1\@\1\4\0\1\4\101\4\12\ from group \10
+      push-field  : 2\2\1\@\1\@\1\1000000079\0\1\4\101\4\47\ via updating the current list of group members\
+   }
+   object-prop    : 3\90002\4\26\Remedy Foundation Elements\90015\2\4\90016\4\1\1\
+   errhandler-opt : 0
+end
+begin filter
+   name           : XM:Group_Add_900
+   timestamp      : 1497461520
+   owner          : Demo
+   last-changed   : Demo
+   filter-op      : 4
+   enable         : 1
+   filter-order   : 900
+   wk-conn-type   : 1
+   schema-name    : CTM:Support Group
+   export-version : 12
+   action {
+      push-field  : 0\1\@\9\XM:Action\1\536870914\4\1\2\2\1\2\2\2\4\6\101\4\3\Add\
+      push-field  : 1\1\@\9\XM:Action\1\536870913\4\1\2\2\1\2\2\2\4\6\102\1\@\1\@\1\1\0\1\4\
+      push-field  : 2\1\@\9\XM:Action\1\8\4\1\2\2\1\2\2\2\4\6\104\1\104\1\101\4\29\Sending request to Add group \102\1\@\1\@\1\1000000015\0\1\4\101\4\12\ to xMatters\
+   }
+   object-prop    : 3\90002\4\26\Remedy Foundation Elements\90015\2\4\90016\4\1\1\
+   errhandler-opt : 0
+end
+begin filter
+   name           : XM:Group_Delete_900
+   timestamp      : 1497461520
+   owner          : Demo
+   last-changed   : Demo
+   filter-op      : 2
+   enable         : 1
+   filter-order   : 900
+   wk-conn-type   : 1
+   schema-name    : CTM:Support Group
+   export-version : 12
+   filter-query   : 4\1\50\7\2\6\5\
+   action {
+      push-field  : 0\1\@\9\XM:Action\1\536870914\4\1\2\2\1\2\2\2\4\6\101\4\6\Delete\
+      push-field  : 1\1\@\9\XM:Action\1\536870913\4\1\2\2\1\2\2\2\4\6\102\1\@\1\@\1\1\0\1\4\
+      push-field  : 2\1\@\9\XM:Action\1\8\4\1\2\2\1\2\2\2\4\6\104\1\104\1\101\4\32\Sending request to Delete group \102\1\@\1\@\1\1000000015\0\1\4\101\4\14\ from xMatters\
+   }
+   object-prop    : 3\90002\4\26\Remedy Foundation Elements\90015\2\4\90016\4\1\1\
+   errhandler-opt : 0
+end
+begin filter
+   name           : XM:Group_Update_900
+   timestamp      : 1497461520
+   owner          : Demo
+   last-changed   : Demo
+   filter-op      : 2
+   enable         : 1
+   filter-order   : 900
+   wk-conn-type   : 1
+   schema-name    : CTM:Support Group
+   export-version : 12
+   filter-query   : 4\4\99\7\2\6\5\
+   action {
+      push-field  : 0\1\@\9\XM:Action\1\536870914\4\1\2\2\1\2\2\2\4\6\101\4\6\Update\
+      push-field  : 1\1\@\9\XM:Action\1\536870913\4\1\2\2\1\2\2\2\4\6\102\1\@\1\@\1\1\0\1\4\
+      push-field  : 2\1\@\9\XM:Action\1\8\4\1\2\2\1\2\2\2\4\6\104\1\104\1\101\4\32\Sending request to Update group \102\1\@\1\@\1\1000000015\0\1\4\101\4\12\ in xMatters\
+   }
+   object-prop    : 3\90002\4\26\Remedy Foundation Elements\90015\2\4\90016\4\1\1\
+   errhandler-opt : 0
+end
+begin filter
+   name           : XM:Person_Add_750
+   timestamp      : 1497461520
+   owner          : Demo
+   last-changed   : Demo
+   filter-op      : 4
+   enable         : 1
+   filter-order   : 750
+   wk-conn-type   : 1
+   schema-name    : CTM:People
+   export-version : 12
+   action {
+      push-field  : 0\1\@\9\XM:Action\1\536870914\4\1\2\2\1\2\2\2\4\6\101\4\3\Add\
+      push-field  : 1\1\@\9\XM:Action\1\536870913\4\1\2\2\1\2\2\2\4\6\102\1\@\1\@\1\1\0\1\4\
+      push-field  : 2\1\@\9\XM:Action\1\8\4\1\2\2\1\2\2\2\4\6\104\1\104\1\101\4\28\Sending request to Add user \102\1\@\1\@\1\4\0\1\4\101\4\12\ to xMatters\
+   }
+   object-prop    : 3\90002\4\26\Remedy Foundation Elements\90015\2\4\90016\4\1\1\
+   errhandler-opt : 0
+end
+begin filter
+   name           : XM:Person_Delete_750
+   timestamp      : 1497461520
+   owner          : Demo
+   last-changed   : Demo
+   filter-op      : 2
+   enable         : 1
+   filter-order   : 750
+   wk-conn-type   : 1
+   schema-name    : CTM:People
+   export-version : 12
+   filter-query   : 4\1\99\7\2\6\5\
+   action {
+      push-field  : 0\1\@\9\XM:Action\1\536870914\4\1\2\2\1\2\2\2\4\6\101\4\6\Delete\
+      push-field  : 1\1\@\9\XM:Action\1\536870913\4\1\2\2\1\2\2\2\4\6\102\1\@\1\@\1\1\0\1\4\
+      push-field  : 2\1\@\9\XM:Action\1\8\4\1\2\2\1\2\2\2\4\6\104\1\104\1\101\4\31\Sending request to Delete user \102\1\@\1\@\1\4\0\1\4\101\4\14\ from xMatters\
+   }
+   object-prop    : 3\90002\4\26\Remedy Foundation Elements\90015\2\4\90016\4\1\1\
+   errhandler-opt : 0
+end
+begin filter
+   name           : XM:Person_Update_750
+   timestamp      : 1497461520
+   owner          : Demo
+   last-changed   : Demo
+   filter-op      : 2
+   enable         : 1
+   filter-order   : 750
+   wk-conn-type   : 1
+   schema-name    : CTM:People
+   export-version : 12
+   filter-query   : 4\4\99\7\2\6\5\
+   action {
+      push-field  : 0\1\@\9\XM:Action\1\536870914\4\1\2\2\1\2\2\2\4\6\101\4\6\Update\
+      push-field  : 1\1\@\9\XM:Action\1\536870913\4\1\2\2\1\2\2\2\4\6\102\1\@\1\@\1\1\0\1\4\
+      push-field  : 2\1\@\9\XM:Action\1\8\4\1\2\2\1\2\2\2\4\6\104\1\104\1\101\4\31\Sending request to Update user \102\1\@\1\@\1\4\0\1\4\101\4\12\ in xMatters\
+   }
+   object-prop    : 3\90002\4\26\Remedy Foundation Elements\90015\2\4\90016\4\1\1\
+   errhandler-opt : 0
+end
+begin escalation
+   name           : XM:DataLoad Injection Retry
+   timestamp      : 1497461520
+   owner          : Demo
+   last-changed   : Demo
+   enable         : 1
+   escl-tmType    : 1
+   export-version : 12
+   escl-interval  : 120
+   wk-conn-type   : 1
+   schema-name    : XM:Event Injection
+   wk-conn-type   : 1
+   escl-query     : 1\1\1\2\4\1\1\7\2\6\0\4\1\1\7\2\6\1\4\2\1\536870915\2\2\0\4\4\1\536870915\2\2\3\2\2\4\7\1\536870913\2\4\4\PPL%\4\7\1\536870913\2\4\4\SGP%\1\4\1\1\536870
+   escl-query     : 913\2\0\4\1\1\536870916\2\6\3\
+   action {
+      set-field   : 0\536870915\104\1\102\1\@\1\@\1\536870915\0\1\4\101\2\1\
+   }
+   action {
+      set-field   : 0\8\108\20\ARSYS.ARF.WEBSERVICE\20\101\4\36\c4245525-eeff-460b-a51a-79820047329f\101\4\20\WebServiceSoapClient\101\4\4\call\101\4\39\([Ljava/lang/String;
+      set-field   : 0\)Ljava/lang/String;\101\4\72\C:\Documents and Settings\Administrator\Desktop\apia_http_bmcremedy.wsdl\101\4\25\apia_http_bmcRemedyChange\101\4\619\<?xm
+      set-field   : 0\l version="1.0" encoding="UTF-8"?><operation bindingStyle="document" name="triggerDataLoad"    soapActionURI="triggerDataLoad" type="create" useStyle
+      set-field   : 0\="literal">    <arOptions>        <setOptions>            <type>setFirst</type>            <documentType>full</documentType>        </setOptions>
+      set-field   : 0\    </arOptions>    <inputMapping name="TriggerRequest"        namespace="http://www.xmatters.com/apia_http_bmcremedy/" topLevelElement="TriggerReque
+      set-field   : 0\st"/>    <outputMapping name="TriggerResponse"        namespace="http://www.xmatters.com/apia_http_bmcremedy/" topLevelElement="TriggerResponse"/></
+      set-field   : 0\operation>\101\4\62\http://localhost:8081/http/bmcremedydataload_bmcremedydataload\101\4\44\http://www.xmatters.com/apia_http_bmcremedy/\101\4\1371\<?
+      set-field   : 0\xml version="1.0" encoding="UTF-8"?><arDocMapping arDocVersion="11" externalSchema=""    generateXsiType="false" name="TriggerRequest" schemaSource="
+      set-field   : 0\imported">    <formMapping>        <form distinguishingKeyId="1" foreignKeyId="1"            formName="XM:Event Injection" primaryKeyId="1"/>      
+      set-field   : 0\  <element name="ROOT" targetNamespace="http://www.xmatters.com/apia_http_bmcremedy/">            <element dataType="string"                enumValue
+      set-field   : 0\s="Add,Update,Delete,Load" form="qualified"                maxOccurs="1" minOccurs="1" name="action" targetNamespace="http://www.xmatters.com/apia_htt
+      set-field   : 0\p_bmcremedy/">                <fieldMapping arFieldId="536870916" arFieldPart="" defaultAttachName=""/>            </element>            <element da
+      set-field   : 0\taType="string" form="qualified" maxOccurs="1"                minOccurs="1" name="id" targetNamespace="http://www.xmatters.com/apia_http_bmcremedy/">
+      set-field   : 0\                <fieldMapping arFieldId="536870913" arFieldPart="" defaultAttachName=""/>            </element>            <element dataType="string"
+      set-field   : 0\ form="qualified" maxOccurs="1"                minOccurs="1" name="requestType" targetNamespace="http://www.xmatters.com/apia_http_bmcremedy/">      
+      set-field   : 0\          <fieldMapping arFieldId="536870914" arFieldPart="" defaultAttachName=""/>            </element>        </element>    </formMapping></arDo
+      set-field   : 0\cMapping>\101\4\1065\<?xml version="1.0" encoding="UTF-8"?><arDocMapping arDocVersion="11" externalSchema=""    generateXsiType="false" name="Trigge
+      set-field   : 0\rResponse" schemaSource="imported">    <formMapping>        <form distinguishingKeyId="1" foreignKeyId="1"            formName="XM:Event Injection" 
+      set-field   : 0\primaryKeyId="1"/>        <element name="ROOT" targetNamespace="http://www.xmatters.com/apia_http_bmcremedy/">            <element dataType="string" 
+      set-field   : 0\enumValues="New,Error,Received"                form="qualified" maxOccurs="1" minOccurs="1"                name="status" targetNamespace="http://www.
+      set-field   : 0\xmatters.com/apia_http_bmcremedy/">                <fieldMapping arFieldId="7" arFieldPart="" defaultAttachName=""/>            </element>          
+      set-field   : 0\  <element dataType="string" form="qualified" maxOccurs="1"                minOccurs="1" name="description" targetNamespace="http://www.xmatters.com/a
+      set-field   : 0\pia_http_bmcremedy/">                <fieldMapping arFieldId="8" arFieldPart="" defaultAttachName=""/>            </element>        </element>    <
+      set-field   : 0\/formMapping></arDocMapping>\101\4\31\apia_http_bmcRemedyDataLoadSOAP\101\0\101\0\101\0\101\0\101\0\101\0\101\0\101\0\8\
+   }
+   object-prop    : 2\90015\2\4\90016\4\1\1\
+end
+begin container
+   name           : XM:DataLoad Packing List
+   type           : 3
+   num-references : 20
+   timestamp      : 1497461520
+   owner          : Demo
+   last-changed   : Demo
+   export-version : 12
+   label          : xMatters DataLoad Packing List
+   description    : This packing list includes xMatters objects required by the dataload module.  It depends on the objects in XM:Foundation Packing List.
+   object-prop    : 2\90015\2\4\90016\4\1\1\
+reference {
+   type           : 4
+   datatype       : 0
+   object         : XM:DataLoad Injection Retry
+}
+reference {
+   type           : 3
+   datatype       : 0
+   object         : XM:Group_Delete_900
+}
+reference {
+   type           : 3
+   datatype       : 0
+   object         : XM:EI:DataLoadInjection_150
+}
+reference {
+   type           : 3
+   datatype       : 0
+   object         : XM:Group_Add_900
+}
+reference {
+   type           : 3
+   datatype       : 0
+   object         : XM:GroupMember_Delete_900
+}
+reference {
+   type           : 3
+   datatype       : 0
+   object         : XM:Group_Update_900
+}
+reference {
+   type           : 3
+   datatype       : 0
+   object         : XM:Person_Delete_750
+}
+reference {
+   type           : 3
+   datatype       : 0
+   object         : XM:Person_Add_750
+}
+reference {
+   type           : 3
+   datatype       : 0
+   object         : XM:GroupMember_Add_900
+}
+reference {
+   type           : 3
+   datatype       : 0
+   object         : XM:GroupMember_Update_900
+}
+reference {
+   type           : 3
+   datatype       : 0
+   object         : XM:Person_Update_750
+}
+reference {
+   type           : 2
+   datatype       : 0
+   object         : XM:CTM_SupportGroupAssoc_join_People
+}
+reference {
+   type           : 32801
+   datatype       : 1
+   value          : 0\
+}
+reference {
+   type           : 6
+   datatype       : 0
+   object         : XM_CTM_People_WS
+}
+reference {
+   type           : 32801
+   datatype       : 1
+   value          : 0\
+}
+reference {
+   type           : 6
+   datatype       : 0
+   object         : XM_CTM_SupportGroupAssoc_join_People_WS
+}
+reference {
+   type           : 32801
+   datatype       : 1
+   value          : 0\
+}
+reference {
+   type           : 6
+   datatype       : 0
+   object         : XM_CTM_SupportGroupFunctionalRole_WS
+}
+reference {
+   type           : 32801
+   datatype       : 1
+   value          : 0\
+}
+reference {
+   type           : 6
+   datatype       : 0
+   object         : XM_CTM_Support_Group_Association_WS
+}
+end
+begin container
+   name           : XM_CTM_People_WS
+   type           : 5
+   num-references : 7
+   timestamp      : 1497461520
+   owner          : Demo
+   owning-obj     : 1\2\10\CTM:People\
+   last-changed   : Demo
+   export-version : 12
+   permission     : 0\1
+   description    : xMatters web service to expose CTM:People. This web service is meant to expose those fields that belong to CTM:People which can be used to create an xMa
+   description    : tters user.
+   object-prop    : 3\90002\4\26\Remedy Foundation Elements\90015\2\4\90016\4\1\1\
+reference {
+   type           : 32797
+   datatype       : 1
+   value          : 4\172\<?xml version="1.0"?><portProperties name="People"><portType name=""/><xmlSchemaSource name="embedded"/><externalSchema name=""/><portName name="
+   value          : People"/></portProperties>\
+   ref-groups     : 0
+}
+reference {
+   type           : 32798
+   datatype       : 1
+   value          : 4\580\<?xml version="1.0" encoding="UTF-8"?><operation maxLimit="XPATH(/ROOT/maxLimit)" name="PeopleList"    qualification="XPATH(/ROOT/Qualification)
+   value          : "    startRecord="XPATH(/ROOT/startRecord)" type="get">    <arOptions>        <setOptions>            <type>setFirst</type>            <documentTyp
+   value          : e>full</documentType>        </setOptions>    </arOptions>    <inputMapping name="InputMapping1" namespace="XM_CTM_People_WS" topLevelElement="People
+   value          : List"/>    <outputMapping name="OutputMapping1" namespace="XM_CTM_People_WS" topLevelElement="PeopleListResponse"/></operation>\
+   ref-groups     : 0
+}
+reference {
+   type           : 32828
+   datatype       : 1
+   value          : 4\0\\
+   ref-groups     : 0
+}
+reference {
+   type           : 32799
+   datatype       : 1
+   value          : 4\9991\<?xml version="1.0" encoding="UTF-8"?><arDocMapping arDocVersion="11" externalSchema=""    generateXsiType="false" name="OutputMapping1" schema
+   value          : Source="generated">    <element all="false" dataType="ROOT" default="" maxOccurs="1"        minOccurs="1" name="ROOT" targetNamespace="urn:XM_CTM_Peop
+   value          : le_WS">        <formMapping>            <form distinguishingKeyId="1" foreignKeyId="1"                formName="CTM:People" primaryKeyId="1"/>      
+   value          :       <element all="" dataType="" default="" maxOccurs="unbounded"                minOccurs="1" name="getListValues" nillable="false" xmlType="false">
+   value          :                 <element dataType="string" default="" maxOccurs="1"                    minOccurs="1" name="Remedy_Login_ID"                    nillabl
+   value          : e="false" xmlType="false">                    <fieldMapping arFieldId="4" arFieldPart="" defaultAttachName=""/>                </element>            
+   value          :     <element dataType="string" default="" maxOccurs="1"                    minOccurs="1" name="First_Name" nillable="false" xmlType="false">          
+   value          :           <fieldMapping arFieldId="1000000019" arFieldPart="" defaultAttachName=""/>                </element>                <element dataType="strin
+   value          : g" default="" maxOccurs="1"                    minOccurs="1" name="Last_Name" nillable="false" xmlType="false">                    <fieldMapping arFie
+   value          : ldId="1000000018" arFieldPart="" defaultAttachName=""/>                </element>                <element dataType="string" default=""               
+   value          :      enumValues="=== Operating Company Menu ===,Office-Based Employee,Field-Based Employee,Home-Based Employee,Contractor,======= Customer Menu =======,
+   value          : Customer,Prospect,======== Vendor Menu ========,Vendor"                    maxOccurs="1" minOccurs="1" name="Client_Type"                    nillable=
+   value          : "false" xmlType="false">                    <fieldMapping arFieldId="1000000022" arFieldPart="" defaultAttachName=""/>                </element>     
+   value          :            <element dataType="string" default=""                    enumValues="Proposed,Enabled,Offline,Obsolete,Archive,Delete"                    m
+   value          : axOccurs="1" minOccurs="1" name="Profile_Status"                    nillable="false" xmlType="false">                    <fieldMapping arFieldId="7" a
+   value          : rFieldPart="" defaultAttachName=""/>                </element>                <element dataType="string" default=""                    enumValues="Ye
+   value          : s,No" maxOccurs="1" minOccurs="1"                    name="Support_Staff" nillable="false" xmlType="false">                    <fieldMapping arFieldId
+   value          : ="1000000025" arFieldPart="" defaultAttachName=""/>                </element>                <element dataType="string" default=""                   
+   value          :  enumValues="Yes,No" maxOccurs="1" minOccurs="1"                    name="Assignment_Availability" nillable="false" xmlType="false">                  
+   value          :   <fieldMapping arFieldId="1000000346" arFieldPart="" defaultAttachName=""/>                </element>                <element dataType="string" defau
+   value          : lt="Time_Zone"                    maxOccurs="1" minOccurs="1" name="Time_Zone"                    nillable="false" xmlType="false">                  
+   value          :   <fieldMapping arFieldId="1000000541" arFieldPart="" defaultAttachName=""/>                </element>                <element dataType="string" defau
+   value          : lt="Internet E-Mail"                    maxOccurs="1" minOccurs="1" name="Internet_Email"                    nillable="false" xmlType="false">       
+   value          :              <fieldMapping arFieldId="1000000048" arFieldPart="" defaultAttachName=""/>                </element>                <element dataType="st
+   value          : ring" default="" maxOccurs="1"                    minOccurs="1" name="Corporate_Email"                    nillable="false" xmlType="false">          
+   value          :           <fieldMapping arFieldId="1000000049" arFieldPart="" defaultAttachName=""/>                </element>                <element all="" dataType
+   value          : ="" default=""                    maxOccurs="unbounded" minOccurs="1"                    name="Phone_Number_Mobile" nillable="false" xmlType="false">
+   value          :                     <element dataType="string" default="" maxOccurs="1"                        minOccurs="1" name="CC" nillable="false" xmlType="false"
+   value          : >                        <fieldMapping arFieldId="1000000040"                            arFieldPart="" defaultAttachName=""/>                    </e
+   value          : lement>                    <element dataType="string" default="" maxOccurs="1"                        minOccurs="1" name="Area" nillable="false" xmlTy
+   value          : pe="false">                        <fieldMapping arFieldId="1000000041"                            arFieldPart="" defaultAttachName=""/>             
+   value          :        </element>                    <element dataType="string" default="" maxOccurs="1"                        minOccurs="1" name="Local" nillable="f
+   value          : alse" xmlType="false">                        <fieldMapping arFieldId="1000000042"                            arFieldPart="" defaultAttachName=""/>  
+   value          :                   </element>                </element>                <element all="" dataType="" default=""                    maxOccurs="unbounded"
+   value          :  minOccurs="1"                    name="Phone_Number_Home" nillable="false" xmlType="false">                    <element dataType="string" default="" 
+   value          : maxOccurs="1"                        minOccurs="1" name="CC" nillable="false" xmlType="false">                        <fieldMapping arFieldId="1000000
+   value          : 043"                            arFieldPart="" defaultAttachName=""/>                    </element>                    <element dataType="string" def
+   value          : ault="" maxOccurs="1"                        minOccurs="1" name="Area" nillable="false" xmlType="false">                        <fieldMapping arFieldI
+   value          : d="1000000044"                            arFieldPart="" defaultAttachName=""/>                    </element>                    <element dataType="s
+   value          : tring" default="" maxOccurs="1"                        minOccurs="1" name="Local" nillable="false" xmlType="false">                        <fieldMappi
+   value          : ng arFieldId="1000000045"                            arFieldPart="" defaultAttachName=""/>                    </element>                </element>  
+   value          :               <element all="" dataType="" default=""                    maxOccurs="unbounded" minOccurs="1"                    name="Phone_Number_Page
+   value          : r" nillable="false" xmlType="false">                    <element dataType="string" default="" maxOccurs="1"                        minOccurs="1" name=
+   value          : "CC" nillable="false" xmlType="false">                        <fieldMapping arFieldId="1000000050"                            arFieldPart="" defaultAt
+   value          : tachName=""/>                    </element>                    <element dataType="string" default="" maxOccurs="1"                        minOccurs="
+   value          : 1" name="Area" nillable="false" xmlType="false">                        <fieldMapping arFieldId="1000000051"                            arFieldPart=""
+   value          :  defaultAttachName=""/>                    </element>                    <element dataType="string" default="" maxOccurs="1"                        m
+   value          : inOccurs="1" name="Local" nillable="false" xmlType="false">                        <fieldMapping arFieldId="1000000052"                            arF
+   value          : ieldPart="" defaultAttachName=""/>                    </element>                </element>                <element all="" dataType="" default=""    
+   value          :                 maxOccurs="unbounded" minOccurs="1" name="Phone_Number_Fax">                    <element dataType="string" default="" maxOccurs="1"   
+   value          :                      minOccurs="1" name="CC" nillable="false" xmlType="false">                        <fieldMapping arFieldId="1000000032"            
+   value          :                 arFieldPart="" defaultAttachName=""/>                    </element>                    <element dataType="string" default="" maxOccurs
+   value          : ="1"                        minOccurs="1" name="Area" nillable="false" xmlType="false">                        <fieldMapping arFieldId="1000000033"  
+   value          :                           arFieldPart="" defaultAttachName=""/>                    </element>                    <element dataType="string" default=""
+   value          :  maxOccurs="1"                        minOccurs="1" name="Local" nillable="false" xmlType="false">                        <fieldMapping arFieldId="100
+   value          : 0000034"                            arFieldPart="" defaultAttachName=""/>                    </element>                </element>                <el
+   value          : ement all="" dataType="" default=""                    maxOccurs="unbounded" minOccurs="1" name="Phone_Number_Business">                    <element d
+   value          : ataType="string" default="" maxOccurs="1"                        minOccurs="1" name="CC" nillable="false" xmlType="false">                        <fie
+   value          : ldMapping arFieldId="1000000028"                            arFieldPart="" defaultAttachName=""/>                    </element>                    <e
+   value          : lement dataType="string" default="" maxOccurs="1"                        minOccurs="1" name="Area" nillable="false" xmlType="false">                  
+   value          :       <fieldMapping arFieldId="1000000029"                            arFieldPart="" defaultAttachName=""/>                    </element>            
+   value          :         <element dataType="string" default="" maxOccurs="1"                        minOccurs="1" name="Local" nillable="false" xmlType="false">       
+   value          :                  <fieldMapping arFieldId="1000000030"                            arFieldPart="" defaultAttachName=""/>                    </element> 
+   value          :                    <element dataType="string" default="" maxOccurs="1"                        minOccurs="1" name="Extension" nillable="false" xmlType="
+   value          : false">                        <fieldMapping arFieldId="1000000031"                            arFieldPart="" defaultAttachName=""/>                 
+   value          :    </element>                </element>            </element>        </formMapping>    </element></arDocMapping>\
+   ref-groups     : 0
+}
+reference {
+   type           : 32799
+   datatype       : 1
+   value          : 4\754\<?xml version="1.0" encoding="UTF-8"?><arDocMapping arDocVersion="11" externalSchema=""    generateXsiType="false" name="InputMapping1" schemaSo
+   value          : urce="generated">    <element all="false" dataType="ROOT" default="" maxOccurs="1"        minOccurs="1" name="ROOT" targetNamespace="urn:XM_CTM_People
+   value          : _WS">        <element dataType="string" default="" maxOccurs="1"            minOccurs="1" name="Qualification" nillable="false" xmlType="false"/>    
+   value          :     <element dataType="string" default="" maxOccurs="1"            minOccurs="1" name="startRecord" nillable="false" xmlType="false"/>        <element
+   value          :  dataType="string" default="" maxOccurs="1"            minOccurs="1" name="maxLimit" nillable="false" xmlType="false"/>    </element></arDocMapping>
+   value          : \
+   ref-groups     : 0
+}
+reference {
+   type           : 32800
+   datatype       : 1
+   value          : 4\7357\<?xml version="1.0" encoding="UTF-8"?><wsdl:definitions targetNamespace="urn:XM_CTM_People_WS" xmlns:s0="urn:XM_CTM_People_WS" xmlns:soap="http
+   value          : ://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="ht
+   value          : tp://www.w3.org/2001/XMLSchema"> <wsdl:types>  <xsd:schema elementFormDefault="qualified" targetNamespace="urn:XM_CTM_People_WS">   <xsd:element n
+   value          : ame="PeopleList" type="s0:InputMapping1"/>   <xsd:complexType name="InputMapping1">    <xsd:sequence>     <xsd:element name="Qualification" type="
+   value          : xsd:string"/>     <xsd:element name="startRecord" type="xsd:string"/>     <xsd:element name="maxLimit" type="xsd:string"/>    </xsd:sequence>   
+   value          : </xsd:complexType>   <xsd:element name="PeopleListResponse" type="s0:OutputMapping1"/>   <xsd:complexType name="OutputMapping1">    <xsd:sequence>
+   value          :      <xsd:element maxOccurs="unbounded" name="getListValues">      <xsd:complexType>       <xsd:sequence>        <xsd:element name="Remedy_Login
+   value          : _ID" type="xsd:string"/>        <xsd:element name="First_Name" type="xsd:string"/>        <xsd:element name="Last_Name" type="xsd:string"/>       
+   value          :  <xsd:element name="Client_Type" type="s0:Client_TypeType"/>        <xsd:element name="Profile_Status" type="s0:Profile_StatusType"/>        <xsd:el
+   value          : ement name="Support_Staff" type="s0:Support_StaffType"/>        <xsd:element name="Assignment_Availability" type="s0:Support_StaffType"/>        <xs
+   value          : d:element name="Time_Zone" type="xsd:string"/>        <xsd:element name="Internet_Email" type="xsd:string"/>        <xsd:element name="Corporate_Ema
+   value          : il" type="xsd:string"/>        <xsd:element maxOccurs="unbounded" name="Phone_Number_Mobile">         <xsd:complexType>          <xsd:sequence> 
+   value          :           <xsd:element name="CC" type="xsd:string"/>           <xsd:element name="Area" type="xsd:string"/>           <xsd:element name="Local" type
+   value          : ="xsd:string"/>          </xsd:sequence>         </xsd:complexType>        </xsd:element>        <xsd:element maxOccurs="unbounded" name="Phone_
+   value          : Number_Home">         <xsd:complexType>          <xsd:sequence>           <xsd:element name="CC" type="xsd:string"/>           <xsd:element name
+   value          : ="Area" type="xsd:string"/>           <xsd:element name="Local" type="xsd:string"/>          </xsd:sequence>         </xsd:complexType>        <
+   value          : /xsd:element>        <xsd:element maxOccurs="unbounded" name="Phone_Number_Pager">         <xsd:complexType>          <xsd:sequence>           <
+   value          : xsd:element name="CC" type="xsd:string"/>           <xsd:element name="Area" type="xsd:string"/>           <xsd:element name="Local" type="xsd:strin
+   value          : g"/>          </xsd:sequence>         </xsd:complexType>        </xsd:element>        <xsd:element maxOccurs="unbounded" name="Phone_Number_Fax"
+   value          : >         <xsd:complexType>          <xsd:sequence>           <xsd:element name="CC" type="xsd:string"/>           <xsd:element name="Area" type
+   value          : ="xsd:string"/>           <xsd:element name="Local" type="xsd:string"/>          </xsd:sequence>         </xsd:complexType>        </xsd:element
+   value          : >        <xsd:element maxOccurs="unbounded" name="Phone_Number_Business">         <xsd:complexType>          <xsd:sequence>           <xsd:eleme
+   value          : nt name="CC" type="xsd:string"/>           <xsd:element name="Area" type="xsd:string"/>           <xsd:element name="Local" type="xsd:string"/>   
+   value          :         <xsd:element name="Extension" type="xsd:string"/>          </xsd:sequence>         </xsd:complexType>        </xsd:element>       </xsd:
+   value          : sequence>      </xsd:complexType>     </xsd:element>    </xsd:sequence>   </xsd:complexType>   <xsd:simpleType name="Client_TypeType">    <x
+   value          : sd:restriction base="xsd:string">     <xsd:enumeration value="=== Operating Company Menu ==="/>     <xsd:enumeration value="Office-Based Employee"/>
+   value          :      <xsd:enumeration value="Field-Based Employee"/>     <xsd:enumeration value="Home-Based Employee"/>     <xsd:enumeration value="Contractor"/>
+   value          :      <xsd:enumeration value="======= Customer Menu ======="/>     <xsd:enumeration value="Customer"/>     <xsd:enumeration value="Prospect"/>   
+   value          :   <xsd:enumeration value="======== Vendor Menu ========"/>     <xsd:enumeration value="Vendor"/>    </xsd:restriction>   </xsd:simpleType>   <xs
+   value          : d:simpleType name="Profile_StatusType">    <xsd:restriction base="xsd:string">     <xsd:enumeration value="Proposed"/>     <xsd:enumeration value=
+   value          : "Enabled"/>     <xsd:enumeration value="Offline"/>     <xsd:enumeration value="Obsolete"/>     <xsd:enumeration value="Archive"/>     <xsd:enume
+   value          : ration value="Delete"/>    </xsd:restriction>   </xsd:simpleType>   <xsd:simpleType name="Support_StaffType">    <xsd:restriction base="xsd:stri
+   value          : ng">     <xsd:enumeration value="Yes"/>     <xsd:enumeration value="No"/>    </xsd:restriction>   </xsd:simpleType>   <xsd:element name="Authe
+   value          : nticationInfo" type="s0:AuthenticationInfo"/>   <xsd:complexType name="AuthenticationInfo">    <xsd:sequence>     <xsd:element name="userName" typ
+   value          : e="xsd:string"/>     <xsd:element name="password" type="xsd:string"/>     <xsd:element minOccurs="0" name="authentication" type="xsd:string"/>    
+   value          :  <xsd:element minOccurs="0" name="locale" type="xsd:string"/>     <xsd:element minOccurs="0" name="timeZone" type="xsd:string"/>    </xsd:sequence>
+   value          :    </xsd:complexType>  </xsd:schema> </wsdl:types>   <wsdl:message name="ARAuthenticate">      <wsdl:part element="s0:AuthenticationInfo" na
+   value          : me="parameters">      </wsdl:part>   </wsdl:message>   <wsdl:message name="PeopleListSoapOut">      <wsdl:part element="s0:PeopleListRespons
+   value          : e" name="parameters">      </wsdl:part>   </wsdl:message>   <wsdl:message name="PeopleListSoapIn">      <wsdl:part element="s0:PeopleList" n
+   value          : ame="parameters">      </wsdl:part>   </wsdl:message>   <wsdl:portType name="PeoplePortType">      <wsdl:operation name="PeopleList">    
+   value          :      <wsdl:input message="s0:PeopleListSoapIn">       </wsdl:input>         <wsdl:output message="s0:PeopleListSoapOut">       </wsdl:output>
+   value          :       </wsdl:operation>   </wsdl:portType>   <wsdl:binding name="PeopleSoapBinding" type="s0:PeoplePortType">      <soap:binding style="docume
+   value          : nt" transport="http://schemas.xmlsoap.org/soap/http"/>      <wsdl:operation name="PeopleList">         <soap:operation soapAction="urn:XM_CTM_Peop
+   value          : le_WS/PeopleList" style="document"/>         <wsdl:input>            <soap:header message="s0:ARAuthenticate" part="parameters" use="literal"> 
+   value          :            </soap:header>            <soap:body use="literal"/>         </wsdl:input>         <wsdl:output>            <soap:body use="liter
+   value          : al"/>         </wsdl:output>      </wsdl:operation>   </wsdl:binding>   <wsdl:service name="XM_CTM_People_WSService">  <wsdl:documentatio
+   value          : n>xMatters web service to expose CTM:People. This web service is meant to expose those fields that belong to CTM:People which can be used to create an
+   value          :  xMatters user.  </wsdl:documentation>      <wsdl:port binding="s0:PeopleSoapBinding" name="PeopleSoap">         <soap:address location="@LOCATION
+   value          : @"/>      </wsdl:port>   </wsdl:service></wsdl:definitions>\
+   ref-groups     : 0
+}
+reference {
+   type           : 32802
+   datatype       : 1
+   value          : 4\71\http://<midtier_server>/arsys/WSDL/public/<servername>/XM_CTM_People_WS\
+   ref-groups     : 0
+}
+end
+begin container
+   name           : XM_CTM_SupportGroupAssoc_join_People_WS
+   type           : 5
+   num-references : 8
+   timestamp      : 1497461520
+   owner          : Demo
+   owning-obj     : 1\2\36\XM:CTM_SupportGroupAssoc_join_People\
+   last-changed   : Demo
+   export-version : 12
+   permission     : 0\1
+   description    : xMatters web service to expose XM:CTM_SupporGroupAssoc_join_People. This web service is meant to expose the Login ID of all members of the group specifi
+   description    : ed in the Qualification.  The Qualification can also be used to further limit which group members are returned.  The returned list of users should be in
+   description    : tended to be made members of the corresponding xMatters group.
+   object-prop    : 2\90015\2\4\90016\4\1\1\
+reference {
+   type           : 32797
+   datatype       : 1
+   value          : 4\182\<?xml version="1.0"?><portProperties name="GroupMember"><portType name=""/><xmlSchemaSource name="embedded"/><externalSchema name=""/><portName n
+   value          : ame="GroupMember"/></portProperties>\
+   ref-groups     : 0
+}
+reference {
+   type           : 32798
+   datatype       : 1
+   value          : 4\657\<?xml version="1.0" encoding="UTF-8"?><operation maxLimit="XPATH(/ROOT/maxLimit)" name="GroupMemberList"    qualification="XPATH(/ROOT/Qualifica
+   value          : tion)"    startRecord="XPATH(/ROOT/startRecord)" type="get">    <arOptions>        <setOptions>            <type>setFirst</type>            <docume
+   value          : ntType>full</documentType>        </setOptions>    </arOptions>    <inputMapping name="InputMapping1"        namespace="XM_CTM_SupportGroupAssoc_joi
+   value          : n_People_WS" topLevelElement="GroupMemberList"/>    <outputMapping name="OutputMapping1"        namespace="XM_CTM_SupportGroupAssoc_join_People_WS" to
+   value          : pLevelElement="GroupMemberListResponse"/></operation>\
+   ref-groups     : 0
+}
+reference {
+   type           : 32828
+   datatype       : 1
+   value          : 4\0\\
+   ref-groups     : 0
+}
+reference {
+   type           : 32843
+   datatype       : 1
+   value          : 0\
+   ref-groups     : 0
+}
+reference {
+   type           : 32799
+   datatype       : 1
+   value          : 4\959\<?xml version="1.0" encoding="UTF-8"?><arDocMapping arDocVersion="11" externalSchema=""    generateXsiType="false" name="OutputMapping1" schemaS
+   value          : ource="generated">    <element all="false" dataType="ROOT" default="" maxOccurs="1"        minOccurs="1" name="ROOT" targetNamespace="urn:XM_CTM_Suppo
+   value          : rtGroupAssoc_join_People_WS">        <formMapping>            <form distinguishingKeyId="1" foreignKeyId="1"                formName="XM:CTM_SupportG
+   value          : roupAssoc_join_People" primaryKeyId="1"/>            <element all="" dataType="" default="" maxOccurs="unbounded"                minOccurs="1" name="g
+   value          : etListValues">                <element dataType="string" default="" maxOccurs="1"                    minOccurs="1" name="Login_ID" nillable="false" xm
+   value          : lType="false">                    <fieldMapping arFieldId="4" arFieldPart="" defaultAttachName=""/>                </element>            </element> 
+   value          :        </formMapping>    </element></arDocMapping>\
+   ref-groups     : 0
+}
+reference {
+   type           : 32799
+   datatype       : 1
+   value          : 4\936\<?xml version="1.0" encoding="UTF-8"?><arDocMapping arDocVersion="11" externalSchema=""    generateXsiType="false" name="InputMapping1" schemaSo
+   value          : urce="generated">    <formMapping>        <form distinguishingKeyId="1" foreignKeyId="1" formName="" primaryKeyId="1"/>        <element all="false" d
+   value          : ataType="ROOT" default="" maxOccurs="1"            minOccurs="1" name="ROOT" targetNamespace="urn:XM_CTM_SupportGroupAssoc_join_People_WS">           
+   value          :  <element dataType="string" default="" maxOccurs="1"                minOccurs="1" name="Qualification" nillable="false" xmlType="false"/>            <
+   value          : element dataType="string" default="" maxOccurs="1"                minOccurs="1" name="startRecord" nillable="false" xmlType="false"/>            <elem
+   value          : ent dataType="string" default="" maxOccurs="1"                minOccurs="1" name="maxLimit" nillable="false" xmlType="false"/>        </element>    <
+   value          : /formMapping></arDocMapping>\
+   ref-groups     : 0
+}
+reference {
+   type           : 32800
+   datatype       : 1
+   value          : 4\3965\<?xml version="1.0" encoding="UTF-8"?><wsdl:definitions targetNamespace="urn:XM_CTM_SupportGroupAssoc_join_People_WS" xmlns:s0="urn:XM_CTM_Supp
+   value          : ortGroupAssoc_join_People_WS" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="h
+   value          : ttp://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"> <wsdl:types>  <xsd:schema elementFormDefault="qualified" targetNamesp
+   value          : ace="urn:XM_CTM_SupportGroupAssoc_join_People_WS">   <xsd:element name="GroupMemberList" type="s0:InputMapping1"/>   <xsd:complexType name="InputMap
+   value          : ping1">    <xsd:sequence>     <xsd:element name="Qualification" type="xsd:string"/>     <xsd:element name="startRecord" type="xsd:string"/>     
+   value          : <xsd:element name="maxLimit" type="xsd:string"/>    </xsd:sequence>   </xsd:complexType>   <xsd:element name="GroupMemberListResponse" type="s0:Ou
+   value          : tputMapping1"/>   <xsd:complexType name="OutputMapping1">    <xsd:sequence>     <xsd:element maxOccurs="unbounded" name="getListValues">      <x
+   value          : sd:complexType>       <xsd:sequence>        <xsd:element name="Login_ID" type="xsd:string"/>       </xsd:sequence>      </xsd:complexType>    
+   value          :  </xsd:element>    </xsd:sequence>   </xsd:complexType>   <xsd:element name="AuthenticationInfo" type="s0:AuthenticationInfo"/>   <xsd:complexTy
+   value          : pe name="AuthenticationInfo">    <xsd:sequence>     <xsd:element name="userName" type="xsd:string"/>     <xsd:element name="password" type="xsd:st
+   value          : ring"/>     <xsd:element minOccurs="0" name="authentication" type="xsd:string"/>     <xsd:element minOccurs="0" name="locale" type="xsd:string"/> 
+   value          :     <xsd:element minOccurs="0" name="timeZone" type="xsd:string"/>    </xsd:sequence>   </xsd:complexType>  </xsd:schema> </wsdl:types>   <ws
+   value          : dl:message name="GroupMemberListSoapOut">      <wsdl:part element="s0:GroupMemberListResponse" name="parameters">      </wsdl:part>   </wsdl:me
+   value          : ssage>   <wsdl:message name="GroupMemberListSoapIn">      <wsdl:part element="s0:GroupMemberList" name="parameters">      </wsdl:part>   </w
+   value          : sdl:message>   <wsdl:message name="ARAuthenticate">      <wsdl:part element="s0:AuthenticationInfo" name="parameters">      </wsdl:part>   <
+   value          : /wsdl:message>   <wsdl:portType name="GroupMemberPortType">      <wsdl:operation name="GroupMemberList">         <wsdl:input message="s0:GroupM
+   value          : emberListSoapIn">       </wsdl:input>         <wsdl:output message="s0:GroupMemberListSoapOut">       </wsdl:output>      </wsdl:operation>
+   value          :    </wsdl:portType>   <wsdl:binding name="GroupMemberSoapBinding" type="s0:GroupMemberPortType">      <soap:binding style="document" transport=
+   value          : "http://schemas.xmlsoap.org/soap/http"/>      <wsdl:operation name="GroupMemberList">         <soap:operation soapAction="urn:XM_CTM_SupportGroupA
+   value          : ssoc_join_People_WS/GroupMemberList" style="document"/>         <wsdl:input>            <soap:header message="s0:ARAuthenticate" part="parameters"
+   value          :  use="literal">            </soap:header>            <soap:body use="literal"/>         </wsdl:input>         <wsdl:output>            <s
+   value          : oap:body use="literal"/>         </wsdl:output>      </wsdl:operation>   </wsdl:binding>   <wsdl:service name="XM_CTM_SupportGroupAssoc_join
+   value          : _People_WSService">  <wsdl:documentation>xMatters web service to expose XM:CTM_SupporGroupAssoc_join_People. This web service is meant to expose th
+   value          : e Login ID of all members of the group specified in the Qualification.  The Qualification can also be used to further limit which group members are retu
+   value          : rned.  The returned list of users should be intended to be made members of the corresponding xMatters group.  </wsdl:documentation>      <wsdl:port b
+   value          : inding="s0:GroupMemberSoapBinding" name="GroupMemberSoap">         <soap:address location="@LOCATION@"/>      </wsdl:port>   </wsdl:service>
+   value          : </wsdl:definitions>\
+   ref-groups     : 0
+}
+reference {
+   type           : 32802
+   datatype       : 1
+   value          : 4\94\http://<midtier_server>/arsys/WSDL/public/<servername>/XM_CTM_SupportGroupAssoc_join_People_WS\
+   ref-groups     : 0
+}
+end
+begin container
+   name           : XM_CTM_SupportGroupFunctionalRole_WS
+   type           : 5
+   num-references : 7
+   timestamp      : 1497461520
+   owner          : Demo
+   owning-obj     : 1\2\30\CTM:SupportGroupFunctionalRole\
+   last-changed   : Demo
+   export-version : 12
+   permission     : 0\1
+   description    : xMatters web service to expose CTM:SupportGroupFunctionalRole. This web service is meant to expose those fields which can be used to obtain Support Grou
+   description    : p Functional Role data which can be mapped to xMatters roles.
+   object-prop    : 3\90002\4\26\Remedy Foundation Elements\90015\2\4\90016\4\1\1\
+reference {
+   type           : 32797
+   datatype       : 1
+   value          : 4\178\<?xml version="1.0"?><portProperties name="GroupRole"><portType name=""/><xmlSchemaSource name="embedded"/><externalSchema name=""/><portName nam
+   value          : e="GroupRole"/></portProperties>\
+   ref-groups     : 0
+}
+reference {
+   type           : 32798
+   datatype       : 1
+   value          : 4\645\<?xml version="1.0" encoding="UTF-8"?><operation maxLimit="XPATH(/ROOT/maxLimit)" name="GroupRoleList"    qualification="XPATH(/ROOT/Qualificati
+   value          : on)"    startRecord="XPATH(/ROOT/startRecord)" type="get">    <arOptions>        <setOptions>            <type>setFirst</type>            <document
+   value          : Type>full</documentType>        </setOptions>    </arOptions>    <inputMapping name="InputMapping1"        namespace="XM_CTM_SupportGroupFunctionalR
+   value          : ole_WS" topLevelElement="GroupRoleList"/>    <outputMapping name="OutputMapping1"        namespace="XM_CTM_SupportGroupFunctionalRole_WS" topLevelElem
+   value          : ent="GroupRoleListResponse"/></operation>\
+   ref-groups     : 0
+}
+reference {
+   type           : 32828
+   datatype       : 1
+   value          : 4\0\\
+   ref-groups     : 0
+}
+reference {
+   type           : 32799
+   datatype       : 1
+   value          : 4\2436\<?xml version="1.0" encoding="UTF-8"?><arDocMapping arDocVersion="11" externalSchema=""    generateXsiType="false" name="OutputMapping1" schema
+   value          : Source="generated">    <element all="false" dataType="ROOT" default="" maxOccurs="1"        minOccurs="1" name="ROOT" targetNamespace="urn:XM_CTM_Supp
+   value          : ortGroupFunctionalRole_WS">        <formMapping>            <form distinguishingKeyId="1" foreignKeyId="1"                formName="CTM:SupportGroupF
+   value          : unctionalRole" primaryKeyId="1"/>            <element all="" dataType="" default="" maxOccurs="unbounded"                minOccurs="1" name="getListVa
+   value          : lues">                <element dataType="string" default="" maxOccurs="1"                    minOccurs="1" name="Functional_Role"                    
+   value          : nillable="false" xmlType="false">                    <fieldMapping arFieldId="1000000171" arFieldPart="" defaultAttachName=""/>                </eleme
+   value          : nt>                <element dataType="string" default="" maxOccurs="1"                    minOccurs="1" name="Company" nillable="false" xmlType="false
+   value          : ">                    <fieldMapping arFieldId="1000000001" arFieldPart="" defaultAttachName=""/>                </element>                <element da
+   value          : taType="string" default="" maxOccurs="1"                    minOccurs="1" name="Support_Organization"                    nillable="false" xmlType="fal
+   value          : se">                    <fieldMapping arFieldId="1000000014" arFieldPart="" defaultAttachName=""/>                </element>                <element 
+   value          : dataType="string" default="" maxOccurs="1"                    minOccurs="1" name="Support_Group_Name"                    nillable="false" xmlType="fal
+   value          : se">                    <fieldMapping arFieldId="1000000015" arFieldPart="" defaultAttachName=""/>                </element>                <element 
+   value          : dataType="string" default="" maxOccurs="1"                    minOccurs="1" name="Login_ID" nillable="false" xmlType="false">                    <fiel
+   value          : dMapping arFieldId="4" arFieldPart="" defaultAttachName=""/>                </element>                <element dataType="string" default="" maxOccurs=
+   value          : "1"                    minOccurs="1" name="Support_Group_ID"                    nillable="false" xmlType="false">                    <fieldMapping ar
+   value          : FieldId="1000000079" arFieldPart="" defaultAttachName=""/>                </element>            </element>        </formMapping>    </element></arD
+   value          : ocMapping>\
+   ref-groups     : 0
+}
+reference {
+   type           : 32799
+   datatype       : 1
+   value          : 4\774\<?xml version="1.0" encoding="UTF-8"?><arDocMapping arDocVersion="11" externalSchema=""    generateXsiType="false" name="InputMapping1" schemaSo
+   value          : urce="generated">    <element all="false" dataType="ROOT" default="" maxOccurs="1"        minOccurs="1" name="ROOT" targetNamespace="urn:XM_CTM_Suppor
+   value          : tGroupFunctionalRole_WS">        <element dataType="string" default="" maxOccurs="1"            minOccurs="1" name="Qualification" nillable="false" xm
+   value          : lType="false"/>        <element dataType="string" default="" maxOccurs="1"            minOccurs="1" name="startRecord" nillable="false" xmlType="false
+   value          : "/>        <element dataType="string" default="" maxOccurs="1"            minOccurs="1" name="maxLimit" nillable="false" xmlType="false"/>    </eleme
+   value          : nt></arDocMapping>\
+   ref-groups     : 0
+}
+reference {
+   type           : 32800
+   datatype       : 1
+   value          : 4\4091\<?xml version="1.0" encoding="UTF-8"?><wsdl:definitions targetNamespace="urn:XM_CTM_SupportGroupFunctionalRole_WS" xmlns:s0="urn:XM_CTM_Support
+   value          : GroupFunctionalRole_WS" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://
+   value          : schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"> <wsdl:types>  <xsd:schema elementFormDefault="qualified" targetNamespace="u
+   value          : rn:XM_CTM_SupportGroupFunctionalRole_WS">   <xsd:element name="GroupRoleList" type="s0:InputMapping1"/>   <xsd:complexType name="InputMapping1">  
+   value          :   <xsd:sequence>     <xsd:element name="Qualification" type="xsd:string"/>     <xsd:element name="startRecord" type="xsd:string"/>     <xsd:elemen
+   value          : t name="maxLimit" type="xsd:string"/>    </xsd:sequence>   </xsd:complexType>   <xsd:element name="GroupRoleListResponse" type="s0:OutputMapping1"
+   value          : />   <xsd:complexType name="OutputMapping1">    <xsd:sequence>     <xsd:element maxOccurs="unbounded" name="getListValues">      <xsd:complexTyp
+   value          : e>       <xsd:sequence>        <xsd:element name="Functional_Role" type="xsd:string"/>        <xsd:element name="Company" type="xsd:string"/>   
+   value          :      <xsd:element name="Support_Organization" type="xsd:string"/>        <xsd:element name="Support_Group_Name" type="xsd:string"/>        <xsd:elem
+   value          : ent name="Login_ID" type="xsd:string"/>        <xsd:element name="Support_Group_ID" type="xsd:string"/>       </xsd:sequence>      </xsd:complexTy
+   value          : pe>     </xsd:element>    </xsd:sequence>   </xsd:complexType>   <xsd:element name="AuthenticationInfo" type="s0:AuthenticationInfo"/>   <xsd:
+   value          : complexType name="AuthenticationInfo">    <xsd:sequence>     <xsd:element name="userName" type="xsd:string"/>     <xsd:element name="password" typ
+   value          : e="xsd:string"/>     <xsd:element minOccurs="0" name="authentication" type="xsd:string"/>     <xsd:element minOccurs="0" name="locale" type="xsd:str
+   value          : ing"/>     <xsd:element minOccurs="0" name="timeZone" type="xsd:string"/>    </xsd:sequence>   </xsd:complexType>  </xsd:schema> </wsdl:types>
+   value          :    <wsdl:message name="ARAuthenticate">      <wsdl:part element="s0:AuthenticationInfo" name="parameters">      </wsdl:part>   </wsdl:messag
+   value          : e>   <wsdl:message name="GroupRoleListSoapOut">      <wsdl:part element="s0:GroupRoleListResponse" name="parameters">      </wsdl:part>   </
+   value          : wsdl:message>   <wsdl:message name="GroupRoleListSoapIn">      <wsdl:part element="s0:GroupRoleList" name="parameters">      </wsdl:part>   
+   value          : </wsdl:message>   <wsdl:portType name="GroupRolePortType">      <wsdl:operation name="GroupRoleList">         <wsdl:input message="s0:GroupRole
+   value          : ListSoapIn">       </wsdl:input>         <wsdl:output message="s0:GroupRoleListSoapOut">       </wsdl:output>      </wsdl:operation>   </
+   value          : wsdl:portType>   <wsdl:binding name="GroupRoleSoapBinding" type="s0:GroupRolePortType">      <soap:binding style="document" transport="http://sche
+   value          : mas.xmlsoap.org/soap/http"/>      <wsdl:operation name="GroupRoleList">         <soap:operation soapAction="urn:XM_CTM_SupportGroupFunctionalRole_
+   value          : WS/GroupRoleList" style="document"/>         <wsdl:input>            <soap:header message="s0:ARAuthenticate" part="parameters" use="literal"> 
+   value          :            </soap:header>            <soap:body use="literal"/>         </wsdl:input>         <wsdl:output>            <soap:body use="liter
+   value          : al"/>         </wsdl:output>      </wsdl:operation>   </wsdl:binding>   <wsdl:service name="XM_CTM_SupportGroupFunctionalRole_WSService">
+   value          :   <wsdl:documentation>xMatters web service to expose CTM:SupportGroupFunctionalRole. This web service is meant to expose those fields which can be use
+   value          : d to obtain Support Group Functional Role data which can be mapped to xMatters roles.  </wsdl:documentation>      <wsdl:port binding="s0:GroupRoleSoa
+   value          : pBinding" name="GroupRoleSoap">         <soap:address location="@LOCATION@"/>      </wsdl:port>   </wsdl:service></wsdl:definitions>\
+   ref-groups     : 0
+}
+reference {
+   type           : 32802
+   datatype       : 1
+   value          : 4\91\http://<midtier_server>/arsys/WSDL/public/<servername>/XM_CTM_SupportGroupFunctionalRole_WS\
+   ref-groups     : 0
+}
+end
+begin container
+   name           : XM_CTM_Support_Group_Association_WS
+   type           : 5
+   num-references : 7
+   timestamp      : 1497461520
+   owner          : Demo
+   owning-obj     : 1\2\29\CTM:Support Group Association\
+   last-changed   : Demo
+   export-version : 12
+   permission     : 0\1
+   description    : xMatters web service to expose CTM:Support Group Association. This web service is meant to expose the Login ID of all members of the group specified in 
+   description    : the Qualification.  The Qualification can also be used to further limit which group members are returned.  The returned list of users should be intended
+   description    :  to be made members of the corresponding xMatters group.
+   object-prop    : 3\90002\4\26\Remedy Foundation Elements\90015\2\4\90016\4\1\1\
+reference {
+   type           : 32797
+   datatype       : 1
+   value          : 4\182\<?xml version="1.0"?><portProperties name="GroupMember"><portType name=""/><xmlSchemaSource name="embedded"/><externalSchema name=""/><portName n
+   value          : ame="GroupMember"/></portProperties>\
+   ref-groups     : 0
+}
+reference {
+   type           : 32798
+   datatype       : 1
+   value          : 4\649\<?xml version="1.0" encoding="UTF-8"?><operation maxLimit="XPATH(/ROOT/maxLimit)" name="GroupMemberList"    qualification="XPATH(/ROOT/Qualifica
+   value          : tion)"    startRecord="XPATH(/ROOT/startRecord)" type="get">    <arOptions>        <setOptions>            <type>setFirst</type>            <docume
+   value          : ntType>full</documentType>        </setOptions>    </arOptions>    <inputMapping name="InputMapping1"        namespace="XM_CTM_Support_Group_Associa
+   value          : tion_WS" topLevelElement="GroupMemberList"/>    <outputMapping name="OutputMapping1"        namespace="XM_CTM_Support_Group_Association_WS" topLevelEl
+   value          : ement="GroupMemberListResponse"/></operation>\
+   ref-groups     : 0
+}
+reference {
+   type           : 32828
+   datatype       : 1
+   value          : 4\0\\
+   ref-groups     : 0
+}
+reference {
+   type           : 32799
+   datatype       : 1
+   value          : 4\976\<?xml version="1.0" encoding="UTF-8"?><arDocMapping arDocVersion="11" externalSchema=""    generateXsiType="false" name="OutputMapping1" schemaS
+   value          : ource="generated">    <element all="false" dataType="ROOT" default="" maxOccurs="1"        minOccurs="1" name="ROOT" targetNamespace="urn:XM_CTM_Suppo
+   value          : rt_Group_Association_WS">        <formMapping>            <form distinguishingKeyId="1" foreignKeyId="1"                formName="CTM:Support Group A
+   value          : ssociation" primaryKeyId="1"/>            <element all="" dataType="" default="" maxOccurs="unbounded"                minOccurs="1" name="getListValue
+   value          : s">                <element dataType="string" default="Login_ID"                    maxOccurs="1" minOccurs="1" name="Login_ID"                    ni
+   value          : llable="false" xmlType="false">                    <fieldMapping arFieldId="4" arFieldPart="" defaultAttachName=""/>                </element>       
+   value          :      </element>        </formMapping>    </element></arDocMapping>\
+   ref-groups     : 0
+}
+reference {
+   type           : 32799
+   datatype       : 1
+   value          : 4\773\<?xml version="1.0" encoding="UTF-8"?><arDocMapping arDocVersion="11" externalSchema=""    generateXsiType="false" name="InputMapping1" schemaSo
+   value          : urce="generated">    <element all="false" dataType="ROOT" default="" maxOccurs="1"        minOccurs="1" name="ROOT" targetNamespace="urn:XM_CTM_Suppor
+   value          : t_Group_Association_WS">        <element dataType="string" default="" maxOccurs="1"            minOccurs="1" name="Qualification" nillable="false" xml
+   value          : Type="false"/>        <element dataType="string" default="" maxOccurs="1"            minOccurs="1" name="startRecord" nillable="false" xmlType="false"
+   value          : />        <element dataType="string" default="" maxOccurs="1"            minOccurs="1" name="maxLimit" nillable="false" xmlType="false"/>    </elemen
+   value          : t></arDocMapping>\
+   ref-groups     : 0
+}
+reference {
+   type           : 32800
+   datatype       : 1
+   value          : 4\3939\<?xml version="1.0" encoding="UTF-8"?><wsdl:definitions targetNamespace="urn:XM_CTM_Support_Group_Association_WS" xmlns:s0="urn:XM_CTM_Support_
+   value          : Group_Association_WS" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://sc
+   value          : hemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"> <wsdl:types>  <xsd:schema elementFormDefault="qualified" targetNamespace="urn
+   value          : :XM_CTM_Support_Group_Association_WS">   <xsd:element name="GroupMemberList" type="s0:InputMapping1"/>   <xsd:complexType name="InputMapping1">   
+   value          :  <xsd:sequence>     <xsd:element name="Qualification" type="xsd:string"/>     <xsd:element name="startRecord" type="xsd:string"/>     <xsd:element
+   value          :  name="maxLimit" type="xsd:string"/>    </xsd:sequence>   </xsd:complexType>   <xsd:element name="GroupMemberListResponse" type="s0:OutputMapping1
+   value          : "/>   <xsd:complexType name="OutputMapping1">    <xsd:sequence>     <xsd:element maxOccurs="unbounded" name="getListValues">      <xsd:complexTy
+   value          : pe>       <xsd:sequence>        <xsd:element name="Login_ID" type="xsd:string"/>       </xsd:sequence>      </xsd:complexType>     </xsd:eleme
+   value          : nt>    </xsd:sequence>   </xsd:complexType>   <xsd:element name="AuthenticationInfo" type="s0:AuthenticationInfo"/>   <xsd:complexType name="Aut
+   value          : henticationInfo">    <xsd:sequence>     <xsd:element name="userName" type="xsd:string"/>     <xsd:element name="password" type="xsd:string"/>   
+   value          :   <xsd:element minOccurs="0" name="authentication" type="xsd:string"/>     <xsd:element minOccurs="0" name="locale" type="xsd:string"/>     <xsd:ele
+   value          : ment minOccurs="0" name="timeZone" type="xsd:string"/>    </xsd:sequence>   </xsd:complexType>  </xsd:schema> </wsdl:types>   <wsdl:message n
+   value          : ame="ARAuthenticate">      <wsdl:part element="s0:AuthenticationInfo" name="parameters">      </wsdl:part>   </wsdl:message>   <wsdl:message
+   value          :  name="GroupMemberListSoapOut">      <wsdl:part element="s0:GroupMemberListResponse" name="parameters">      </wsdl:part>   </wsdl:message> 
+   value          :   <wsdl:message name="GroupMemberListSoapIn">      <wsdl:part element="s0:GroupMemberList" name="parameters">      </wsdl:part>   </wsdl:messag
+   value          : e>   <wsdl:portType name="GroupMemberPortType">      <wsdl:operation name="GroupMemberList">         <wsdl:input message="s0:GroupMemberListSoa
+   value          : pIn">       </wsdl:input>         <wsdl:output message="s0:GroupMemberListSoapOut">       </wsdl:output>      </wsdl:operation>   </wsdl:
+   value          : portType>   <wsdl:binding name="GroupMemberSoapBinding" type="s0:GroupMemberPortType">      <soap:binding style="document" transport="http://schem
+   value          : as.xmlsoap.org/soap/http"/>      <wsdl:operation name="GroupMemberList">         <soap:operation soapAction="urn:XM_CTM_Support_Group_Association_
+   value          : WS/GroupMemberList" style="document"/>         <wsdl:input>            <soap:header message="s0:ARAuthenticate" part="parameters" use="literal">
+   value          :             </soap:header>            <soap:body use="literal"/>         </wsdl:input>         <wsdl:output>            <soap:body use="lit
+   value          : eral"/>         </wsdl:output>      </wsdl:operation>   </wsdl:binding>   <wsdl:service name="XM_CTM_Support_Group_Association_WSService">
+   value          :   <wsdl:documentation>xMatters web service to expose CTM:Support Group Association. This web service is meant to expose the Login ID of all members o
+   value          : f the group specified in the Qualification.  The Qualification can also be used to further limit which group members are returned.  The returned list of
+   value          :  users should be intended to be made members of the corresponding xMatters group.  </wsdl:documentation>      <wsdl:port binding="s0:GroupMemberSoapB
+   value          : inding" name="GroupMemberSoap">         <soap:address location="@LOCATION@"/>      </wsdl:port>   </wsdl:service></wsdl:definitions>\
+   ref-groups     : 0
+}
+reference {
+   type           : 32802
+   datatype       : 1
+   value          : 4\90\http://<midtier_server>/arsys/WSDL/public/<servername>/XM_CTM_Support_Group_Association_WS\
+   ref-groups     : 0
+}
+end

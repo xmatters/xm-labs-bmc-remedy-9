@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="urn:XM_CTM_Support_Group_WS" xmlns:s0="urn:XM_CTM_Support_Group_WS" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified" targetNamespace="urn:XM_CTM_Support_Group_WS">
+      <xsd:element name="GroupList" type="s0:InputMapping1"/>
+      <xsd:complexType name="InputMapping1">
+        <xsd:sequence>
+          <xsd:element name="Qualification" type="xsd:string"/>
+          <xsd:element name="startRecord" type="xsd:string"/>
+          <xsd:element name="maxLimit" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="GroupListResponse" type="s0:OutputMapping1"/>
+      <xsd:complexType name="OutputMapping1">
+        <xsd:sequence>
+          <xsd:element maxOccurs="unbounded" name="getListValues">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element minOccurs="0" name="Support_Group_ID" type="xsd:string"/>
+                <xsd:element name="Company" type="xsd:string"/>
+                <xsd:element name="Support_Organization" type="xsd:string"/>
+                <xsd:element name="Support_Group_Name" type="xsd:string"/>
+                <xsd:element minOccurs="0" name="Description" type="xsd:string"/>
+                <xsd:element name="Status" type="s0:StatusType"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="StatusType">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="Proposed"/>
+          <xsd:enumeration value="Enabled"/>
+          <xsd:enumeration value="Offline"/>
+          <xsd:enumeration value="Obsolete"/>
+          <xsd:enumeration value="Archive"/>
+          <xsd:enumeration value="Delete"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:element name="AuthenticationInfo" type="s0:AuthenticationInfo"/>
+      <xsd:complexType name="AuthenticationInfo">
+        <xsd:sequence>
+          <xsd:element name="userName" type="xsd:string"/>
+          <xsd:element name="password" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="authentication" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="locale" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="timeZone" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="GroupListSoapIn">
+    <wsdl:part element="s0:GroupList" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="ARAuthenticate">
+    <wsdl:part element="s0:AuthenticationInfo" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GroupListSoapOut">
+    <wsdl:part element="s0:GroupListResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="GroupPortType">
+    <wsdl:operation name="GroupList">
+      <wsdl:input message="s0:GroupListSoapIn"></wsdl:input>
+      <wsdl:output message="s0:GroupListSoapOut"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="GroupSoapBinding" type="s0:GroupPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GroupList">
+      <soap:operation soapAction="urn:XM_CTM_Support_Group_WS/GroupList" style="document"/>
+      <wsdl:input>
+        <soap:header message="s0:ARAuthenticate" part="parameters" use="literal"></soap:header>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="XM_CTM_Support_Group_WSService">
+    <wsdl:port binding="s0:GroupSoapBinding" name="GroupSoap">
+      <soap:address location="http://192.168.170.163:8080/arsys/services/ARService?server=vic-vm-r7604-02&amp;webService=XM_CTM_Support_Group_WS"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
