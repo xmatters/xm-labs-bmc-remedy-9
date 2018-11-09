@@ -5,6 +5,8 @@ Information about the incident or change request will be presented to the messag
 
 This is an experimental integration as our workshop engineers in the great white north have not validated it works for Remedy 9. It has been field tested however, and it should work. If any issues are encountered, open an issue [here](https://github.com/xmatters/xm-labs-bmc-remedy-9/issues) and we'll get it looked at. 
 
+**Note** This integration has been superceeded by [this](https://github.com/xmatters/xm-labs-remedy-9-rest-on-prem) integration. The new one uses the REST API, but note that the Data Sync has not been ported over yet. If data sync is needed, use this one. 
+
 ---------
 
 <kbd>
