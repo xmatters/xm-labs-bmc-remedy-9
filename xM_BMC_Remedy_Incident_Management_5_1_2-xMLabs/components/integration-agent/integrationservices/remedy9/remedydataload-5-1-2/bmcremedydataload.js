@@ -164,7 +164,7 @@ function queueConsumer()
                 successList = new ArrayList();
                 warningList = new ArrayList();
                 reprocessedList = new ArrayList();
-                
+
                 var queueItem = queue.take();
                 processDataLoadRequest(queueItem);
 
@@ -259,6 +259,7 @@ function processDataLoadRequest(requestObject)
     log.debug("Exit - processDataLoadRequest");
 }
 
+
 /**
  * ---------------------------------------------------------------------------------------------------------------------
  * logSyncResults
@@ -277,7 +278,7 @@ function logSyncResults(syncRequest)
     var successCount = successList.size();
     var warningCount = warningList.size();
     var failCount = failedList.size();
-
+	var notes = [];
 
     var msg = "Synchronization Summary\n\n";
     msg += "Action: " + syncAction + "\n";
@@ -293,36 +294,45 @@ function logSyncResults(syncRequest)
         if (successList.size() > 0)
         {
             log.debug("Synchronization Success Summary:");
+			notes.push("Synchronization Success Summary:");
             for (var i = 0; i < successList.size(); i++)
             {
+                notes.push(successList.get(i));
                 log.debug(successList.get(i));
             }
+			notes.push("");
         }
     }
 
     if (warningList.size() > 0)
     {
         log.warn("Synchronization Success with Warnings Summary:");
+        notes.push("Synchronization Success with Warnings Summary:");
         for (var i = 0; i < warningList.size(); i++)
         {
+            notes.push(warningList.get(i));
             log.warn(warningList.get(i));
         }
+		notes.push("");
     }
 
     if (failedList.size() > 0)
     {
         log.warn("Synchronization Failure Summary:");
+        notes.push("Synchronization Failure Summary:");
         for (var i = 0; i < failedList.size(); i++)
         {
+            notes.push(failedList.get(i));
             log.warn(failedList.get(i));
         }
+		notes.push("");
     }
 
     if ((SEND_SYNC_SUMMARY && (syncRequest.action == ACTION_LOAD))
         || (warningList.size() > 0)
         || (failedList.size() > 0))
     {
-        sendSyncSummaryMessage(syncAction, totalCount, successCount, warningCount, failCount);
+        sendSyncSummaryMessage(syncAction, totalCount, successCount, warningCount, failCount, notes);
     }
 
     log.debug("Exit - logSyncResults");
@@ -337,16 +347,17 @@ function logSyncResults(syncRequest)
  * @param msg String containing the message to send
  * ---------------------------------------------------------------------------------------------------------------------
  */
-function sendSyncSummaryMessage(syncAction, totalCount, successCount, warningCount, failCount)
+function sendSyncSummaryMessage(syncAction, totalCount, successCount, warningCount, failCount, notesArray)
 {
     log.debug("Enter - sendSyncSummaryMessage");
 
+	/*
     var apxml = ServiceAPI.createAPXML();
 
     apxml.setMethod("ADD");
     apxml.setSubclass("action");
     apxml.setToken("recipients", XMATTERS_ADMINISTRATOR);
- 
+
     apxml.setToken("action", syncAction);
 
     // use toString() on the numeric count values to avoid them being formatted as floating point when they get to xMatters
@@ -372,9 +383,40 @@ function sendSyncSummaryMessage(syncAction, totalCount, successCount, warningCou
     {
         log.error("Caught exception processing [sync summary] Exception:" + e);
     }
+	*/
+
+	// Create payload
+    var notes = "For further information, please refer to the Integration Agent log file";
+	if (notesArray !== undefined && notesArray && notesArray.length > 0) {
+		notes += "\n\n" + notesArray.join("\n");
+	}
+	var payload = {};
+	payload.action = syncAction;
+	payload.companyName = XMATTERS_COMPANY_NAME;
+	payload.environment = ENVIRONMENT;
+	payload.errorCount = failCount;
+	payload.hasErrors = (failCount > 0);
+	payload.hasWarnings = (warningCount > 0);
+	payload.notes = notes;
+	payload.recipients = XMATTERS_ADMINISTRATOR;
+	payload.successCount = successCount;
+	payload.totalCount = totalCount;
+	payload.warningCount = warningCount;
+
+    try
+    {
+        log.debug("About to send Sync Summary Payload to xMatters: " + JSON.stringify(payload));
+		XMIO.post(JSON.stringify(payload));
+        log.debug("Finished sending Sync Summary to xMatters");
+    }
+    catch (e)
+    {
+        log.error("Caught exception processing [sync summary] Exception:" + e);
+    }
 
     log.debug("Exit - sendSyncSummaryMessage");
 }
+
 
 
 /**
@@ -497,11 +539,11 @@ function handleSend(apxml)
 
 /**
  * ---------------------------------------------------------------------------------------------------------------------
- * This is a placeholder function to handle callbacks from apia requests. Called from 
+ * This is a placeholder function to handle callbacks from apia requests. Called from
  * ---------------------------------------------------------------------------------------------------------------------
  */
 function apia_callback(msg) {
-    log.info( "In apia - callback" );  
+    log.info( "In apia - callback" );
     var debugMsg = "Received message from xMatters:";
     debugMsg += "\nIncident: " + msg.incident_id;
     debugMsg += "\nEvent ID: " + msg.eventidentifier;

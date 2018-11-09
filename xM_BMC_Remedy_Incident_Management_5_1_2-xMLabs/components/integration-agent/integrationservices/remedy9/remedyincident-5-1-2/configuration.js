@@ -3,10 +3,10 @@
 // ----------------------------------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------------------------------
-// This value determines the form that will be used to inject events into xMatters if no form parameter 
+// This value determines the form that will be used to inject events into xMatters if no form parameter
 // is present in the request. The retrieve or terminate event requests are also based on this URL
 // ----------------------------------------------------------------------------------------------------
-var WEB_SERVICE_URL = "<Access Web Service URL of New Incident Alerts form>";
+var WEB_SERVICE_URL = "<Inbound Integration Builder URL of New Incident Alerts>";
 
 //----------------------------------------------------------------------------------------------------
 // Access Web Service URLs of "BMC Remedy ITSM - Incident" relevance engine forms used to inject events
@@ -15,7 +15,7 @@ var WEB_SERVICE_URL = "<Access Web Service URL of New Incident Alerts form>";
 //----------------------------------------------------------------------------------------------------
 
 var FORMS = {
-  'Incident Priority Upgrade Alerts' : "", 
+  'Incident Priority Upgrade Alerts' : "",
                'New Incident Alerts' : "",
           'Reopened Incident Alerts' : "",
         'Reassigned Incident Alerts' : "",
@@ -26,13 +26,13 @@ var FORMS = {
 // The Web Login ID used to authenticate the request to xMatters. The user's password should be encrypted
 // using the iapassword.sh utility. Please see the integration agent documentation for instructions.
 //----------------------------------------------------------------------------------------------------
-var INITIATOR = "remedyincident"; 
+var INITIATOR = "remedyincident";
 var INITIATOR_PASSWORD_FILE = "conf/.initiatorpasswd";
 
 //----------------------------------------------------------------------------------------------------
 // The User ID of the user used to authenticate the request to xMatters. Default value is "Remedy"
 //----------------------------------------------------------------------------------------------------
-var INITIATOR_USER_ID = "Remedy"; 
+var INITIATOR_USER_ID = "Remedy";
 
 //----------------------------------------------------------------------------------------------------
 // Name of the filter from conf/deduplicator-filter.xml to be used to detect duplicate events
@@ -52,7 +52,7 @@ var ANNOTATE_DELIVERY = true;
 //----------------------------------------------------------------------------------------------------
 // Web Service credentials
 //
-// Credentials for accessing the XM_CTM_xxx Web service will be stored in 
+// Credentials for accessing the XM_CTM_xxx Web service will be stored in
 // a separate password file created using iapassword.bat
 //----------------------------------------------------------------------------------------------------
 var REMEDY_WS_USERNAME = "xmatters";
@@ -61,7 +61,7 @@ var REMEDY_WS_PASSWORD_FILE = "conf/xm_hpd_ws.pwd"; // "conf/.passwd";
 var PROTOCOL = "http";
 var MID_TIER_HOSTNAME = "localhost"; // usually 'localhost'
 var MID_TIER_PORT = "8080";
-var REMEDY_SERVER_NAME = "vic-vw-remedy8";  
+var REMEDY_SERVER_NAME = "vic-vw-remedy8";
 
 var XM_HPD_HELPDESK_WS_URL = PROTOCOL + "://" + MID_TIER_HOSTNAME + ":" + MID_TIER_PORT + "/arsys/services/ARService?server=" + REMEDY_SERVER_NAME + "&webService=XM_HPD_HelpDesk_WS";
 var XM_HPD_INCIDENT_WS_URL = PROTOCOL + "://" + MID_TIER_HOSTNAME + ":" + MID_TIER_PORT + "/arsys/services/ARService?server=" + REMEDY_SERVER_NAME + "&webService=XM_HPD_IncidentInterface_WS";
@@ -81,7 +81,7 @@ var HOST_HEADER = MID_TIER_HOSTNAME;
 RESPONSE_OPTIONS_WHEN_ASSIGNED_TO_USER = {
 
   // Out of the box, only Accept and Resolve response options are available when incident is assigned to the user
-  
+
   'Incident Priority Upgrade Alerts' : [ '<Access Response Identifier>', '<Resolve Response Identifier>' ],
                'New Incident Alerts' : [ '<Access Response Identifier>', '<Resolve Response Identifier>' ],
           'Reopened Incident Alerts' : [ '<Access Response Identifier>', '<Resolve Response Identifier>' ],
@@ -92,7 +92,7 @@ RESPONSE_OPTIONS_WHEN_ASSIGNED_TO_USER = {
 //----------------------------------------------------------------------------------------------------
 // Response options when incident is assigned to the group.
 //
-// Format : '<Form parameter value passed from Remedy filter>' : [ '<Response Identifier>', ... ] 
+// Format : '<Form parameter value passed from Remedy filter>' : [ '<Response Identifier>', ... ]
 //----------------------------------------------------------------------------------------------------
 
 RESPONSE_OPTIONS_WHEN_ASSIGNED_TO_GROUP = {

@@ -2,6 +2,26 @@
 // Main Configuration settings for BMC Remedy Data Load
 // =====================================================================================================================
 
+// ----------------------------------------------------------------------------------------------------
+// Identifies the Remedy source environment
+// ----------------------------------------------------------------------------------------------------
+var ENVIRONMENT = "DEV";
+
+// ----------------------------------------------------------------------------------------------------
+// This value determines the form that will be used to inject data load results into xMatters
+// ----------------------------------------------------------------------------------------------------
+var WEB_SERVICE_URL = "https://libertymutual-np.hosted.xmatters.com/api/integration/1/functions/b004f875-f0a5-4da0-84a4-95d7e9b81916/triggers?apiKey=2a7b37d3-8cd0-40da-8552-bf131f8a3768";
+//----------------------------------------------------------------------------------------------------
+// The Web Login ID used to authenticate the request to xMatters. The user's password should be encrypted
+// using the iapassword.sh utility. Please see the integration agent documentation for instructions.
+//----------------------------------------------------------------------------------------------------
+var INITIATOR = “xm_remedydataload";
+var INITIATOR_PASSWORD_FILE = "conf/xmremedydataload.pwd";
+
+//----------------------------------------------------------------------------------------------------
+// The User ID of the user used to authenticate the request to xMatters. Default value is "Remedy"
+//----------------------------------------------------------------------------------------------------
+var INITIATOR_USER_ID = INITIATOR;
 
 // ---------------------------------------------------------------------------------------------------------------------
 // Web Service credentials
@@ -118,7 +138,7 @@ var XMATTERS_ADMINISTRATOR = "companyadmin";
 // The mapping should be defined using the Functional Role from remedy as the KEY to the roleMap entry and an Array of
 // associated xMatters roles as the value (one or more). The format should be as follows:
 //
-// roleMap["Functional Role"] = ["xMatters Role1", "xMatters Role2", "xMatters Role3"]; 
+// roleMap["Functional Role"] = ["xMatters Role1", "xMatters Role2", "xMatters Role3"];
 //
 // This data is not used unless MAP_REMEDY_USER_ROLES above is true.
 // ---------------------------------------------------------------------------------------------------------------------
