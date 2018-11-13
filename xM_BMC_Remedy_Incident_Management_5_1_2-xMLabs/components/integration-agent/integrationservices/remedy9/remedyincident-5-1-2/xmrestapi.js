@@ -49,7 +49,7 @@ XMRESTAPI = {};
 
     IALOG.debug("XM REST API: getEvents for " + eventFilter);
 
-    var parameters = eventFilter;
+    var parameters = getEventFilterAsString(eventFilter);
     IALOG.debug("Parameters " + parameters);
     var url = BASE_URL + XM_API_URL + "events?" + parameters;
 
