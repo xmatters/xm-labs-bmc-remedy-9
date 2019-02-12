@@ -8,6 +8,13 @@
 // ----------------------------------------------------------------------------------------------------
 var WEB_SERVICE_URL = "<Inbound Integration Builder URL of New Incident Alerts>";
 
+// ----------------------------------------------------------------------------------------------------
+// REST Web Service Detail
+// ----------------------------------------------------------------------------------------------------
+
+var BASE_URL ="https://<company-name>.xmatters.com";
+var XM_API_URL = "/api/xm/1/";
+
 //----------------------------------------------------------------------------------------------------
 // Access Web Service URLs of "BMC Remedy ITSM - Incident" relevance engine forms used to inject events
 //
