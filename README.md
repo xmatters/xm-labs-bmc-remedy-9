@@ -17,7 +17,7 @@ This is an experimental integration as our workshop engineers in the great white
 
 
 # Pre-Requisites
-* BMC Remedy ITSM 8.1 - 9.1 **On Premise**
+* BMC Remedy ITSM version 8.1 - 9.1 **On Premise**
 * xMatters account - If you don't have one, [get one](https://www.xmatters.com)!
 * xMatters Integration Agent 5.8.1 - Downloads and install docs are [here](https://support.xmatters.com/hc/en-us/articles/201463419-Integration-Agent-for-xMatters-5-x-xMatters-On-Demand)
 
