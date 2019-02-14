@@ -14,16 +14,16 @@ importClass(Packages.org.apache.commons.httpclient.Header);
 importClass(Packages.org.apache.commons.httpclient.HttpVersion);
 importClass(Packages.org.mule.providers.http.HttpResponse);
 
-var PRODUCT_VERSION_NUMBER = "81";
+var PRODUCT_VERSION_NUMBER = "9";
 var INTEGRATION_VERSION_NUMBER = "-5-1-2";
 
 // Core Javascript files provided by the IA
 load("integrationservices/remedy" + PRODUCT_VERSION_NUMBER + "/lib/javascript/core/baseclass.js");
 load("integrationservices/remedy" + PRODUCT_VERSION_NUMBER + "/lib/javascript/core/logger.js");
 load("integrationservices/remedy" + PRODUCT_VERSION_NUMBER + "/lib/javascript/core/util.js");
-load("integrationservices/remedy" + PRODUCT_VERSION_NUMBER + "/lib/javascript/webservices/wsutil.js"); 
+load("integrationservices/remedy" + PRODUCT_VERSION_NUMBER + "/lib/javascript/webservices/wsutil.js");
 load("integrationservices/remedy" + PRODUCT_VERSION_NUMBER + "/lib/javascript/webservices/soapfault.js");
-load("integrationservices/remedy" + PRODUCT_VERSION_NUMBER + "/lib/javascript/xmatters/xmattersws.js"); 
+load("integrationservices/remedy" + PRODUCT_VERSION_NUMBER + "/lib/javascript/xmatters/xmattersws.js");
 
 // REB support
 load("lib/integrationservices/javascript/event.js");
