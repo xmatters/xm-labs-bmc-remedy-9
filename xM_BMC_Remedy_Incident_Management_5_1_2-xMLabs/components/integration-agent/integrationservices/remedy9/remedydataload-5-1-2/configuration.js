@@ -10,7 +10,7 @@ var ENVIRONMENT = "DEV";
 // ----------------------------------------------------------------------------------------------------
 // This value determines the form that will be used to inject data load results into xMatters
 // ----------------------------------------------------------------------------------------------------
-var WEB_SERVICE_URL = "https://<instance>.xmatters.com/api/integration/1/functions/b004f875-f0a5-4da0-84a4-95d7e9b81916/triggers?apiKey=2a7b37d3-8cd0-40da-8552-bf131f8a3768";
+var WEB_SERVICE_URL = "https://<URL>";
 //----------------------------------------------------------------------------------------------------
 // The Web Login ID used to authenticate the request to xMatters. The user's password should be encrypted
 // using the iapassword.sh utility. Please see the integration agent documentation for instructions.
