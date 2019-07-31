@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project name="XM_CTM_SupportGroupFunctionalRole_WS" resourceRoot="" soapui-version="4.0.1" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="GroupRoleSoapBinding" type="wsdl" bindingName="{urn:XM_CTM_SupportGroupFunctionalRole_WS}GroupRoleSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://192.168.170.202/arsys/WSDL/public/vic-vm-em-rmdy/XM_CTM_SupportGroupFunctionalRole_WS" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://192.168.170.202/arsys/WSDL/public/vic-vm-em-rmdy/XM_CTM_SupportGroupFunctionalRole_WS"><con:part><con:url>http://192.168.170.202/arsys/WSDL/public/vic-vm-em-rmdy/XM_CTM_SupportGroupFunctionalRole_WS</con:url><con:content><![CDATA[<wsdl:definitions targetNamespace="urn:XM_CTM_SupportGroupFunctionalRole_WS" xmlns:s0="urn:XM_CTM_SupportGroupFunctionalRole_WS" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified" targetNamespace="urn:XM_CTM_SupportGroupFunctionalRole_WS">
+      <xsd:element name="GroupRoleList" type="s0:InputMapping1"/>
+      <xsd:complexType name="InputMapping1">
+        <xsd:sequence>
+          <xsd:element name="Qualification" type="xsd:string"/>
+          <xsd:element name="startRecord" type="xsd:string"/>
+          <xsd:element name="maxLimit" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="GroupRoleListResponse" type="s0:OutputMapping1"/>
+      <xsd:complexType name="OutputMapping1">
+        <xsd:sequence>
+          <xsd:element maxOccurs="unbounded" name="getListValues">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="Functional_Role" type="xsd:string"/>
+                <xsd:element name="Company" type="xsd:string"/>
+                <xsd:element name="Support_Organization" type="xsd:string"/>
+                <xsd:element name="Support_Group_Name" type="xsd:string"/>
+                <xsd:element name="Login_ID" type="xsd:string"/>
+                <xsd:element name="Support_Group_ID" type="xsd:string"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="AuthenticationInfo" type="s0:AuthenticationInfo"/>
+      <xsd:complexType name="AuthenticationInfo">
+        <xsd:sequence>
+          <xsd:element name="userName" type="xsd:string"/>
+          <xsd:element name="password" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="authentication" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="locale" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="timeZone" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ARAuthenticate">
+    <wsdl:part element="s0:AuthenticationInfo" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GroupRoleListSoapOut">
+    <wsdl:part element="s0:GroupRoleListResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GroupRoleListSoapIn">
+    <wsdl:part element="s0:GroupRoleList" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="GroupRolePortType">
+    <wsdl:operation name="GroupRoleList">
+      <wsdl:input message="s0:GroupRoleListSoapIn"></wsdl:input>
+      <wsdl:output message="s0:GroupRoleListSoapOut"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="GroupRoleSoapBinding" type="s0:GroupRolePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GroupRoleList">
+      <soap:operation soapAction="urn:XM_CTM_SupportGroupFunctionalRole_WS/GroupRoleList" style="document"/>
+      <wsdl:input>
+        <soap:header message="s0:ARAuthenticate" part="parameters" use="literal"></soap:header>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="XM_CTM_SupportGroupFunctionalRole_WSService">
+    <wsdl:port binding="s0:GroupRoleSoapBinding" name="GroupRoleSoap">
+      <soap:address location="http://192.168.170.202/arsys/services/ARService?server=vic-vm-em-rmdy&amp;webService=XM_CTM_SupportGroupFunctionalRole_WS"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://192.168.170.202/arsys/services/ARService?server=vic-vm-em-rmdy&amp;webService=XM_CTM_SupportGroupFunctionalRole_WS</con:endpoint><con:endpoint>http://vic-emanero:8088/http/bmcremedy40_bmcremedydataload40</con:endpoint></con:endpoints><con:operation isOneWay="false" action="urn:XM_CTM_SupportGroupFunctionalRole_WS/GroupRoleList" name="GroupRoleList" bindingOperationName="GroupRoleList" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Example GroupRoleList Request"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.170.202/arsys/services/ARService?server=vic-vm-em-rmdy&amp;webService=XM_CTM_SupportGroupFunctionalRole_WS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:XM_CTM_SupportGroupFunctionalRole_WS">
+   <soapenv:Header>
+      <urn:AuthenticationInfo>
+         <urn:userName>Demo</urn:userName>
+         <urn:password></urn:password>
+      </urn:AuthenticationInfo>
+   </soapenv:Header>
+   <soapenv:Body>
+      <urn:GroupRoleList>
+         <urn:Qualification>'Login ID' = "Allen" AND 'Status' = "Enabled" AND 'Assignment Availability' = "Yes"</urn:Qualification>
+         <urn:startRecord></urn:startRecord>
+         <urn:maxLimit></urn:maxLimit>
+      </urn:GroupRoleList>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:XM_CTM_SupportGroupFunctionalRole_WS/GroupRolePortType/GroupRoleListRequest"/><con:wsrmConfig version="1.2"/></con:call><con:call name="GetGroupRoleList"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.170.202/arsys/services/ARService?server=vic-vm-em-rmdy&amp;webService=XM_CTM_SupportGroupFunctionalRole_WS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:XM_CTM_SupportGroupFunctionalRole_WS">
+   <soapenv:Header>
+      <urn:AuthenticationInfo>
+         <urn:userName>${userName}</urn:userName>
+         <urn:password>${password}</urn:password>
+      </urn:AuthenticationInfo>
+   </soapenv:Header>
+   <soapenv:Body>
+      <urn:GroupRoleList>
+         <urn:Qualification>${qualification}</urn:Qualification>
+         <urn:startRecord></urn:startRecord>
+         <urn:maxLimit></urn:maxLimit>
+      </urn:GroupRoleList>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:XM_CTM_SupportGroupFunctionalRole_WS/GroupRoleList"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:mockService port="8088" path="/http/bmcremedy40_bmcremedydataload40" host="vic-emanero" name="GroupRoleSoapBinding MockService"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.mock.WsdlMockService@require-soap-action">false</con:setting></con:settings><con:mockOperation name="GroupRoleList" interface="GroupRoleSoapBinding" operation="GroupRoleList"><con:settings/><con:dispatchStyle>SEQUENCE</con:dispatchStyle><con:defaultResponse>Response 1</con:defaultResponse><con:response name="Response 1" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:XM_CTM_SupportGroupFunctionalRole_WS">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <urn:GroupRoleListResponse>
+         <!--1 or more repetitions:-->
+         <urn:getListValues>
+            <urn:Functional_Role>?</urn:Functional_Role>
+            <urn:Company>?</urn:Company>
+            <urn:Support_Organization>?</urn:Support_Organization>
+            <urn:Support_Group_Name>?</urn:Support_Group_Name>
+            <urn:Login_ID>?</urn:Login_ID>
+            <urn:Support_Group_ID>?</urn:Support_Group_ID>
+         </urn:getListValues>
+      </urn:GroupRoleListResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:XM_CTM_SupportGroupFunctionalRole_WS/GroupRolePortType/GroupRoleListResponse"/></con:response><con:dispatchConfig/></con:mockOperation><con:properties/></con:mockService><con:properties/><con:wssContainer/></con:soapui-project>

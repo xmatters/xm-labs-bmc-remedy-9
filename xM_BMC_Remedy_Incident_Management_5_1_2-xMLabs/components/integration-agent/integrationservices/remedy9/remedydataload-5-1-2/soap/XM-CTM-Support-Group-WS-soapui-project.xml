@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project name="XM_CTM_Support_Group_WS" resourceRoot="" soapui-version="4.0.1" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="GroupSoapBinding" type="wsdl" bindingName="{urn:XM_CTM_Support_Group_WS}GroupSoapBinding" soapVersion="1_1" anonymous="optional" definition="file:/opt/alarmpointsystems/integrationagent/integrationservices/bmcremedydataload40/soap/XM-CTM-Support-Group-WS.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/opt/alarmpointsystems/integrationagent/integrationservices/bmcremedydataload40/soap/XM-CTM-Support-Group-WS.wsdl"><con:part><con:url>file:/opt/alarmpointsystems/integrationagent/integrationservices/bmcremedydataload40/soap/XM-CTM-Support-Group-WS.wsdl</con:url><con:content><![CDATA[<wsdl:definitions targetNamespace="urn:XM_CTM_Support_Group_WS" xmlns:s0="urn:XM_CTM_Support_Group_WS" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified" targetNamespace="urn:XM_CTM_Support_Group_WS">
+      <xsd:element name="GroupList" type="s0:InputMapping1"/>
+      <xsd:complexType name="InputMapping1">
+        <xsd:sequence>
+          <xsd:element name="Qualification" type="xsd:string"/>
+          <xsd:element name="startRecord" type="xsd:string"/>
+          <xsd:element name="maxLimit" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="GroupListResponse" type="s0:OutputMapping1"/>
+      <xsd:complexType name="OutputMapping1">
+        <xsd:sequence>
+          <xsd:element maxOccurs="unbounded" name="getListValues">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element minOccurs="0" name="Support_Group_ID" type="xsd:string"/>
+                <xsd:element name="Company" type="xsd:string"/>
+                <xsd:element name="Support_Organization" type="xsd:string"/>
+                <xsd:element name="Support_Group_Name" type="xsd:string"/>
+                <xsd:element minOccurs="0" name="Description" type="xsd:string"/>
+                <xsd:element name="Status" type="s0:StatusType"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="StatusType">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="Proposed"/>
+          <xsd:enumeration value="Enabled"/>
+          <xsd:enumeration value="Offline"/>
+          <xsd:enumeration value="Obsolete"/>
+          <xsd:enumeration value="Archive"/>
+          <xsd:enumeration value="Delete"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:element name="AuthenticationInfo" type="s0:AuthenticationInfo"/>
+      <xsd:complexType name="AuthenticationInfo">
+        <xsd:sequence>
+          <xsd:element name="userName" type="xsd:string"/>
+          <xsd:element name="password" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="authentication" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="locale" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="timeZone" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="GroupListSoapIn">
+    <wsdl:part element="s0:GroupList" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="ARAuthenticate">
+    <wsdl:part element="s0:AuthenticationInfo" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="GroupListSoapOut">
+    <wsdl:part element="s0:GroupListResponse" name="parameters"/>
+  </wsdl:message>
+  <wsdl:portType name="GroupPortType">
+    <wsdl:operation name="GroupList">
+      <wsdl:input message="s0:GroupListSoapIn"/>
+      <wsdl:output message="s0:GroupListSoapOut"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="GroupSoapBinding" type="s0:GroupPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GroupList">
+      <soap:operation soapAction="urn:XM_CTM_Support_Group_WS/GroupList" style="document"/>
+      <wsdl:input>
+        <soap:header message="s0:ARAuthenticate" part="parameters" use="literal"/>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="XM_CTM_Support_Group_WSService">
+    <wsdl:port binding="s0:GroupSoapBinding" name="GroupSoap">
+      <soap:address location="http://192.168.170.163:8080/arsys/services/ARService?server=vic-vm-r7604-02&amp;webService=XM_CTM_Support_Group_WS"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://192.168.170.163:8080/arsys/services/ARService?server=vic-vm-r7604-02&amp;webService=XM_CTM_Support_Group_WS</con:endpoint></con:endpoints><con:operation isOneWay="false" action="urn:XM_CTM_Support_Group_WS/GroupList" name="GroupList" bindingOperationName="GroupList" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Example Request"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.170.163:8080/arsys/services/ARService?server=vic-vm-r7604-02&amp;webService=XM_CTM_Support_Group_WS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:XM_CTM_Support_Group_WS">
+   <soapenv:Header>
+      <urn:AuthenticationInfo>
+         <urn:userName>Demo</urn:userName>
+         <urn:password></urn:password>
+         <!--Optional:-->
+         <urn:authentication>?</urn:authentication>
+         <!--Optional:-->
+         <urn:locale></urn:locale>
+         <!--Optional:-->
+         <urn:timeZone>?</urn:timeZone>
+      </urn:AuthenticationInfo>
+   </soapenv:Header>
+   <soapenv:Body>
+      <urn:GroupList>
+         <urn:Qualification></urn:Qualification>
+         <urn:startRecord></urn:startRecord>
+         <urn:maxLimit></urn:maxLimit>
+      </urn:GroupList>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:XM_CTM_Support_Group_WS/GroupList"/><con:wsrmConfig version="1.2"/></con:call><con:call name="GetGroupList"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.170.163:8080/arsys/services/ARService?server=vic-vm-r7604-02&amp;webService=XM_CTM_Support_Group_WS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:XM_CTM_Support_Group_WS">
+   <soapenv:Header>
+      <urn:AuthenticationInfo>
+         <urn:userName>${userName}</urn:userName>
+         <urn:password>${password}</urn:password>
+         <!--Optional:-->
+         <urn:authentication></urn:authentication>
+         <!--Optional:-->
+         <urn:locale></urn:locale>
+         <!--Optional:-->
+         <urn:timeZone></urn:timeZone>
+      </urn:AuthenticationInfo>
+   </soapenv:Header>
+   <soapenv:Body>
+      <urn:GroupList>
+         <urn:Qualification>${qualification}</urn:Qualification>
+         <urn:startRecord>${startRecord}</urn:startRecord>
+         <urn:maxLimit>${maxLimit}</urn:maxLimit>
+      </urn:GroupList>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:XM_CTM_Support_Group_WS/GroupList"/><con:wsrmConfig version="1.2"/></con:call><con:call name="Request 3"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.170.163:8080/arsys/services/ARService?server=vic-vm-r7604-02&amp;webService=XM_CTM_Support_Group_WS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://www.alarmpoint.com/webservices/schema">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <sch:UpdateDevice>
+         <sch:user>IA_User</sch:user>
+         <sch:password>ia_complex</sch:password>
+         <sch:clientTimestamp/>
+         <sch:clientIP/>
+         <sch:clientOSUser/>
+         <sch:company>Default Company</sch:company>
+         <sch:deviceIdentifier>200126</sch:deviceIdentifier>
+         <sch:device>
+            <sch:emailDevice>
+               <sch:active>true</sch:active>
+               <sch:default>false</sch:default>
+               <sch:delay>0</sch:delay>
+               <sch:externallyOwned>false</sch:externallyOwned>
+               <sch:name>Home Email</sch:name>
+               <sch:priorityThreshold>LOW</sch:priorityThreshold>
+               <sch:userServiceProvider>
+                  <sch:identifier>1</sch:identifier>
+                  <sch:name>SMTP Email</sch:name>
+               </sch:userServiceProvider>
+               <sch:address>none@calbroservices.com</sch:address>
+            </sch:emailDevice>
+         </sch:device>
+      </sch:UpdateDevice>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:XM_CTM_Support_Group_WS/GroupList"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/></con:soapui-project>

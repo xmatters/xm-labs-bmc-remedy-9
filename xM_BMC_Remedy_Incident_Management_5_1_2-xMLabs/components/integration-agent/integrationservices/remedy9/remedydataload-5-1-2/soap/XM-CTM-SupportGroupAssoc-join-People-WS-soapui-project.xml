@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project name="XM_CTM_SupportGroupAssoc_join_People_WS" resourceRoot="" soapui-version="4.0.1" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="GroupMemberSoapBinding" type="wsdl" bindingName="{urn:XM_CTM_SupportGroupAssoc_join_People_WS}GroupMemberSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://192.168.170.163:8080/arsys/WSDL/public/vic-vm-r7604-02/XM_CTM_SupportGroupAssoc_join_People_WS" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://192.168.170.163:8080/arsys/WSDL/public/vic-vm-r7604-02/XM_CTM_SupportGroupAssoc_join_People_WS"><con:part><con:url>http://192.168.170.163:8080/arsys/WSDL/public/vic-vm-r7604-02/XM_CTM_SupportGroupAssoc_join_People_WS</con:url><con:content><![CDATA[<wsdl:definitions targetNamespace="urn:XM_CTM_SupportGroupAssoc_join_People_WS" xmlns:s0="urn:XM_CTM_SupportGroupAssoc_join_People_WS" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified" targetNamespace="urn:XM_CTM_SupportGroupAssoc_join_People_WS">
+      <xsd:element name="GroupMemberList" type="s0:InputMapping1"/>
+      <xsd:complexType name="InputMapping1">
+        <xsd:sequence>
+          <xsd:element name="Qualification" type="xsd:string"/>
+          <xsd:element name="startRecord" type="xsd:string"/>
+          <xsd:element name="maxLimit" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="GroupMemberListResponse" type="s0:OutputMapping1"/>
+      <xsd:complexType name="OutputMapping1">
+        <xsd:sequence>
+          <xsd:element maxOccurs="unbounded" name="getListValues">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="Login_ID" type="xsd:string"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="AuthenticationInfo" type="s0:AuthenticationInfo"/>
+      <xsd:complexType name="AuthenticationInfo">
+        <xsd:sequence>
+          <xsd:element name="userName" type="xsd:string"/>
+          <xsd:element name="password" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="authentication" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="locale" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="timeZone" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ARAuthenticate">
+    <wsdl:part element="s0:AuthenticationInfo" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GroupMemberListSoapIn">
+    <wsdl:part element="s0:GroupMemberList" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GroupMemberListSoapOut">
+    <wsdl:part element="s0:GroupMemberListResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="GroupMemberPortType">
+    <wsdl:operation name="GroupMemberList">
+      <wsdl:input message="s0:GroupMemberListSoapIn"></wsdl:input>
+      <wsdl:output message="s0:GroupMemberListSoapOut"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="GroupMemberSoapBinding" type="s0:GroupMemberPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GroupMemberList">
+      <soap:operation soapAction="urn:XM_CTM_SupportGroupAssoc_join_People_WS/GroupMemberList" style="document"/>
+      <wsdl:input>
+        <soap:header message="s0:ARAuthenticate" part="parameters" use="literal"></soap:header>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="XM_CTM_SupportGroupAssoc_join_People_WSService">
+    <wsdl:port binding="s0:GroupMemberSoapBinding" name="GroupMemberSoap">
+      <soap:address location="http://192.168.170.163:8080/arsys/services/ARService?server=vic-vm-r7604-02&amp;webService=XM_CTM_SupportGroupAssoc_join_People_WS"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://192.168.170.163:8080/arsys/services/ARService?server=vic-vm-r7604-02&amp;webService=XM_CTM_SupportGroupAssoc_join_People_WS</con:endpoint><con:endpoint>https://vic-emanero:8088/mockGroupMemberSoapBinding</con:endpoint></con:endpoints><con:operation isOneWay="false" action="urn:XM_CTM_SupportGroupAssoc_join_People_WS/GroupMemberList" name="GroupMemberList" bindingOperationName="GroupMemberList" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Example Request"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.170.163:8080/arsys/services/ARService?server=vic-vm-r7604-02&amp;webService=XM_CTM_SupportGroupAssoc_join_People_WS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:XM_CTM_SupportGroupAssoc_join_People_WS">
+   <soapenv:Header>
+      <urn:AuthenticationInfo>
+         <urn:userName>Demo</urn:userName>
+         <urn:password></urn:password>
+      </urn:AuthenticationInfo>
+   </soapenv:Header>
+   <soapenv:Body>
+      <urn:GroupMemberList>
+         <urn:Qualification>'Support Group ID' = "SGP000000000009" AND 'Assignment Availability' = "Yes"</urn:Qualification>
+         <urn:startRecord></urn:startRecord>
+         <urn:maxLimit></urn:maxLimit>
+      </urn:GroupMemberList>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:XM_CTM_SupportGroupAssoc_join_People_WS/GroupMemberPortType/GroupMemberListRequest"/><con:wsrmConfig version="1.2"/></con:call><con:call name="GetGroupMemberList"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.170.163:8080/arsys/services/ARService?server=vic-vm-r7604-02&amp;webService=XM_CTM_SupportGroupAssoc_join_People_WS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:XM_CTM_SupportGroupAssoc_join_People_WS">
+   <soapenv:Header>
+      <urn:AuthenticationInfo>
+         <urn:userName>${userName}</urn:userName>
+         <urn:password>${password}</urn:password>
+      </urn:AuthenticationInfo>
+   </soapenv:Header>
+   <soapenv:Body>
+      <urn:GroupMemberList>
+         <urn:Qualification>${qualification}</urn:Qualification>
+         <urn:startRecord></urn:startRecord>
+         <urn:maxLimit></urn:maxLimit>
+      </urn:GroupMemberList>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:XM_CTM_SupportGroupAssoc_join_People_WS/GroupMemberList"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:mockService port="8088" path="/mockGroupMemberSoapBinding" host="vic-emanero" name="GroupMemberSoapBinding MockService"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.mock.WsdlMockService@require-soap-action">false</con:setting></con:settings><con:mockOperation name="GroupMemberList" interface="GroupMemberSoapBinding" operation="GroupMemberList"><con:settings/><con:dispatchStyle>SEQUENCE</con:dispatchStyle><con:defaultResponse>Response 1</con:defaultResponse><con:response name="Response 1" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:XM_CTM_SupportGroupAssoc_join_People_WS">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <urn:GroupMemberListResponse>
+         <!--1 or more repetitions:-->
+         <urn:getListValues>
+            <urn:Login_ID>?</urn:Login_ID>
+         </urn:getListValues>
+      </urn:GroupMemberListResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:XM_CTM_SupportGroupAssoc_join_People_WS/GroupMemberPortType/GroupMemberListResponse"/></con:response><con:dispatchConfig/></con:mockOperation><con:properties/></con:mockService><con:properties/><con:wssContainer/></con:soapui-project>

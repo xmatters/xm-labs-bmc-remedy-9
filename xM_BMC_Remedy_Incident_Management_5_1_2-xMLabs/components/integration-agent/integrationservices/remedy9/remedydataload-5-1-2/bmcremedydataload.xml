@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ | Service configuration file for the sample ping integration.
+ |
+ | attribute: version
+ | values   : 1.0
+ | comments : identifies the format version of this file
+ |
+ | attribute: xmlns
+ | values   : http://www.alarmpoint.com/schema
+ | comments : the default namespace in which all elements and attributes are
+ |            defined
+ +-->
+<integration-service version="1.0" xmlns="http://www.alarmpoint.com/schema">
+
+  <!--
+   | Each service belongs to an event domain and must have a unique
+   | (case-sensitive) name within the domain.  In other words, the
+   | combination of domain and name forms a unique id for the service.
+   +-->
+   <domain>applications</domain>
+   <name>bmcremedydataload-5-1-2-dev</name>
+
+  <!--
+   | All services are loaded (i.e., parsed and configured), but only
+   | active services are allowed to process requests.  Setting a
+   | service to inactive is useful for temporarily disabling a service
+   | or debugging a configuration since parsing and validation are always
+   | be performed, regardless of initial state.
+   |
+   | NOTE: this value is static and is not changed by the Integration Agent.
+   |
+   | values: active, inactive
+   +-->
+   <initial-state>active</initial-state>
+
+  <!--
+   | For improved performance, services can concurrently process inbound
+   | APXML messages (from both APClient and AlarmPoint).  Messages are grouped
+   | in two stages: first, by priority and second, by process group.
+   | Messages  within the same group are processed sequentially in a
+   | first-come-first-served order, while messages in different groups are
+   | processed concurrently.
+   |
+   | NOTE: The two stage grouping means that normal and high priority messages
+   | are always processed concurrently, regardless of whether they are in
+   | the same process group.
+   |
+   | NOTE: A message's priority is specified by the apia_priority token, whose
+   | value is either "normal" or "high".  A message without such a token
+   | defaults to "normal" priority.
+   |
+   | NOTE: A message's process group is specified by the apia_process_group
+   | token, whose value is an application-defined string.  Message's without
+   | such a token are grouped together.
+   |
+   | NOTE: Thread counts must be positive integers.
+   +-->
+   <concurrency>
+     <normal-priority-thread-count>3</normal-priority-thread-count>
+     <high-priority-thread-count>3</high-priority-thread-count>
+   </concurrency>
+
+  <!--
+   | Integration Service Requests are implemented by corresponding methods in a
+   | JavaScript file.  This element defines the location of the script and
+   | other properties.
+   |
+   | attribute: lang
+   | values   : js
+   | comments : JavaScript is the only supported language
+   +-->
+   <script lang="js">
+    <!--
+     | The relative path (resolved against the directory containing this file),
+     | of the script implementing the service.
+     |
+     | NOTE: The path may be Unix or Windows-formatted, although it is
+     | recommended that Unix-formatting be used since it works under both
+     | environments.
+     |
+     | NOTE: Depending on the OS, paths may be case-sensitive.
+     +-->
+     <file>bmcremedydataload.js</file>
+   </script>
+
+  <!--
+   | The Integration Service scripts and implementation POJOs have access to
+   | all classes stored in <installation>/lib.  However, to prevent conflicts
+   | and enhance security, an Integration Service should load its own classes
+   | and resources from an unshared directory.  The classpath element allows
+   | an Integration Service to specify multiple paths that will be added to
+   | the service's classpath during the processing of an Integration Service
+   | Request.
+   |
+   | NOTE: Although this classpath augments the default classpath, which is
+   | available  to all services), the augmented classpath is exclusive to
+   | this service.
+   +-->
+   <classpath/>
+
+</integration-service>

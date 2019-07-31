@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project name="XM_CTM_People_WS" resourceRoot="" soapui-version="4.0.1" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="PeopleSoapBinding" type="wsdl" bindingName="{urn:XM_CTM_People_WS}PeopleSoapBinding" soapVersion="1_1" anonymous="optional" definition="/home/dave/src/apex/integrations/BMC/Remedy/ITSM/redev/trunk/assets/soap/XM_CTM_People_WS.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/home/dave/src/apex/integrations/BMC/Remedy/ITSM/redev/trunk/assets/soap/XM_CTM_People_WS.wsdl"><con:part><con:url>file:/home/dave/src/apex/integrations/BMC/Remedy/ITSM/redev/trunk/assets/soap/XM_CTM_People_WS.wsdl</con:url><con:content><![CDATA[<wsdl:definitions targetNamespace="urn:XM_CTM_People_WS" xmlns:s0="urn:XM_CTM_People_WS" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified" targetNamespace="urn:XM_CTM_People_WS">
+      <xsd:element name="PeopleList" type="s0:InputMapping1"/>
+      <xsd:complexType name="InputMapping1">
+        <xsd:sequence>
+          <xsd:element name="Qualification" type="xsd:string"/>
+          <xsd:element name="startRecord" type="xsd:string"/>
+          <xsd:element name="maxLimit" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="PeopleListResponse" type="s0:OutputMapping1"/>
+      <xsd:complexType name="OutputMapping1">
+        <xsd:sequence>
+          <xsd:element maxOccurs="unbounded" name="getListValues">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="Remedy_Login_ID" type="xsd:string"/>
+                <xsd:element name="First_Name" type="xsd:string"/>
+                <xsd:element name="Last_Name" type="xsd:string"/>
+                <xsd:element name="Client_Type" type="s0:Client_TypeType"/>
+                <xsd:element name="Profile_Status" type="s0:Profile_StatusType"/>
+                <xsd:element name="Support_Staff" type="s0:Support_StaffType"/>
+                <xsd:element name="Assignment_Availability" type="s0:Support_StaffType"/>
+                <xsd:element name="Time_Zone" type="xsd:string"/>
+                <xsd:element name="Phone_Number_Business" type="xsd:string"/>
+                <xsd:element name="Phone_Number_Mobile" type="xsd:string"/>
+                <xsd:element name="Phone_Number_Home" type="xsd:string"/>
+                <xsd:element name="Phone_Number_Pager" type="xsd:string"/>
+                <xsd:element name="Phone_Number_Fax" type="xsd:string"/>
+                <xsd:element name="Internet_Email" type="xsd:string"/>
+                <xsd:element name="Corporate_Email" type="xsd:string"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="Client_TypeType">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="=== Operating Company Menu ==="/>
+          <xsd:enumeration value="Office-Based Employee"/>
+          <xsd:enumeration value="Field-Based Employee"/>
+          <xsd:enumeration value="Home-Based Employee"/>
+          <xsd:enumeration value="Contractor"/>
+          <xsd:enumeration value="======= Customer Menu ======="/>
+          <xsd:enumeration value="Customer"/>
+          <xsd:enumeration value="Prospect"/>
+          <xsd:enumeration value="======== Vendor Menu ========"/>
+          <xsd:enumeration value="Vendor"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="Profile_StatusType">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="Proposed"/>
+          <xsd:enumeration value="Enabled"/>
+          <xsd:enumeration value="Offline"/>
+          <xsd:enumeration value="Obsolete"/>
+          <xsd:enumeration value="Archive"/>
+          <xsd:enumeration value="Delete"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="Support_StaffType">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="Yes"/>
+          <xsd:enumeration value="No"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:element name="AuthenticationInfo" type="s0:AuthenticationInfo"/>
+      <xsd:complexType name="AuthenticationInfo">
+        <xsd:sequence>
+          <xsd:element name="userName" type="xsd:string"/>
+          <xsd:element name="password" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="authentication" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="locale" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="timeZone" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ARAuthenticate">
+    <wsdl:part element="s0:AuthenticationInfo" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="PeopleListSoapOut">
+    <wsdl:part element="s0:PeopleListResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="PeopleListSoapIn">
+    <wsdl:part element="s0:PeopleList" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="PeoplePortType">
+    <wsdl:operation name="PeopleList">
+      <wsdl:input message="s0:PeopleListSoapIn"></wsdl:input>
+      <wsdl:output message="s0:PeopleListSoapOut"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PeopleSoapBinding" type="s0:PeoplePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="PeopleList">
+      <soap:operation soapAction="urn:XM_CTM_People_WS/PeopleList" style="document"/>
+      <wsdl:input>
+        <soap:header message="s0:ARAuthenticate" part="parameters" use="literal"></soap:header>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="XM_CTM_People_WSService">
+    <wsdl:port binding="s0:PeopleSoapBinding" name="PeopleSoap">
+      <soap:address location="http://192.168.170.144:8080/arsys/services/ARService?server=vic-vm-r7603-01&amp;webService=XM_CTM_People_WS"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://192.168.170.238:8888/api/services/AlarmPointWebService</con:endpoint><con:endpoint>http://vic-dhowell:9088/mock_XM_CTM_People_WS</con:endpoint><con:endpoint>http://192.168.170.163:8080/arsys/services/ARService?server=vic-vm-r7604-02&amp;webService=XM_CTM_People_WS</con:endpoint><con:endpoint>http://192.168.170.144:8080/arsys/services/ARService?server=vic-vm-r7603-01&amp;webService=XM_CTM_People_WS</con:endpoint><con:endpoint>http://192.168.170.202/arsys/services/ARService?server=vic-vm-em-rmdy&amp;webService=XM_CTM_People_WS</con:endpoint></con:endpoints><con:operation isOneWay="false" action="urn:XM_CTM_People_WS/PeopleList" name="PeopleList" bindingOperationName="PeopleList" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Example PeopleList Request"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.170.202/arsys/services/ARService?server=vic-vm-em-rmdy&amp;webService=XM_CTM_People_WS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:XM_CTM_People_WS">
+   <soapenv:Header>
+      <urn:AuthenticationInfo>
+         <urn:userName>Demo</urn:userName>
+         <urn:password></urn:password>
+         <!--Optional:-->
+         <urn:authentication></urn:authentication>
+         <!--Optional:-->
+         <urn:locale></urn:locale>
+         <!--Optional:-->
+         <urn:timeZone></urn:timeZone>
+      </urn:AuthenticationInfo>
+   </soapenv:Header>
+   <soapenv:Body>
+      <urn:PeopleList>
+         <urn:Qualification>'Support Staff'="Yes" AND 'Submit Date' > "4/28/2006 11:09AM"</urn:Qualification>
+         <urn:startRecord></urn:startRecord>
+         <urn:maxLimit></urn:maxLimit>
+      </urn:PeopleList>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:XM_CTM_People_WS/PeopleList"/><con:wsrmConfig version="1.2"/></con:call><con:call name="GetPeopleList"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.170.202/arsys/services/ARService?server=vic-vm-em-rmdy&amp;webService=XM_CTM_People_WS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:XM_CTM_People_WS">
+   <soapenv:Header>
+      <urn:AuthenticationInfo>
+         <urn:userName>${userName}</urn:userName>
+         <urn:password>${password}</urn:password>
+      </urn:AuthenticationInfo>
+   </soapenv:Header>
+   <soapenv:Body>
+      <urn:PeopleList>
+         <urn:Qualification>${qualification}</urn:Qualification>
+         <urn:startRecord>${startRecord}</urn:startRecord>
+         <urn:maxLimit>${maxLimit}</urn:maxLimit>
+      </urn:PeopleList>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:XM_CTM_People_WS/PeopleList"/><con:wsrmConfig version="1.2"/></con:call><con:call name="Copy of Example PeopleList Request"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.170.144:8080/arsys/services/ARService?server=vic-vm-r7603-01&amp;webService=XM_CTM_People_WS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:XM_CTM_People_WS">
+   <soapenv:Header>
+      <urn:AuthenticationInfo>
+         <urn:userName>Demo</urn:userName>
+         <urn:password></urn:password>
+         <!--Optional:-->
+         <urn:authentication></urn:authentication>
+         <!--Optional:-->
+         <urn:locale></urn:locale>
+         <!--Optional:-->
+         <urn:timeZone></urn:timeZone>
+      </urn:AuthenticationInfo>
+   </soapenv:Header>
+   <soapenv:Body>
+      <urn:PeopleList>
+         <urn:Qualification>'Person ID' = "PPL000000000013"</urn:Qualification>
+         <urn:startRecord></urn:startRecord>
+         <urn:maxLimit></urn:maxLimit>
+      </urn:PeopleList>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:XM_CTM_People_WS/PeopleList"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:mockService port="9088" path="/mock_XM_CTM_People_WS" host="vic-dhowell" name="PeopleSoapBinding MockService" bindToHostOnly="false" docroot=""><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.mock.WsdlMockService@require-soap-action">false</con:setting></con:settings><con:mockOperation name="PeopleList" interface="PeopleSoapBinding" operation="PeopleList"><con:settings/><con:dispatchPath>def date = new Date()
+log.info "In submitAPXML - ${date.time}"
+
+def holder = new com.eviware.soapui.support.XmlHolder( mockRequest.requestContent )
+
+log.info "got ${holder.getPrettyXml()}"
+
+def soapRequest = new XmlParser().parseText(holder.getXml())
+def soapenv = new groovy.xml.Namespace("http://schemas.xmlsoap.org/soap/envelope/", 'soapenv')
+def urn = new groovy.xml.Namespace("urn:XM_CTM_People_WS", 'urn')
+	
+//holder.namespaces["soapenv"]="http://schemas.xmlsoap.org/soap/envelope/"
+//holder.namespaces["urn"]="urn:XM_CTM_People_WS"
+
+def node = soapRequest[soapenv.Envelope]
+
+log.info "Found ${node}"
+
+return "EntryDoesNotExistResponse"</con:dispatchPath><con:dispatchStyle>SCRIPT</con:dispatchStyle><con:defaultResponse>EntryDoesNotExistResponse</con:defaultResponse><con:response name="Response 1" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <soapenv:Body>
+      <ns0:PeopleListResponse xmlns:ns0="urn:XM_CTM_People_WS">
+         <ns0:getListValues>
+            <ns0:Remedy_Login_ID>Orchestration</ns0:Remedy_Login_ID>
+            <ns0:First_Name>Orchestration</ns0:First_Name>
+            <ns0:Last_Name>Admin</ns0:Last_Name>
+            <ns0:Client_Type>Field-Based Employee</ns0:Client_Type>
+            <ns0:Profile_Status>Enabled</ns0:Profile_Status>
+            <ns0:Support_Staff>Yes</ns0:Support_Staff>
+            <ns0:Assignment_Availability>No</ns0:Assignment_Availability>
+            <ns0:Time_Zone>(GMT-05:00) Eastern Time (US &amp; Canada)</ns0:Time_Zone>
+            <ns0:Phone_Number_Business>1 212 555-5454 (11)</ns0:Phone_Number_Business>
+            <ns0:Phone_Number_Mobile>1 (253) 345-6789</ns0:Phone_Number_Mobile>
+            <ns0:Phone_Number_Home>212.987.1234</ns0:Phone_Number_Home>
+            <ns0:Phone_Number_Pager>567-234-8967</ns0:Phone_Number_Pager>
+            <ns0:Phone_Number_Fax>987 654 1234 (88)</ns0:Phone_Number_Fax>
+            <ns0:Internet_Email>someone@yahoo.ca</ns0:Internet_Email>
+            <ns0:Corporate_Email>none@calbroservices.com</ns0:Corporate_Email>
+         </ns0:getListValues>
+         <ns0:getListValues>
+            <ns0:Remedy_Login_ID>Allen</ns0:Remedy_Login_ID>
+            <ns0:First_Name>Allen</ns0:First_Name>
+            <ns0:Last_Name>Allbrook</ns0:Last_Name>
+            <ns0:Client_Type>Office-Based Employee</ns0:Client_Type>
+            <ns0:Profile_Status>Enabled</ns0:Profile_Status>
+            <ns0:Support_Staff>Yes</ns0:Support_Staff>
+            <ns0:Assignment_Availability>No</ns0:Assignment_Availability>
+            <ns0:Time_Zone>(GMT-05:00) Eastern Time (US &amp; Canada)</ns0:Time_Zone>
+            <ns0:Phone_Number_Business>678-3456 ext 77</ns0:Phone_Number_Business>
+            <ns0:Phone_Number_Mobile>44 08727 4567 9876</ns0:Phone_Number_Mobile>
+            <ns0:Phone_Number_Home>1 212</ns0:Phone_Number_Home>
+            <ns0:Phone_Number_Pager>1 212</ns0:Phone_Number_Pager>
+            <ns0:Phone_Number_Fax>1 212</ns0:Phone_Number_Fax>
+            <ns0:Internet_Email>A.Allbrook@calbroservices.com</ns0:Internet_Email>
+            <ns0:Corporate_Email/>
+         </ns0:getListValues>
+         <ns0:getListValues>
+            <ns0:Remedy_Login_ID>Bob</ns0:Remedy_Login_ID>
+            <ns0:First_Name>Bob</ns0:First_Name>
+            <ns0:Last_Name>Baxter</ns0:Last_Name>
+            <ns0:Client_Type>Office-Based Employee</ns0:Client_Type>
+            <ns0:Profile_Status>Enabled</ns0:Profile_Status>
+            <ns0:Support_Staff>Yes</ns0:Support_Staff>
+            <ns0:Assignment_Availability>Yes</ns0:Assignment_Availability>
+            <ns0:Time_Zone>(GMT-05:00) Eastern Time (US &amp; Canada)</ns0:Time_Zone>
+            <ns0:Phone_Number_Business>678-3456 ext 77</ns0:Phone_Number_Business>
+            <ns0:Phone_Number_Mobile>44 08727 4567 9876</ns0:Phone_Number_Mobile>
+            <ns0:Phone_Number_Home>1 212</ns0:Phone_Number_Home>
+            <ns0:Phone_Number_Pager>1 212</ns0:Phone_Number_Pager>
+            <ns0:Phone_Number_Fax>1 212</ns0:Phone_Number_Fax>
+            <ns0:Internet_Email>B.Baxter@calbroservices.com</ns0:Internet_Email>
+            <ns0:Corporate_Email/>
+         </ns0:getListValues>
+         <ns0:getListValues>
+            <ns0:Remedy_Login_ID>Mary</ns0:Remedy_Login_ID>
+            <ns0:First_Name>Mary</ns0:First_Name>
+            <ns0:Last_Name>Mann</ns0:Last_Name>
+            <ns0:Client_Type>Office-Based Employee</ns0:Client_Type>
+            <ns0:Profile_Status>Enabled</ns0:Profile_Status>
+            <ns0:Support_Staff>Yes</ns0:Support_Staff>
+            <ns0:Assignment_Availability>Yes</ns0:Assignment_Availability>
+            <ns0:Time_Zone>(GMT-05:00) Eastern Time (US &amp; Canada)</ns0:Time_Zone>
+            <ns0:Phone_Number_Business>1 212 555-5454 (33)</ns0:Phone_Number_Business>
+            <ns0:Phone_Number_Mobile>1 212</ns0:Phone_Number_Mobile>
+            <ns0:Phone_Number_Home>1 212</ns0:Phone_Number_Home>
+            <ns0:Phone_Number_Pager>1 212</ns0:Phone_Number_Pager>
+            <ns0:Phone_Number_Fax>1 212</ns0:Phone_Number_Fax>
+            <ns0:Internet_Email>M.Mann@calbroservices.com</ns0:Internet_Email>
+            <ns0:Corporate_Email/>
+         </ns0:getListValues>
+         <ns0:getListValues>
+            <ns0:Remedy_Login_ID>Ian</ns0:Remedy_Login_ID>
+            <ns0:First_Name>Ian</ns0:First_Name>
+            <ns0:Last_Name>Plyment</ns0:Last_Name>
+            <ns0:Client_Type>Office-Based Employee</ns0:Client_Type>
+            <ns0:Profile_Status>Enabled</ns0:Profile_Status>
+            <ns0:Support_Staff>Yes</ns0:Support_Staff>
+            <ns0:Assignment_Availability>Yes</ns0:Assignment_Availability>
+            <ns0:Time_Zone>(GMT-05:00) Eastern Time (US &amp; Canada)</ns0:Time_Zone>
+            <ns0:Phone_Number_Business>1 212 555-5454 (44)</ns0:Phone_Number_Business>
+            <ns0:Phone_Number_Mobile>1 212</ns0:Phone_Number_Mobile>
+            <ns0:Phone_Number_Home>1 212</ns0:Phone_Number_Home>
+            <ns0:Phone_Number_Pager>1 212</ns0:Phone_Number_Pager>
+            <ns0:Phone_Number_Fax>1 212</ns0:Phone_Number_Fax>
+            <ns0:Internet_Email>I.Plyment@calbroservices.com</ns0:Internet_Email>
+            <ns0:Corporate_Email/>
+         </ns0:getListValues>
+         <ns0:getListValues>
+            <ns0:Remedy_Login_ID>Francie</ns0:Remedy_Login_ID>
+            <ns0:First_Name>Francie</ns0:First_Name>
+            <ns0:Last_Name>Stafford</ns0:Last_Name>
+            <ns0:Client_Type>Office-Based Employee</ns0:Client_Type>
+            <ns0:Profile_Status>Enabled</ns0:Profile_Status>
+            <ns0:Support_Staff>Yes</ns0:Support_Staff>
+            <ns0:Assignment_Availability>Yes</ns0:Assignment_Availability>
+            <ns0:Time_Zone>(GMT-05:00) Eastern Time (US &amp; Canada)</ns0:Time_Zone>
+            <ns0:Phone_Number_Business>1 212 555-5454 (55)</ns0:Phone_Number_Business>
+            <ns0:Phone_Number_Mobile>1 212</ns0:Phone_Number_Mobile>
+            <ns0:Phone_Number_Home>1 212</ns0:Phone_Number_Home>
+            <ns0:Phone_Number_Pager>1 212</ns0:Phone_Number_Pager>
+            <ns0:Phone_Number_Fax>1 212</ns0:Phone_Number_Fax>
+            <ns0:Internet_Email>F.Stafford@calbroservices.com1</ns0:Internet_Email>
+            <ns0:Corporate_Email/>
+         </ns0:getListValues>
+      </ns0:PeopleListResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:XM_CTM_People_WS/PeopleList"/></con:response><con:response name="EntryDoesNotExistResponse" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <soapenv:Body>
+      <soapenv:Fault>
+         <faultcode>soapenv:Server.userException</faultcode>
+         <faultstring>ERROR (302): Entry does not exist in database;</faultstring>
+         <detail>
+            <ns1:hostname xmlns:ns1="http://xml.apache.org/axis/">vic-vm-r7604-02</ns1:hostname>
+         </detail>
+      </soapenv:Fault>
+   </soapenv:Body>
+</soapenv:Envelope>
+]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:XM_CTM_People_WS/PeopleList"/></con:response><con:dispatchConfig/></con:mockOperation><con:properties/></con:mockService><con:properties/><con:wssContainer/><con:sensitiveInformation/></con:soapui-project>

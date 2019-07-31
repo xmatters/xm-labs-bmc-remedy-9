@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project name="XM_HPD_IncidentInterface_WS" resourceRoot="" soapui-version="4.0.1" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="XM_HPD_IncidentInterfaceSoapBinding" type="wsdl" bindingName="{urn:XM_HPD_IncidentInterface_WS}XM_HPD_IncidentInterfaceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://192.168.170.202/arsys/WSDL/public/vic-vm-em-rmdy/XM_HPD_IncidentInterface_WS" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://192.168.170.202/arsys/WSDL/public/vic-vm-em-rmdy/XM_HPD_IncidentInterface_WS"><con:part><con:url>http://192.168.170.202/arsys/WSDL/public/vic-vm-em-rmdy/XM_HPD_IncidentInterface_WS</con:url><con:content><![CDATA[<wsdl:definitions targetNamespace="urn:XM_HPD_IncidentInterface_WS" xmlns:s0="urn:XM_HPD_IncidentInterface_WS" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified" targetNamespace="urn:XM_HPD_IncidentInterface_WS">
+      <xsd:element name="AddWorkLog" type="s0:InputMapping3"/>
+      <xsd:complexType name="InputMapping3">
+        <xsd:sequence>
+          <xsd:element name="Action" type="xsd:string"/>
+          <xsd:element name="Work_Info_Summary" type="xsd:string"/>
+          <xsd:element name="Work_Info_Notes" type="xsd:string"/>
+          <xsd:element name="Work_Info_Type" type="s0:Work_Info_TypeType"/>
+          <xsd:element name="Work_Info_Source" type="s0:Work_Info_SourceType"/>
+          <xsd:element name="Work_Info_Locked" type="s0:Work_Info_LockedType"/>
+          <xsd:element name="Work_Info_View_Access" type="s0:Work_Info_View_AccessType"/>
+          <xsd:element name="Incident_Number" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="Work_Info_TypeType">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="----- Customer Inbound -----"/>
+          <xsd:enumeration value="Customer Communication"/>
+          <xsd:enumeration value="Customer Follow-up"/>
+          <xsd:enumeration value="Customer Status Update"/>
+          <xsd:enumeration value="----- Customer Outbound -----"/>
+          <xsd:enumeration value="Closure Follow Up"/>
+          <xsd:enumeration value="Detail Clarification"/>
+          <xsd:enumeration value="General Information"/>
+          <xsd:enumeration value="Resolution Communications"/>
+          <xsd:enumeration value="Satisfaction Survey"/>
+          <xsd:enumeration value="Status Update"/>
+          <xsd:enumeration value="----- General -----"/>
+          <xsd:enumeration value="Incident Task / Action"/>
+          <xsd:enumeration value="Problem Script"/>
+          <xsd:enumeration value="Working Log"/>
+          <xsd:enumeration value="Email System"/>
+          <xsd:enumeration value="Paging System"/>
+          <xsd:enumeration value="BMC Impact Manager Update"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="Work_Info_SourceType">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="Email"/>
+          <xsd:enumeration value="Fax"/>
+          <xsd:enumeration value="Phone"/>
+          <xsd:enumeration value="Voice Mail"/>
+          <xsd:enumeration value="Walk In"/>
+          <xsd:enumeration value="Pager"/>
+          <xsd:enumeration value="System Assignment"/>
+          <xsd:enumeration value="Web"/>
+          <xsd:enumeration value="Other"/>
+          <xsd:enumeration value="BMC Impact Manager Event"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="Work_Info_LockedType">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="Yes"/>
+          <xsd:enumeration value="No"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="Work_Info_View_AccessType">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="Internal"/>
+          <xsd:enumeration value="Public"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:element name="AddWorkLogResponse" type="s0:OutputMapping3"/>
+      <xsd:complexType name="OutputMapping3">
+        <xsd:sequence/>
+      </xsd:complexType>
+      <xsd:element name="Resolve" type="s0:InputMapping4"/>
+      <xsd:complexType name="InputMapping4">
+        <xsd:sequence>
+          <xsd:element name="Action" type="xsd:string"/>
+          <xsd:element name="Resolution" type="xsd:string"/>
+          <xsd:element name="Resolution_Category" type="xsd:string"/>
+          <xsd:element name="Resolution_Category_Tier_2" type="xsd:string"/>
+          <xsd:element name="Resolution_Category_Tier_3" type="xsd:string"/>
+          <xsd:element name="Resolution_Method" type="xsd:string"/>
+          <xsd:element name="Status" type="s0:StatusType"/>
+          <xsd:element name="Status_Reason" type="s0:Status_ReasonType"/>
+          <xsd:element name="Work_Info_Summary" type="xsd:string"/>
+          <xsd:element name="Work_Info_Notes" type="xsd:string"/>
+          <xsd:element name="Work_Info_Type" type="s0:Work_Info_TypeType"/>
+          <xsd:element name="Work_Info_Source" type="s0:Work_Info_SourceType"/>
+          <xsd:element name="Work_Info_Locked" type="s0:Work_Info_LockedType"/>
+          <xsd:element name="Work_Info_View_Access" type="s0:Work_Info_View_AccessType"/>
+          <xsd:element name="Incident_Number" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:simpleType name="StatusType">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="New"/>
+          <xsd:enumeration value="Assigned"/>
+          <xsd:enumeration value="In Progress"/>
+          <xsd:enumeration value="Pending"/>
+          <xsd:enumeration value="Resolved"/>
+          <xsd:enumeration value="Closed"/>
+          <xsd:enumeration value="Cancelled"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType name="Status_ReasonType">
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="Infrastructure Change Created"/>
+          <xsd:enumeration value="Local Site Action Required"/>
+          <xsd:enumeration value="Purchase Order Approval"/>
+          <xsd:enumeration value="Registration Approval"/>
+          <xsd:enumeration value="Supplier Delivery"/>
+          <xsd:enumeration value="Support Contact Hold"/>
+          <xsd:enumeration value="Third Party Vendor Action Reqd"/>
+          <xsd:enumeration value="Client Action Required"/>
+          <xsd:enumeration value="Infrastructure Change"/>
+          <xsd:enumeration value="Request"/>
+          <xsd:enumeration value="Future Enhancement"/>
+          <xsd:enumeration value="Pending Original Incident"/>
+          <xsd:enumeration value="Client Hold"/>
+          <xsd:enumeration value="Monitoring Incident"/>
+          <xsd:enumeration value="Customer Follow-Up Required"/>
+          <xsd:enumeration value="Temporary Corrective Action"/>
+          <xsd:enumeration value="No Further Action Required"/>
+          <xsd:enumeration value="Resolved by Original Incident"/>
+          <xsd:enumeration value="Automated Resolution Reported"/>
+          <xsd:enumeration value="No longer a Causal CI"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:element name="ResolveResponse" type="s0:OutputMapping4"/>
+      <xsd:complexType name="OutputMapping4">
+        <xsd:sequence/>
+      </xsd:complexType>
+      <xsd:element name="UpdateAssignee" type="s0:InputMapping5"/>
+      <xsd:complexType name="InputMapping5">
+        <xsd:sequence>
+          <xsd:element name="Action" type="xsd:string"/>
+          <xsd:element name="Assignee" type="xsd:string"/>
+          <xsd:element name="Assignee_Login_ID" type="xsd:string"/>
+          <xsd:element name="Assigned_Support_Company" type="xsd:string"/>
+          <xsd:element name="Assigned_Support_Organization" type="xsd:string"/>
+          <xsd:element name="Assigned_Group" type="xsd:string"/>
+          <xsd:element name="Assigned_Group_ID" type="xsd:string"/>
+          <xsd:element name="Work_Info_Summary" type="xsd:string"/>
+          <xsd:element name="Work_Info_Notes" type="xsd:string"/>
+          <xsd:element name="Work_Info_Type" type="s0:Work_Info_TypeType"/>
+          <xsd:element name="Work_Info_Source" type="s0:Work_Info_SourceType"/>
+          <xsd:element name="Work_Info_Locked" type="s0:Work_Info_LockedType"/>
+          <xsd:element name="Work_Info_View_Access" type="s0:Work_Info_View_AccessType"/>
+          <xsd:element name="Incident_Number" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="UpdateAssigneeResponse" type="s0:OutputMapping5"/>
+      <xsd:complexType name="OutputMapping5">
+        <xsd:sequence/>
+      </xsd:complexType>
+      <xsd:element name="UpdateStatus" type="s0:InputMapping7"/>
+      <xsd:complexType name="InputMapping7">
+        <xsd:sequence>
+          <xsd:element name="Action" type="xsd:string"/>
+          <xsd:element name="Status" type="s0:StatusType"/>
+          <xsd:element name="Work_Info_Summary" type="xsd:string"/>
+          <xsd:element name="Work_Info_Notes" type="xsd:string"/>
+          <xsd:element name="Work_Info_Types" type="s0:Work_Info_TypeType"/>
+          <xsd:element name="Work_Info_Source" type="s0:Work_Info_SourceType"/>
+          <xsd:element name="Work_Info_Locked" type="s0:Work_Info_LockedType"/>
+          <xsd:element name="Work_Info_View_Access" type="s0:Work_Info_View_AccessType"/>
+          <xsd:element name="Incident_Number" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="UpdateStatusResponse" type="s0:OutputMapping7"/>
+      <xsd:complexType name="OutputMapping7">
+        <xsd:sequence/>
+      </xsd:complexType>
+      <xsd:element name="AuthenticationInfo" type="s0:AuthenticationInfo"/>
+      <xsd:complexType name="AuthenticationInfo">
+        <xsd:sequence>
+          <xsd:element name="userName" type="xsd:string"/>
+          <xsd:element name="password" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="authentication" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="locale" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="timeZone" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="UpdateAssigneeSoapIn">
+    <wsdl:part element="s0:UpdateAssignee" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="UpdateStatusSoapIn">
+    <wsdl:part element="s0:UpdateStatus" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="AddWorkLogSoapIn">
+    <wsdl:part element="s0:AddWorkLog" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="UpdateAssigneeSoapOut">
+    <wsdl:part element="s0:UpdateAssigneeResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="AddWorkLogSoapOut">
+    <wsdl:part element="s0:AddWorkLogResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="ResolveSoapIn">
+    <wsdl:part element="s0:Resolve" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="UpdateStatusSoapOut">
+    <wsdl:part element="s0:UpdateStatusResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="ARAuthenticate">
+    <wsdl:part element="s0:AuthenticationInfo" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="ResolveSoapOut">
+    <wsdl:part element="s0:ResolveResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="XM_HPD_IncidentInterfacePortType">
+    <wsdl:operation name="AddWorkLog">
+      <wsdl:input message="s0:AddWorkLogSoapIn"></wsdl:input>
+      <wsdl:output message="s0:AddWorkLogSoapOut"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Resolve">
+      <wsdl:input message="s0:ResolveSoapIn"></wsdl:input>
+      <wsdl:output message="s0:ResolveSoapOut"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateAssignee">
+      <wsdl:input message="s0:UpdateAssigneeSoapIn"></wsdl:input>
+      <wsdl:output message="s0:UpdateAssigneeSoapOut"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateStatus">
+      <wsdl:input message="s0:UpdateStatusSoapIn"></wsdl:input>
+      <wsdl:output message="s0:UpdateStatusSoapOut"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="XM_HPD_IncidentInterfaceSoapBinding" type="s0:XM_HPD_IncidentInterfacePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="AddWorkLog">
+      <soap:operation soapAction="urn:XM_HPD_IncidentInterface_WS/AddWorkLog" style="document"/>
+      <wsdl:input>
+        <soap:header message="s0:ARAuthenticate" part="parameters" use="literal"></soap:header>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Resolve">
+      <soap:operation soapAction="urn:XM_HPD_IncidentInterface_WS/Resolve" style="document"/>
+      <wsdl:input>
+        <soap:header message="s0:ARAuthenticate" part="parameters" use="literal"></soap:header>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateAssignee">
+      <soap:operation soapAction="urn:XM_HPD_IncidentInterface_WS/UpdateAssignee" style="document"/>
+      <wsdl:input>
+        <soap:header message="s0:ARAuthenticate" part="parameters" use="literal"></soap:header>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateStatus">
+      <soap:operation soapAction="urn:XM_HPD_IncidentInterface_WS/UpdateStatus" style="document"/>
+      <wsdl:input>
+        <soap:header message="s0:ARAuthenticate" part="parameters" use="literal"></soap:header>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="XM_HPD_IncidentInterface_WSService">
+    <wsdl:documentation>xMatters web service to update incidents. Since the use of HPD:IncidentInterface is the supported method of interacting with HPD:Help Desk this web service is the endpoint for making updates.  The out of box functions include:
+
+* add a worklog entry
+* update the assignee/assigned group
+* resolve an incident</wsdl:documentation>
+    <wsdl:port binding="s0:XM_HPD_IncidentInterfaceSoapBinding" name="XM_HPD_IncidentInterfaceSoap">
+      <soap:address location="http://192.168.170.202/arsys/services/ARService?server=vic-vm-em-rmdy&amp;webService=XM_HPD_IncidentInterface_WS"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://192.168.170.202/arsys/WSDL/public/vic-vm-em-rmdy/XM_CTM_PPLSupptGrpAscFcnRoleLkUp_WS</con:endpoint><con:endpoint>http://192.168.170.202/arsys/services/ARService?server=vic-vm-em-rmdy&amp;webService=XM_HPD_IncidentInterface_WS</con:endpoint></con:endpoints><con:operation isOneWay="false" action="urn:XM_HPD_IncidentInterface_WS/AddWorkLog" name="AddWorkLog" bindingOperationName="AddWorkLog" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="testAddWorkLog"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.170.202/arsys/services/ARService?server=vic-vm-em-rmdy&amp;webService=XM_HPD_IncidentInterface_WS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:XM_HPD_IncidentInterface_WS">
+   <soapenv:Header>
+      <urn:AuthenticationInfo>
+         <urn:userName>Allen</urn:userName>
+         <urn:password>allen</urn:password>
+      </urn:AuthenticationInfo>
+   </soapenv:Header>
+   <soapenv:Body>
+      <urn:AddWorkLog>
+         <urn:Action></urn:Action>
+         <urn:Work_Info_Summary>Summary from soapui</urn:Work_Info_Summary>
+         <urn:Work_Info_Notes>Notes from soapui</urn:Work_Info_Notes>
+         <urn:Work_Info_Type></urn:Work_Info_Type>
+         <urn:Work_Info_Source></urn:Work_Info_Source>
+         <urn:Work_Info_Locked></urn:Work_Info_Locked>
+         <urn:Work_Info_View_Access></urn:Work_Info_View_Access>
+         <urn:Incident_Number>INC000000000001</urn:Incident_Number>
+      </urn:AddWorkLog>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:XM_HPD_IncidentInterface_WS/XM_HPD_IncidentInterfacePortType/AddWorkLogRequest"/><con:wsrmConfig version="1.2"/></con:call><con:call name="AddWorkLog"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.170.202/arsys/services/ARService?server=vic-vm-em-rmdy&amp;webService=XM_HPD_IncidentInterface_WS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:XM_HPD_IncidentInterface_WS">
+   <soapenv:Header>
+      <urn:AuthenticationInfo>
+         <urn:userName>${userName}</urn:userName>
+         <urn:password>${password}</urn:password>
+      </urn:AuthenticationInfo>
+   </soapenv:Header>
+   <soapenv:Body>
+      <urn:AddWorkLog>
+         <urn:Action>${Action}</urn:Action>
+         <urn:Work_Info_Summary>${Work_Info_Summary}</urn:Work_Info_Summary>
+         <urn:Work_Info_Notes>${Work_Info_Notes}</urn:Work_Info_Notes>
+         <urn:Work_Info_Type>${Work_Info_Type}</urn:Work_Info_Type>
+         <urn:Work_Info_Source>${Work_Info_Source}</urn:Work_Info_Source>
+         <urn:Work_Info_Locked>${Work_Info_Locked}</urn:Work_Info_Locked>
+         <urn:Work_Info_View_Access>${Work_Info_View_Access}</urn:Work_Info_View_Access>
+         <urn:Incident_Number>${Incident_Number}</urn:Incident_Number>
+      </urn:AddWorkLog>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:XM_HPD_IncidentInterface_WS/AddWorkLog"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="urn:XM_HPD_IncidentInterface_WS/Resolve" name="Resolve" bindingOperationName="Resolve" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="testResolve"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.170.202/arsys/services/ARService?server=vic-vm-em-rmdy&amp;webService=XM_HPD_IncidentInterface_WS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:XM_HPD_IncidentInterface_WS">
+   <soapenv:Header>
+      <urn:AuthenticationInfo>
+         <urn:userName>Allen</urn:userName>
+         <urn:password>allen</urn:password>
+      </urn:AuthenticationInfo>
+   </soapenv:Header>
+   <soapenv:Body>
+      <urn:Resolve>
+         <urn:Action>MODIFY</urn:Action>
+         <urn:Resolution/>
+         <urn:Resolution_Category/>
+         <urn:Resolution_Category_Tier_2/>
+         <urn:Resolution_Category_Tier_3/>
+         <urn:Resolution_Method/>
+         <urn:Status>Resolved</urn:Status>
+         <urn:Status_Reason>No Further Action Required</urn:Status_Reason>
+         <urn:Work_Info_Summary/>
+         <urn:Work_Info_Notes/>
+         <urn:Work_Info_Type/>
+         <urn:Work_Info_Source/>
+         <urn:Work_Info_Locked/>
+         <urn:Work_Info_View_Access/>
+         <urn:Incident_Number>INC000000000001</urn:Incident_Number>
+      </urn:Resolve>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:XM_HPD_IncidentInterface_WS/XM_HPD_IncidentInterfacePortType/ResolveRequest"/><con:wsrmConfig version="1.2"/></con:call><con:call name="Resolve"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.170.202/arsys/services/ARService?server=vic-vm-em-rmdy&amp;webService=XM_HPD_IncidentInterface_WS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:XM_HPD_IncidentInterface_WS">
+   <soapenv:Header>
+      <urn:AuthenticationInfo>
+         <urn:userName>${userName}</urn:userName>
+         <urn:password>${password}</urn:password>
+      </urn:AuthenticationInfo>
+   </soapenv:Header>
+   <soapenv:Body>
+      <urn:Resolve>
+         <urn:Action>${Action}</urn:Action>
+         <urn:Resolution>${Resolution}</urn:Resolution>
+         <urn:Resolution_Category>${Resolution_Category}</urn:Resolution_Category>
+         <urn:Resolution_Category_Tier_2>${Resolution_Category_Tier_2}</urn:Resolution_Category_Tier_2>
+         <urn:Resolution_Category_Tier_3>${Resolution_Category_Tier_3}</urn:Resolution_Category_Tier_3>
+         <urn:Resolution_Method>${Resolution_Method}</urn:Resolution_Method>
+         <urn:Status>${Status}</urn:Status>
+         <urn:Status_Reason>${Status_Reason}</urn:Status_Reason>
+         <urn:Work_Info_Summary>${Work_Info_Summary}</urn:Work_Info_Summary>
+         <urn:Work_Info_Notes>${Work_Info_Notes}</urn:Work_Info_Notes>
+         <urn:Work_Info_Type>${Work_Info_Type}</urn:Work_Info_Type>
+         <urn:Work_Info_Source>${Work_Info_Source}</urn:Work_Info_Source>
+         <urn:Work_Info_Locked>${Work_Info_Locked}</urn:Work_Info_Locked>
+         <urn:Work_Info_View_Access>${Work_Info_View_Access}</urn:Work_Info_View_Access>
+         <urn:Incident_Number>${Incident_Number}</urn:Incident_Number>
+      </urn:Resolve>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:XM_HPD_IncidentInterface_WS/Resolve"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="urn:XM_HPD_IncidentInterface_WS/UpdateAssignee" name="UpdateAssignee" bindingOperationName="UpdateAssignee" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="testUpdateAssignee"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.170.202/arsys/services/ARService?server=vic-vm-em-rmdy&amp;webService=XM_HPD_IncidentInterface_WS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:XM_HPD_IncidentInterface_WS">
+   <soapenv:Header>
+      <urn:AuthenticationInfo>
+         <urn:userName>Allen</urn:userName>
+         <urn:password>allen</urn:password>
+      </urn:AuthenticationInfo>
+   </soapenv:Header>
+   <soapenv:Body>
+      <urn:UpdateAssignee>
+         <urn:Action>MODIFY</urn:Action>
+         <urn:Assignee>Ian Plyment</urn:Assignee>
+         <urn:Assignee_Login_ID>Ian</urn:Assignee_Login_ID>
+         <urn:Assigned_Support_Company>Calbro Services</urn:Assigned_Support_Company>
+         <urn:Assigned_Support_Organization>IT Support</urn:Assigned_Support_Organization>
+         <urn:Assigned_Group>Frontoffice Support</urn:Assigned_Group>
+         <urn:Assigned_Group_ID>SGP000000000010</urn:Assigned_Group_ID>
+         <urn:Work_Info_Summary/>
+         <urn:Work_Info_Notes/>
+         <urn:Work_Info_Type/>
+         <urn:Work_Info_Source/>
+         <urn:Work_Info_Locked/>
+         <urn:Work_Info_View_Access/>
+         <urn:Incident_Number>INC000000000008</urn:Incident_Number>
+      </urn:UpdateAssignee>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:XM_HPD_IncidentInterface_WS/XM_HPD_IncidentInterfacePortType/UpdateAssigneeRequest"/><con:wsrmConfig version="1.2"/></con:call><con:call name="UpdateAssignee"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.170.202/arsys/services/ARService?server=vic-vm-em-rmdy&amp;webService=XM_HPD_IncidentInterface_WS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:XM_HPD_IncidentInterface_WS">
+   <soapenv:Header>
+      <urn:AuthenticationInfo>
+         <urn:userName>${userName}</urn:userName>
+         <urn:password>${password}</urn:password>
+      </urn:AuthenticationInfo>
+   </soapenv:Header>
+   <soapenv:Body>
+      <urn:UpdateAssignee>
+         <urn:Action>${Action}</urn:Action>
+         <urn:Assignee>${Assignee}</urn:Assignee>
+         <urn:Assignee_Login_ID>${Assignee_Login_ID}</urn:Assignee_Login_ID>
+         <urn:Assigned_Support_Company>${Assigned_Support_Company}</urn:Assigned_Support_Company>
+         <urn:Assigned_Support_Organization>${Assigned_Support_Organization}</urn:Assigned_Support_Organization>
+         <urn:Assigned_Group>${Assigned_Group}</urn:Assigned_Group>
+         <urn:Assigned_Group_ID>${Assigned_Group_ID}</urn:Assigned_Group_ID>
+         <urn:Work_Info_Summary>${Work_Info_Summary}</urn:Work_Info_Summary>
+         <urn:Work_Info_Notes>${Work_Info_Notes}</urn:Work_Info_Notes>
+         <urn:Work_Info_Type>${Work_Info_Type}</urn:Work_Info_Type>
+         <urn:Work_Info_Source>${Work_Info_Source}</urn:Work_Info_Source>
+         <urn:Work_Info_Locked>${Work_Info_Locked}</urn:Work_Info_Locked>
+         <urn:Work_Info_View_Access>${Work_Info_View_Access}</urn:Work_Info_View_Access>
+         <urn:Incident_Number>${Incident_Number}</urn:Incident_Number>
+      </urn:UpdateAssignee>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:XM_HPD_IncidentInterface_WS/UpdateAssignee"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="urn:XM_HPD_IncidentInterface_WS/UpdateStatus" name="UpdateStatus" bindingOperationName="UpdateStatus" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="testUpdateStatus"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.170.202/arsys/services/ARService?server=vic-vm-em-rmdy&amp;webService=XM_HPD_IncidentInterface_WS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:XM_HPD_IncidentInterface_WS">
+   <soapenv:Header>
+      <urn:AuthenticationInfo>
+         <urn:userName>Allen</urn:userName>
+         <urn:password>allen</urn:password>
+      </urn:AuthenticationInfo>
+   </soapenv:Header>
+   <soapenv:Body>
+      <urn:UpdateStatus>
+         <urn:Action>MODIFY</urn:Action>
+         <urn:Status>In Progress</urn:Status>
+         <urn:Work_Info_Summary></urn:Work_Info_Summary>
+         <urn:Work_Info_Notes></urn:Work_Info_Notes>
+         <urn:Work_Info_Types></urn:Work_Info_Types>
+         <urn:Work_Info_Source></urn:Work_Info_Source>
+         <urn:Work_Info_Locked></urn:Work_Info_Locked>
+         <urn:Work_Info_View_Access></urn:Work_Info_View_Access>
+         <urn:Incident_Number>INC000000000008</urn:Incident_Number>
+      </urn:UpdateStatus>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:XM_HPD_IncidentInterface_WS/XM_HPD_IncidentInterfacePortType/UpdateStatusRequest"/><con:wsrmConfig version="1.2"/></con:call><con:call name="UpdateStatus"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.170.202/arsys/services/ARService?server=vic-vm-em-rmdy&amp;webService=XM_HPD_IncidentInterface_WS</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:XM_HPD_IncidentInterface_WS">
+   <soapenv:Header>
+      <urn:AuthenticationInfo>
+         <urn:userName>${userName}</urn:userName>
+         <urn:password>${password}</urn:password>
+      </urn:AuthenticationInfo>
+   </soapenv:Header>
+   <soapenv:Body>
+      <urn:UpdateStatus>
+         <urn:Action>${Action}</urn:Action>
+         <urn:Status>${Status}</urn:Status>
+         <urn:Work_Info_Summary>${Work_Info_Summary}</urn:Work_Info_Summary>
+         <urn:Work_Info_Notes>${Work_Info_Notes}</urn:Work_Info_Notes>
+         <urn:Work_Info_Type>${Work_Info_Type}</urn:Work_Info_Type>
+         <urn:Work_Info_Source>${Work_Info_Source}</urn:Work_Info_Source>
+         <urn:Work_Info_Locked>${Work_Info_Locked}</urn:Work_Info_Locked>
+         <urn:Work_Info_View_Access>${Work_Info_View_Access}</urn:Work_Info_View_Access>
+         <urn:Incident_Number>${Incident_Number}</urn:Incident_Number>
+      </urn:UpdateStatus>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:XM_HPD_IncidentInterface_WS/XM_HPD_IncidentInterfacePortType/UpdateStatusRequest"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/><con:sensitiveInformation/></con:soapui-project>
