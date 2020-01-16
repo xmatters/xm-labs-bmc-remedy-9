@@ -112,11 +112,9 @@ XMRESTAPI = {};
     }
     IALOG.debug("XM REST API: Deduplication settings: parameter passed=" + deduplicationFilter + ", value used=" + deduplicationFilterName);
 
-    if (deduplicationFilterName != null && APXML.dedup(apxml, deduplicationFilterName)) {
-      IALOG.warn(
-        "XM REST API: An event with tokens " + APXML.toString(apxml) + " has been injected into the event domain " +
-        "within the configured suppression period. It has been suppressed."
-      );
+    if (XMUtil.deduplicator.isDuplicate(apxml)) {
+      // Discard message, adding a warning note to the log
+      XMUtil.deduplicate(event.properties);
       return;
     }
 
@@ -133,8 +131,10 @@ XMRESTAPI = {};
     if (IALOG.isDebugEnabled()) {
       IALOG.debug("XM REST API: Post to " + url + " " + json);
     }
-    return XMIO.post(json, url, INITIATOR, INITIATOR_PASSWORD);
-  }
+    var response = XMIO.post(json, url, INITIATOR, INITIATOR_PASSWORD);
+    XMUtil.deduplicator.incrementCount(apxml);
+    return response;
+  };
 
   // Utility methods
   XMRESTAPI.checkResponse = function(response, ignoreError) {
