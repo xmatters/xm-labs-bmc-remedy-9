@@ -212,8 +212,8 @@ function processDataLoadRequest(requestObject)
         case ACTION_LOAD:
             log.info("processDataLoadRequest: starting batch data load");
 
-            processRemedyUsers(XM_CTM_PEOPLE_WS_BATCH_QUALIFICATION, PROCESS_ADD_UPDATE, ALLOW_ADD_USER);
-            processRemedySupportGroups(XM_CTM_SUPPORT_GROUP_WS_BATCH_QUALIFICATION, PROCESS_ADD_UPDATE);
+            processRemedyUsers(XM_CTM_PEOPLE_WS_BATCH_QUALIFICATION, DELETE_FROM_XMATTERS, ONLY_UPDATE_USER);
+            processRemedySupportGroups(XM_CTM_SUPPORT_GROUP_WS_BATCH_QUALIFICATION, DELETE_FROM_XMATTERS);
             break;
 
         case ACTION_ADD:
@@ -222,13 +222,13 @@ function processDataLoadRequest(requestObject)
             {
                 // A user that doesn't match the general selection criteria should only be updated
                 isUpdateOnly = !isQualifyingUser(requestObject.id);
-                processRemedyUsers(XM_CTM_PEOPLE_WS_PERSON_QUALIFICATION.replace("${PERSON_ID}", String(requestObject.id)), PROCESS_ADD_UPDATE, isUpdateOnly);
+                processRemedyUsers(XM_CTM_PEOPLE_WS_PERSON_QUALIFICATION.replace("${PERSON_ID}", String(requestObject.id)), DELETE_FROM_XMATTERS, isUpdateOnly);
             }
             else if (isGroupAction)
             {
                 // A group that doesn't match the general selection criteria should only be updated
                 isUpdateOnly = !isQualifyingGroup(requestObject.id);
-                processRemedySupportGroups(XM_CTM_SUPPORT_GROUP_WS_GROUP_QUALIFICATION.replace("${GROUP_ID}", String(requestObject.id)), PROCESS_ADD_UPDATE, isUpdateOnly, requestObject.requestType, requestObject.additionalData);
+                processRemedySupportGroups(XM_CTM_SUPPORT_GROUP_WS_GROUP_QUALIFICATION.replace("${GROUP_ID}", String(requestObject.id)), DELETE_FROM_XMATTERS, isUpdateOnly, requestObject.requestType, requestObject.additionalData);
             }
             else
             {

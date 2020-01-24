@@ -186,9 +186,12 @@ var ACTION_DELETE = "delete";
 var REQUEST_DELETE_GROUP = "deleteGroupMember";
 
 var PROCESS_DELETE = true;
-var PROCESS_ADD_UPDATE = false;
 
-var ALLOW_ADD_USER = false;
+// DELETE_FROM_XMATTERS: Set this to true if the users/groups should be removed from xMatters.
+var DELETE_FROM_XMATTERS = false;
+
+// ONLY_UPDATE_USER: Set this to true if no new users should be created in xMatters.
+var ONLY_UPDATE_USER = false;
 
 // Controls how removing a user from a BMC Remedy group will affect users in
 // xMatters. If false, removing a user from a group in BMC Remedy will remove
