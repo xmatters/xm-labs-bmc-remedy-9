@@ -24,7 +24,7 @@ This is an experimental integration as our workshop engineers in the great white
 * xMatters Integration Agent 5.8.1 - Downloads and install docs are [here](https://support.xmatters.com/hc/en-us/articles/201463419-Integration-Agent-for-xMatters-5-x-xMatters-On-Demand)
 
 # Files
-* [xM_BMC_Remedy_Incident_Management_5_1_2-xMLabs.zip](xM_BMC_Remedy_Incident_Management_5_1_2-xMLabs.zip) - Zip file containing all necessary files: Workflow, Integration Agent files and Remedy files
+* [xM_BMC_Remedy_Incident_Management_5_1_2-xMLabs](xM_BMC_Remedy_Incident_Management_5_1_2-xMLabs) - folder containing all necessary files: Workflow, Integration Agent files and Remedy files
 * [xM-BMC-Remedy_Incident_Management_5_1_2.pdf](xM-BMC-Remedy_Incident_Management_5_1_2.pdf) - Documentation pdf for all installation steps.
 
 
