@@ -114,7 +114,7 @@ XMRESTAPI = {};
 
     if (XMUtil.deduplicator.isDuplicate(apxml)) {
       // Discard message, adding a warning note to the log
-      XMUtil.deduplicate(event.properties);
+      XMUtil.deduplicate(apxml);
       return;
     }
 
